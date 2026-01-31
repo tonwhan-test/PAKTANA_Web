@@ -50,8 +50,10 @@ window.HeroSlider = {
             d.classList.toggle('active', i === this.currentSlide);
         });
 
-        // Apply Sliding Effect
-        track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+        // Apply Fade Effect (Toggle active class)
+        slides.forEach((s, i) => {
+            s.classList.toggle('active', i === this.currentSlide);
+        });
     },
 
     changeSlide(direction) {
