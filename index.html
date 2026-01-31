@@ -57,1192 +57,1224 @@
     <script src="assets/js/ui/analytics.js"></script>
 </head>
 
-<body class="h-full overflow-auto w-full nav-fixed-padding"><!-- Admin Toolbar -->
-    <div class="admin-toolbar" id="adminToolbar">
-        <div class="admin-toolbar-title"><span>🔐</span> <span>โหมดแก้ไข Admin</span></div>
-        <div class="flex gap-4">
-            <button class="admin-toolbar-btn bg-purple-600 hover:bg-purple-700 text-white"
-                onclick="openAnalyticsModal()">📊 สถิติ</button>
-            <button class="admin-toolbar-btn" onclick="logoutAdmin()">ออกจากระบบ</button>
-        </div>
-    </div><!-- Navigation -->
-    <nav class="nav-bar editable-section">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3 md:space-x-4">
+<!-- Navigation -->
+<nav class="nav-bar editable-section">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3 md:space-x-4">
+                <div
+                    class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl flex items-center justify-center shadow-lg transform transition-transform hover:scale-105 overflow-hidden">
+                    <img src="paktana_logo.png" alt="PAKTANA Logo" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold text-heading leading-tight" id="navPartyName">
+                        PAKTANA</h1>
+                    <p class="text-xs text-body hidden md:block" id="navPartySubtitle">The Learning Party</p>
+                </div>
+            </div>
+            <div class="nav-links-desktop flex items-center space-x-1">
+                <a href="#" class="nav-link active" data-page="home">หน้าแรก</a>
+                <a href="#" class="nav-link" data-page="policies">นโยบาย</a>
+                <a href="#" class="nav-link" data-page="leadership">ทำเนียบสมาชิก</a>
+                <a href="#" class="nav-link" data-page="activities">กิจกรรม</a>
+                <a href="#" class="nav-link" data-page="contact">เสนอนโยบาย</a>
+                <a href="#" class="nav-link" data-page="contact_us_new">ติดต่อสอบถาม</a>
+
+                <a href="#" class="nav-link admin-only hidden" data-page="manage_policies">จัดการนโยบาย</a>
+                <a href="#" class="nav-link admin-only hidden" data-page="manage_members">จัดการสมาชิก</a>
+
+                <!-- Admin Dropdown Section -->
+                <div class="relative group admin-only hidden ml-2" id="navAdminDropdown">
+                    <button
+                        class="nav-link flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold hover:bg-blue-100 transition-all border border-blue-100">
+                        <span>🔐 Admin</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-50 group-hover:rotate-180 transition-transform"></i>
+                    </button>
                     <div
-                        class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl flex items-center justify-center shadow-lg transform transition-transform hover:scale-105 overflow-hidden">
-                        <img src="paktana_logo.png" alt="PAKTANA Logo" class="w-full h-full object-contain">
+                        class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[1001] transform translate-y-2 group-hover:translate-y-0">
+                        <div class="px-4 py-2 mb-2 border-b border-gray-50">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Admin Control</p>
+                        </div>
+                        <a href="#" onclick="openAnalyticsModal()"
+                            class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                            <span
+                                class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">📊</span>
+                            <span class="font-bold">ดูสถิติสภา</span>
+                        </a>
+                        <div class="my-2 border-t border-gray-50"></div>
+                        <a href="#" onclick="logoutAdmin()"
+                            class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                            <span
+                                class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600">🚪</span>
+                            <span class="font-bold">ออกจากระบบ</span>
+                        </a>
                     </div>
-                    <div>
-                        <h1 class="text-lg md:text-xl font-bold text-heading leading-tight" id="navPartyName">
-                            PAKTANA</h1>
-                        <p class="text-xs text-body hidden md:block" id="navPartySubtitle">The Learning Party</p>
-                    </div>
                 </div>
-                <!-- Desktop Links -->
-                <div class="nav-links-desktop flex space-x-2">
-                    <a href="#" class="nav-link active" data-page="home">หน้าแรก</a>
-                    <a href="#" class="nav-link" data-page="policies">นโยบาย</a>
-                    <a href="#" class="nav-link" data-page="leadership">ทำเนียบสมาชิก</a>
-                    <a href="#" class="nav-link" data-page="activities">กิจกรรม</a>
-                    <a href="#" class="nav-link" data-page="contact">เสนอนโยบาย</a>
-                    <a href="#" class="nav-link" data-page="contact_us_new">ติดต่อสอบถาม</a>
-                    <a href="#" class="nav-link admin-only hidden" data-page="manage_policies">จัดการนโยบาย</a>
-                    <a href="#" class="nav-link admin-only hidden" data-page="manage_members">จัดการสมาชิก</a>
-                    <a href="#" class="nav-link" data-page="admin">Admin</a>
-                </div>
-                <!-- Hamburger Button -->
-                <div class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+
+                <!-- Visitor-only Admin Login Link -->
+                <a href="#" class="nav-link visitor-only" data-page="admin">Admin</a>
+            </div>
+            <!-- Hamburger Button -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Mobile Navigation Overlay -->
-    <!-- Mobile Navigation Sidebar -->
-    <div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="toggleMobileMenu()"></div>
-    <div class="mobile-nav-overlay" id="mobileNav">
-        <div class="mobile-sidebar-header">
-            <div class="mobile-sidebar-logo overflow-hidden bg-white">
-                <img src="paktana_logo.png" alt="PAKTANA Logo" class="w-full h-full object-contain">
-            </div>
-            <div>
-                <h3 class="font-bold text-lg leading-tight">PAKTANA</h3>
-                <p class="text-xs text-blue-100 opacity-80">The Learning Party</p>
-            </div>
+<!-- Mobile Navigation Overlay -->
+<!-- Mobile Navigation Sidebar -->
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="toggleMobileMenu()"></div>
+<div class="mobile-nav-overlay" id="mobileNav">
+    <div class="mobile-sidebar-header">
+        <div class="mobile-sidebar-logo overflow-hidden bg-white">
+            <img src="paktana_logo.png" alt="PAKTANA Logo" class="w-full h-full object-contain">
         </div>
+        <div>
+            <h3 class="font-bold text-lg leading-tight">PAKTANA</h3>
+            <p class="text-xs text-blue-100 opacity-80">The Learning Party</p>
+        </div>
+    </div>
 
-        <div class="mobile-nav-content">
-            <a href="#" class="mobile-nav-link" data-page="home" onclick="toggleMobileMenu(); navigateToPage('home')">
-                <i>🏠</i> หน้าแรก
-            </a>
-            <a href="#" class="mobile-nav-link" data-page="policies"
-                onclick="toggleMobileMenu(); navigateToPage('policies')">
-                <i>📋</i> นโยบาย
-            </a>
-            <a href="#" class="mobile-nav-link" data-page="leadership"
-                onclick="toggleMobileMenu(); navigateToPage('leadership')">
-                <i>👥</i> ทำเนียบสมาชิก
-            </a>
-            <a href="#" class="mobile-nav-link" data-page="activities"
-                onclick="toggleMobileMenu(); navigateToPage('activities')">
-                <i>📸</i> กิจกรรม
-            </a>
-            <a href="#" class="mobile-nav-link" data-page="contact"
-                onclick="toggleMobileMenu(); navigateToPage('contact')">
-                <i>📢</i> เสนอนโยบาย
-            </a>
-            <a href="#" class="mobile-nav-link" data-page="contact_us_new"
-                onclick="toggleMobileMenu(); navigateToPage('contact_us_new')">
-                <i>✉️</i> ติดต่อสอบถาม
-            </a>
-            <hr class="border-gray-100 my-2">
-            <a href="#" class="mobile-nav-link admin-only hidden" data-page="manage_policies"
+    <div class="mobile-nav-content">
+        <a href="#" class="mobile-nav-link" data-page="home" onclick="toggleMobileMenu(); navigateToPage('home')">
+            <i>🏠</i> หน้าแรก
+        </a>
+        <a href="#" class="mobile-nav-link" data-page="policies"
+            onclick="toggleMobileMenu(); navigateToPage('policies')">
+            <i>📋</i> นโยบาย
+        </a>
+        <a href="#" class="mobile-nav-link" data-page="leadership"
+            onclick="toggleMobileMenu(); navigateToPage('leadership')">
+            <i>👥</i> ทำเนียบสมาชิก
+        </a>
+        <a href="#" class="mobile-nav-link" data-page="activities"
+            onclick="toggleMobileMenu(); navigateToPage('activities')">
+            <i>📸</i> กิจกรรม
+        </a>
+        <a href="#" class="mobile-nav-link" data-page="contact" onclick="toggleMobileMenu(); navigateToPage('contact')">
+            <i>📢</i> เสนอนโยบาย
+        </a>
+        <a href="#" class="mobile-nav-link" data-page="contact_us_new"
+            onclick="toggleMobileMenu(); navigateToPage('contact_us_new')">
+            <i>✉️</i> ติดต่อสอบถาม
+        </a>
+
+        <!-- Mobile Admin Section -->
+        <div class="admin-only hidden">
+            <div class="px-4 pt-4 pb-2">
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Admin Features</p>
+            </div>
+            <a href="#" class="mobile-nav-link" data-page="manage_policies"
                 onclick="toggleMobileMenu(); navigateToPage('manage_policies')">
                 <i>📋</i> จัดการนโยบาย
             </a>
-            <a href="#" class="mobile-nav-link admin-only hidden" data-page="manage_members"
+            <a href="#" class="mobile-nav-link" data-page="manage_members"
                 onclick="toggleMobileMenu(); navigateToPage('manage_members')">
                 <i>⚙️</i> จัดการสมาชิก
             </a>
-            <a href="#" class="mobile-nav-link" data-page="admin" onclick="toggleMobileMenu(); navigateToPage('admin')">
-                <i>🔐</i> Admin
+            <a href="#" class="mobile-nav-link text-purple-600" onclick="toggleMobileMenu(); openAnalyticsModal()">
+                <i>📊</i> สถิติเว็บไซต์
+            </a>
+            <a href="#" class="mobile-nav-link text-red-600 font-bold" onclick="toggleMobileMenu(); logoutAdmin()">
+                <i>🚪</i> ออกจากระบบ
             </a>
         </div>
-    </div>
 
-    <!-- Page 1: Homepage -->
-    <div class="page active" data-page="home">
-        <section class="hero-slider" id="heroSliderSection">
-            <div id="heroSlider" class="h-full w-full">
-                <!-- Content will be injected by window.Renderers.renderHeroSlides -->
-                <div class="flex items-center justify-center h-full bg-gray-900">
-                    <div class="animate-spin text-4xl text-white">⏳</div>
+        <a href="#" class="mobile-nav-link visitor-only" data-page="admin"
+            onclick="toggleMobileMenu(); navigateToPage('admin')">
+            <i>🔐</i> Admin Login
+        </a>
+    </div>
+</div>
+
+<!-- Page 1: Homepage -->
+<div class="page active" data-page="home">
+    <section class="hero-slider" id="heroSliderSection">
+        <div id="heroSlider" class="h-full w-full">
+            <!-- Content will be injected by window.Renderers.renderHeroSlides -->
+            <div class="flex items-center justify-center h-full bg-gray-900">
+                <div class="animate-spin text-4xl text-white">⏳</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="executive-summary relative">
+        <!-- Admin Edit Button -->
+        <button class="admin-edit-btn" onclick="openSummaryEditModal()" style="top: 2rem; right: 2rem;">✏️
+            แก้ไขข้อความ</button>
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-heading mb-4 font-serif" id="summaryHeading">
+                -</h2>
+            <div class="gold-divider"></div>
+            <p class="text-xl text-body leading-relaxed mb-12 text-center max-w-3xl mx-auto" id="summaryIntro">
+                -</p>
+            <div id="policiesHomeGrid" class="grid md:grid-cols-2 gap-6 mb-10">
+                <div class="col-span-full text-center py-12">
+                    <div class="animate-spin text-4xl mb-4">⏳</div>
+                    <p>กำลังโหลดข้อมูลนโยบาย...</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="section-padding bg-section-bg border-t border-gray-100">
+            <div class="max-w-7xl mx-auto text-center">
+                <div id="homeLeadershipGrid" class="leadership-grid hidden">
+                    <!-- Injected by Renderers -->
+                </div>
+
+                <div class="mt-8">
+                    <button onclick="navigateToPage('leadership')"
+                        class="group inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        ดูทำเนียบสมาชิกทั้งหมด
+                        <span class="text-xl group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
                 </div>
             </div>
         </section>
+    </section>
+</div>
 
-        <section class="executive-summary relative">
-            <!-- Admin Edit Button -->
-            <button class="admin-edit-btn" onclick="openSummaryEditModal()" style="top: 2rem; right: 2rem;">✏️
-                แก้ไขข้อความ</button>
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold text-center text-heading mb-4 font-serif" id="summaryHeading">
-                    -</h2>
-                <div class="gold-divider"></div>
-                <p class="text-xl text-body leading-relaxed mb-12 text-center max-w-3xl mx-auto" id="summaryIntro">
-                    -</p>
-                <div id="policiesHomeGrid" class="grid md:grid-cols-2 gap-6 mb-10">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin text-4xl mb-4">⏳</div>
-                        <p>กำลังโหลดข้อมูลนโยบาย...</p>
-                    </div>
+<!-- Page: Policies -->
+<div class="page" data-page="policies">
+    <section class="section-padding bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-6xl font-bold text-center text-heading mb-4 font-serif">นโยบายโดยละเอียด
+            </h2>
+            <div class="gold-divider"></div>
+            <p class="text-center text-gray-600 text-xl mb-16 max-w-3xl mx-auto">
+                แผนงานและกลยุทธ์ครบวงจรเพื่อยกระดับการศึกษาไทยสู่ความเป็นเลิศ</p>
+            <div id="policiesDetailContainer">
+                <div class="col-span-full text-center py-12">
+                    <div class="animate-spin text-4xl mb-4">⏳</div>
+                    <p>กำลังโหลดข้อมูลนโยบายโดยละเอียด...</p>
                 </div>
             </div>
+            <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-3xl p-12 text-white text-center mt-12">
+                <h3 class="text-3xl font-bold mb-4 font-serif">💪 ร่วมขับเคลื่อนนโยบาย</h3>
+                <p class="text-xl mb-8 opacity-90">มีความคิดเห็นหรือข้อเสนอแนะเกี่ยวกับนโยบายของเรา?</p>
+                <button onclick="navigateToPage('contact')"
+                    class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-4 px-10 rounded-xl text-lg transition-all hover:scale-105 shadow-xl">
+                    ติดต่อเรา </button>
+            </div>
+        </div>
+    </section>
+</div>
 
-            <section class="section-padding bg-section-bg border-t border-gray-100">
-                <div class="max-w-7xl mx-auto text-center">
-                    <div id="homeLeadershipGrid" class="leadership-grid hidden">
-                        <!-- Injected by Renderers -->
-                    </div>
+<!-- Page: Leadership -->
+<div class="page" data-page="leadership">
+    <section class="section-padding bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl md:text-6xl font-bold text-center text-heading mb-4 font-serif" id="leadershipHeading">
+                ทำเนียบสมาชิก</h2>
+            <div class="gold-divider"></div>
+            <div class="flex justify-center mb-8 admin-only">
+                <button
+                    class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-2 px-6 rounded-xl font-semibold hover:shadow-lg transition-all"
+                    onclick="navigateToPage('manage_members')">จัดการสมาชิก</button>
+            </div>
+            <p class="text-center text-gray-600 text-xl mb-16">โครงสร้างองค์กรและผู้นำที่มีวิสัยทัศน์</p>
 
-                    <div class="mt-8">
-                        <button onclick="navigateToPage('leadership')"
-                            class="group inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            ดูทำเนียบสมาชิกทั้งหมด
-                            <span class="text-xl group-hover:translate-x-1 transition-transform">→</span>
-                        </button>
-                    </div>
-                </div>
-            </section>
-        </section>
-    </div>
+            <div class="leadership-grid" id="pageLeadershipGrid">
+                <!-- Dynamic -->
+            </div>
 
-    <!-- Page: Policies -->
-    <div class="page" data-page="policies">
-        <section class="section-padding bg-gradient-to-b from-white to-gray-50">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-5xl md:text-6xl font-bold text-center text-heading mb-4 font-serif">นโยบายโดยละเอียด
-                </h2>
-                <div class="gold-divider"></div>
-                <p class="text-center text-gray-600 text-xl mb-16 max-w-3xl mx-auto">
-                    แผนงานและกลยุทธ์ครบวงจรเพื่อยกระดับการศึกษาไทยสู่ความเป็นเลิศ</p>
-                <div id="policiesDetailContainer">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin text-4xl mb-4">⏳</div>
-                        <p>กำลังโหลดข้อมูลนโยบายโดยละเอียด...</p>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-3xl p-12 text-white text-center mt-12">
-                    <h3 class="text-3xl font-bold mb-4 font-serif">💪 ร่วมขับเคลื่อนนโยบาย</h3>
-                    <p class="text-xl mb-8 opacity-90">มีความคิดเห็นหรือข้อเสนอแนะเกี่ยวกับนโยบายของเรา?</p>
-                    <button onclick="navigateToPage('contact')"
-                        class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-4 px-10 rounded-xl text-lg transition-all hover:scale-105 shadow-xl">
-                        ติดต่อเรา </button>
+            <div class="mt-16">
+
+                <div class="member-grid" id="membersList">
+                    <!-- Members injected here -->
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
-    <!-- Page: Leadership -->
-    <div class="page" data-page="leadership">
-        <section class="section-padding bg-gradient-to-b from-gray-50 to-white">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-5xl md:text-6xl font-bold text-center text-heading mb-4 font-serif"
-                    id="leadershipHeading">ทำเนียบสมาชิก</h2>
-                <div class="gold-divider"></div>
-                <div class="flex justify-center mb-8 admin-only">
-                    <button
-                        class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-2 px-6 rounded-xl font-semibold hover:shadow-lg transition-all"
-                        onclick="navigateToPage('manage_members')">จัดการสมาชิก</button>
-                </div>
-                <p class="text-center text-gray-600 text-xl mb-16">โครงสร้างองค์กรและผู้นำที่มีวิสัยทัศน์</p>
-
-                <div class="leadership-grid" id="pageLeadershipGrid">
-                    <!-- Dynamic -->
-                </div>
-
-                <div class="mt-16">
-
-                    <div class="member-grid" id="membersList">
-                        <!-- Members injected here -->
-                    </div>
-                </div>
+<!-- Page: Activities -->
+<div class="page" data-page="activities">
+    <section class="section-padding bg-gradient-to-b from-white to-section-bg editable-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-6xl font-bold text-center text-heading mb-4 font-serif" id="activitiesHeading">
+                กิจกรรม &amp; แกลเลอรี่</h2>
+            <div class="gold-divider"></div>
+            <div class="flex justify-between items-center mb-8">
+                <p class="text-left text-gray-600 text-xl">ผลงานและกิจกรรมที่ผ่านมาของ PAKTANA</p>
+                <button
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all admin-only"
+                    onclick="openGalleryManagementModal()">+ เพิ่มกิจกรรม</button>
             </div>
-        </section>
-    </div>
-
-    <!-- Page: Activities -->
-    <div class="page" data-page="activities">
-        <section class="section-padding bg-gradient-to-b from-white to-section-bg editable-section">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl md:text-6xl font-bold text-center text-heading mb-4 font-serif"
-                    id="activitiesHeading">กิจกรรม &amp; แกลเลอรี่</h2>
-                <div class="gold-divider"></div>
-                <div class="flex justify-between items-center mb-8">
-                    <p class="text-left text-gray-600 text-xl">ผลงานและกิจกรรมที่ผ่านมาของ PAKTANA</p>
-                    <button
-                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all admin-only"
-                        onclick="openGalleryManagementModal()">+ เพิ่มกิจกรรม</button>
-                </div>
-                <div class="gallery-grid" id="galleryGrid">
-                </div>
+            <div class="gallery-grid" id="galleryGrid">
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
-    <!-- Page: Propose Policy (Formerly Contact) -->
-    <div class="page" data-page="contact">
-        <section class="section-padding bg-section-bg">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
-                    <div class="p-10 md:p-14">
-                        <h2 class="text-4xl font-bold text-heading mb-8 font-serif text-center">เสนอนโยบาย</h2>
-                        <form id="contactForm" class="space-y-6">
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-gray-700 font-bold mb-2">ชื่อ-นามสกุล</label>
-                                    <input type="text" id="contactName" required
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 font-bold mb-2">อีเมล</label>
-                                    <input type="email" id="contactEmail" required
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none">
-                                </div>
-                            </div>
+<!-- Page: Propose Policy (Formerly Contact) -->
+<div class="page" data-page="contact">
+    <section class="section-padding bg-section-bg">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                <div class="p-10 md:p-14">
+                    <h2 class="text-4xl font-bold text-heading mb-8 font-serif text-center">เสนอนโยบาย</h2>
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-gray-700 font-bold mb-2">หัวข้อติดต่อ</label>
-                                <select id="contactSubject"
+                                <label class="block text-gray-700 font-bold mb-2">ชื่อ-นามสกุล</label>
+                                <input type="text" id="contactName" required
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none">
-                                    <option value="general">สอบถามทั่วไป</option>
-                                    <option value="join">สมัครเป็นสมาชิก</option>
-                                    <option value="collaborate">ขอความร่วมมือ</option>
-                                    <option value="other">อื่นๆ</option>
-                                </select>
                             </div>
                             <div>
-                                <label class="block text-gray-700 font-bold mb-2">รายละเอียดนโยบาย</label>
-                                <textarea id="contactMessageText" rows="5" required
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none"></textarea>
+                                <label class="block text-gray-700 font-bold mb-2">อีเมล</label>
+                                <input type="email" id="contactEmail" required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none">
                             </div>
-                            <button type="submit"
-                                class="w-full bg-secondary hover:bg-yellow-500 text-blue-900 font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                                ส่งนโยบาย
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Page: Contact Us New -->
-    <div class="page" data-page="contact_us_new">
-        <section class="section-padding bg-section-bg">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <p class="text-gray-500 text-lg">ยินดีรับฟังความคิดเห็นและข้อเสนอแนะจากคุณ</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Left: Contact Info -->
-                    <div
-                        class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100 flex flex-col justify-between">
+                        </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-heading mb-8">ข้อมูลติดต่อ</h3>
-
-                            <div class="space-y-8">
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-                                        📧
-                                    </div>
-                                    <div>
-                                        <h5 class="font-bold text-gray-900">อีเมล</h5>
-                                        <p class="text-gray-500" id="pageContactEmail">info@learningparty.th</p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-                                        📱
-                                    </div>
-                                    <div>
-                                        <h5 class="font-bold text-gray-900">โทรศัพท์</h5>
-                                        <p class="text-gray-500" id="pageContactPhone">02-XXX-XXXX</p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-                                        📍
-                                    </div>
-                                    <div>
-                                        <h5 class="font-bold text-gray-900">ที่อยู่</h5>
-                                        <p class="text-gray-500" id="pageContactAddress">123 ถนนการศึกษา
-                                            แขวงวัฒนา<br>เขตวัฒนา กรุงเทพฯ 10110
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <label class="block text-gray-700 font-bold mb-2">หัวข้อติดต่อ</label>
+                            <select id="contactSubject"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none">
+                                <option value="general">สอบถามทั่วไป</option>
+                                <option value="join">สมัครเป็นสมาชิก</option>
+                                <option value="collaborate">ขอความร่วมมือ</option>
+                                <option value="other">อื่นๆ</option>
+                            </select>
                         </div>
-
-                        <div class="mt-12">
-                            <h3 class="text-xl font-bold text-heading mb-6">ติดตามเรา</h3>
-                            <div class="flex gap-4" id="pageContactSocials">
-                                <a href="#"
-                                    class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a href="#"
-                                    class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a href="#"
-                                    class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 transition-transform"><i
-                                        class="fab fa-tiktok"></i></a>
-                                <a href="#"
-                                    class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
-                                        class="fab fa-linkedin-in"></i></a>
-                            </div>
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">รายละเอียดนโยบาย</label>
+                            <textarea id="contactMessageText" rows="5" required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none"></textarea>
                         </div>
-                    </div>
-
-                    <!-- Right: Contact Form -->
-                    <div class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100">
-                        <h3 class="text-2xl font-bold text-heading mb-8">ส่งข้อความถึงเรา</h3>
-                        <form id="contactUsNewForm" class="space-y-6">
-                            <div>
-                                <label class="block text-gray-700 font-bold mb-2">ชื่อ-นามสกุล *</label>
-                                <input type="text" id="newContactName" placeholder="กรอกชื่อ-นามสกุล" required
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 font-bold mb-2">อีเมล *</label>
-                                <input type="email" id="newContactEmail" placeholder="example@email.com" required
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 font-bold mb-2">หัวข้อ *</label>
-                                <select id="newContactSubject" required
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none text-gray-500">
-                                    <option value="" disabled selected>เลือกหัวข้อ...</option>
-                                    <option value="general">สอบถามทั่วไป</option>
-                                    <option value="support">แจ้งปัญหาการใช้งาน</option>
-                                    <option value="other">อื่นๆ</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 font-bold mb-2">ข้อความ *</label>
-                                <textarea id="newContactMessage" rows="4" placeholder="กรอกข้อความของคุณ..." required
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none"></textarea>
-                            </div>
-                            <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-blue-500/30">
-                                ส่งข้อความ
-                            </button>
-                        </form>
-                    </div>
+                        <button type="submit"
+                            class="w-full bg-secondary hover:bg-yellow-500 text-blue-900 font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            ส่งนโยบาย
+                        </button>
+                    </form>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
-    <!-- Page: Manage Policies -->
-    <div class="page" data-page="manage_policies">
-        <section class="py-20 bg-gray-50 min-h-screen">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+<!-- Page: Contact Us New -->
+<div class="page" data-page="contact_us_new">
+    <section class="section-padding bg-section-bg">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="text-gray-500 text-lg">ยินดีรับฟังความคิดเห็นและข้อเสนอแนะจากคุณ</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Left: Contact Info -->
+                <div class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100 flex flex-col justify-between">
                     <div>
-                        <h2 class="text-4xl font-bold text-heading font-serif mb-2">หน้าจัดการนโยบาย</h2>
-                    </div>
-                    <button onclick="addPolicy()"
-                        class="mt-4 md:mt-0 bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all flex items-center gap-2">
-                        <span>➕</span> เพิ่มนโยบายใหม่
-                    </button>
-                </div>
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-                        <!-- Desktop Header -->
-                        <div
-                            class="hidden md:grid md:grid-cols-12 gap-4 bg-gray-50 px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
-                            <div class="md:col-span-1 text-center">Icon</div>
-                            <div class="md:col-span-8">หัวข้อนโยบาย / รายละเอียด</div>
-                            <div class="md:col-span-1 text-center">ลำดับ</div>
-                            <div class="md:col-span-2 text-right pr-2">จัดการ</div>
+                        <h3 class="text-2xl font-bold text-heading mb-8">ข้อมูลติดต่อ</h3>
+
+                        <div class="space-y-8">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                    📧
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-900">อีเมล</h5>
+                                    <p class="text-gray-500" id="pageContactEmail">info@learningparty.th</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                    📱
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-900">โทรศัพท์</h5>
+                                    <p class="text-gray-500" id="pageContactPhone">02-XXX-XXXX</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                    📍
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-900">ที่อยู่</h5>
+                                    <p class="text-gray-500" id="pageContactAddress">123 ถนนการศึกษา
+                                        แขวงวัฒนา<br>เขตวัฒนา กรุงเทพฯ 10110
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <!-- List Container -->
-                        <div id="policyManagementTableBody" class="divide-y divide-gray-100"></div>
                     </div>
+
+                    <div class="mt-12">
+                        <h3 class="text-xl font-bold text-heading mb-6">ติดตามเรา</h3>
+                        <div class="flex gap-4" id="pageContactSocials">
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                    class="fab fa-instagram"></i></a>
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                    class="fab fa-tiktok"></i></a>
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Contact Form -->
+                <div class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100">
+                    <h3 class="text-2xl font-bold text-heading mb-8">ส่งข้อความถึงเรา</h3>
+                    <form id="contactUsNewForm" class="space-y-6">
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">ชื่อ-นามสกุล *</label>
+                            <input type="text" id="newContactName" placeholder="กรอกชื่อ-นามสกุล" required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">อีเมล *</label>
+                            <input type="email" id="newContactEmail" placeholder="example@email.com" required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">หัวข้อ *</label>
+                            <select id="newContactSubject" required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none text-gray-500">
+                                <option value="" disabled selected>เลือกหัวข้อ...</option>
+                                <option value="general">สอบถามทั่วไป</option>
+                                <option value="support">แจ้งปัญหาการใช้งาน</option>
+                                <option value="other">อื่นๆ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">ข้อความ *</label>
+                            <textarea id="newContactMessage" rows="4" placeholder="กรอกข้อความของคุณ..." required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-blue-500/30">
+                            ส่งข้อความ
+                        </button>
+                    </form>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
-    <!-- Page: Manage Members -->
-    <div class="page" data-page="manage_members">
-        <section class="py-20 bg-gray-50 min-h-screen">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-                    <div>
-                        <h2 class="text-4xl font-bold text-heading font-serif mb-2">หน้าจัดการสมาชิก</h2>
-                        <p class="text-gray-600">จัดการข้อมูลสมาชิก</p>
-                    </div>
-                    <button onclick="addMember()"
-                        class="mt-4 md:mt-0 bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all flex items-center gap-2">
-                        <span>➕</span> เพิ่มสมาชิกใหม่
-                    </button>
+<!-- Page: Manage Policies -->
+<div class="page" data-page="manage_policies">
+    <section class="py-20 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-4xl font-bold text-heading font-serif mb-2">หน้าจัดการนโยบาย</h2>
                 </div>
+                <button onclick="addPolicy()"
+                    class="mt-4 md:mt-0 bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all flex items-center gap-2">
+                    <span>➕</span> เพิ่มนโยบายใหม่
+                </button>
+            </div>
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                     <!-- Desktop Header -->
                     <div
                         class="hidden md:grid md:grid-cols-12 gap-4 bg-gray-50 px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
-                        <div class="md:col-span-5 pl-2">สมาชิก</div>
-                        <div class="md:col-span-3">ตำแหน่ง / หมวดหมู่</div>
-                        <div class="md:col-span-2 text-center">ลำดับ</div>
+                        <div class="md:col-span-1 text-center">Icon</div>
+                        <div class="md:col-span-8">หัวข้อนโยบาย / รายละเอียด</div>
+                        <div class="md:col-span-1 text-center">ลำดับ</div>
                         <div class="md:col-span-2 text-right pr-2">จัดการ</div>
                     </div>
                     <!-- List Container -->
-                    <div id="managementTableBody" class="divide-y divide-gray-100"></div>
+                    <div id="policyManagementTableBody" class="divide-y divide-gray-100"></div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
-    <!-- Page: Admin Login -->
-    <div class="page" data-page="admin">
-        <section class="min-h-screen flex items-center justify-center bg-gray-900" id="adminLoginSection">
-            <div class="bg-gray-800 p-10 rounded-3xl shadow-2xl max-w-md w-full border border-gray-700">
-                <div class="text-center mb-10">
-                    <div
-                        class="w-20 h-20 bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl shadow-lg">
-                        🔐</div>
-                    <h2 class="text-3xl font-bold text-white mb-2">Admin Portal</h2>
-                    <p class="text-gray-400">เข้าสู่ระบบเพื่อจัดการข้อมูล</p>
-                </div>
-                <div id="adminLoginMessage"
-                    class="hidden mb-6 p-4 rounded-lg bg-red-900/50 border border-red-500/50 text-red-200 text-sm">
-                </div>
-                <form id="adminLoginForm">
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-300 mb-3">Username</label>
-                        <input type="text" id="adminUsername"
-                            class="w-full bg-gray-700 border border-gray-600 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
-                            placeholder="Enter username" required>
-                    </div>
-                    <div class="mb-8">
-                        <label class="block text-sm font-semibold text-gray-300 mb-3">Password</label>
-                        <input type="password" id="adminPassword"
-                            class="w-full bg-gray-700 border border-gray-600 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
-                            placeholder="Enter password" required>
-                    </div>
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-4 rounded-xl shadow-lg transform transition-all hover:scale-[1.02]">
-                        🔓 Sign In
-                    </button>
-                </form>
-            </div>
-        </section>
-    </div>
-
-    <footer class="bg-[#0f172a] text-white py-12 font-serif border-t border-slate-800 w-full relative z-10">
+<!-- Page: Manage Members -->
+<div class="page" data-page="manage_members">
+    <section class="py-20 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 bg-white rounded-xl p-2 shrink-0">
-                            <img src="paktana_logo.png" alt="Logo" class="w-full h-full object-contain">
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold">PAKTANA</h3>
-                            <p class="text-gray-400 text-sm">The Learning Party</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed max-w-sm">
-                        มุ่งมั่นพัฒนาการศึกษาไทย สร้างสรรค์อนาคตที่ยั่งยืน เพื่อเยาวชนและสังคมไทย
-                    </p>
-                </div>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
                 <div>
-                    <h4 class="text-xl font-bold mb-6 text-yellow-400">เมนูนำทาง</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors" data-page="home"
-                                onclick="navigateToPage('home')">หน้าแรก</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors"
-                                data-page="policies" onclick="navigateToPage('policies')">นโยบาย</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors"
-                                data-page="leadership" onclick="navigateToPage('leadership')">ทำเนียบสมาชิก</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors"
-                                data-page="activities" onclick="navigateToPage('activities')">กิจกรรม</a></li>
-                    </ul>
+                    <h2 class="text-4xl font-bold text-heading font-serif mb-2">หน้าจัดการสมาชิก</h2>
+                    <p class="text-gray-600">จัดการข้อมูลสมาชิก</p>
                 </div>
-                <div>
-                    <div class="flex justify-between items-center mb-6">
-                        <h4 class="text-xl font-bold text-yellow-400">ติดต่อเรา</h4>
-                        <button class="bg-yellow-400 text-blue-900 px-2 py-1 rounded text-xs font-bold admin-only"
-                            onclick="openContactEditModal()">✏️ แก้ไข</button>
-                    </div>
-
-                    <ul class="space-y-3 text-gray-400 mb-6" id="footerContactList">
-                        <!-- Filled by JS -->
-                        <li class="flex items-start"><span class="mr-2">📧</span> <span
-                                id="footerEmail">info@learningparty.th</span></li>
-                        <li class="flex items-start"><span class="mr-2">📱</span> <span
-                                id="footerPhone">02-XXX-XXXX</span></li>
-                        <li class="flex items-start"><span class="mr-2">📍</span> <span id="footerAddress">123
-                                ถนนการศึกษา<br>กรุงเทพฯ 10110</span></li>
-                    </ul>
-
-                    <!-- Social Media Buttons -->
-                    <h4 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Follow Us</h4>
-                    <div class="flex space-x-3" id="footerSocials">
-                        <!-- Filled by JS -->
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white hover:bg-pink-500 transition-colors"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"><i
-                                class="fab fa-tiktok"></i></a>
-                    </div>
-                </div>
+                <button onclick="addMember()"
+                    class="mt-4 md:mt-0 bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all flex items-center gap-2">
+                    <span>➕</span> เพิ่มสมาชิกใหม่
+                </button>
             </div>
-            <div class="border-t border-gray-700 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 text-center md:text-left mb-4 md:mb-0">© 2024 PAKTANA .
-                        All rights reserved.
-                    </p>
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                <!-- Desktop Header -->
+                <div
+                    class="hidden md:grid md:grid-cols-12 gap-4 bg-gray-50 px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    <div class="md:col-span-5 pl-2">สมาชิก</div>
+                    <div class="md:col-span-3">ตำแหน่ง / หมวดหมู่</div>
+                    <div class="md:col-span-2 text-center">ลำดับ</div>
+                    <div class="md:col-span-2 text-right pr-2">จัดการ</div>
+                </div>
+                <!-- List Container -->
+                <div id="managementTableBody" class="divide-y divide-gray-100"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Page: Admin Login -->
+<div class="page" data-page="admin">
+    <section class="min-h-screen flex items-center justify-center bg-gray-900" id="adminLoginSection">
+        <div class="bg-gray-800 p-10 rounded-3xl shadow-2xl max-w-md w-full border border-gray-700">
+            <div class="text-center mb-10">
+                <div
+                    class="w-20 h-20 bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl shadow-lg">
+                    🔐</div>
+                <h2 class="text-3xl font-bold text-white mb-2">Admin Portal</h2>
+                <p class="text-gray-400">เข้าสู่ระบบเพื่อจัดการข้อมูล</p>
+            </div>
+            <div id="adminLoginMessage"
+                class="hidden mb-6 p-4 rounded-lg bg-red-900/50 border border-red-500/50 text-red-200 text-sm">
+            </div>
+            <form id="adminLoginForm">
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-300 mb-3">Username</label>
+                    <input type="text" id="adminUsername"
+                        class="w-full bg-gray-700 border border-gray-600 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                        placeholder="Enter username" required>
+                </div>
+                <div class="mb-8">
+                    <label class="block text-sm font-semibold text-gray-300 mb-3">Password</label>
+                    <input type="password" id="adminPassword"
+                        class="w-full bg-gray-700 border border-gray-600 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                        placeholder="Enter password" required>
+                </div>
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-4 rounded-xl shadow-lg transform transition-all hover:scale-[1.02]">
+                    🔓 Sign In
+                </button>
+            </form>
+        </div>
+    </section>
+</div>
+
+<footer class="bg-[#0f172a] text-white py-12 font-serif border-t border-slate-800 w-full relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-white rounded-xl p-2 shrink-0">
+                        <img src="paktana_logo.png" alt="Logo" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold">PAKTANA</h3>
+                        <p class="text-gray-400 text-sm">The Learning Party</p>
+                    </div>
+                </div>
+                <p class="text-gray-400 leading-relaxed max-w-sm">
+                    มุ่งมั่นพัฒนาการศึกษาไทย สร้างสรรค์อนาคตที่ยั่งยืน เพื่อเยาวชนและสังคมไทย
+                </p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-6 text-yellow-400">เมนูนำทาง</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors" data-page="home"
+                            onclick="navigateToPage('home')">หน้าแรก</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors" data-page="policies"
+                            onclick="navigateToPage('policies')">นโยบาย</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors" data-page="leadership"
+                            onclick="navigateToPage('leadership')">ทำเนียบสมาชิก</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors" data-page="activities"
+                            onclick="navigateToPage('activities')">กิจกรรม</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-6">
+                    <h4 class="text-xl font-bold text-yellow-400">ติดต่อเรา</h4>
+                    <button class="bg-yellow-400 text-blue-900 px-2 py-1 rounded text-xs font-bold admin-only"
+                        onclick="openContactEditModal()">✏️ แก้ไข</button>
+                </div>
+
+                <ul class="space-y-3 text-gray-400 mb-6" id="footerContactList">
+                    <!-- Filled by JS -->
+                    <li class="flex items-start"><span class="mr-2">📧</span> <span
+                            id="footerEmail">info@learningparty.th</span></li>
+                    <li class="flex items-start"><span class="mr-2">📱</span> <span id="footerPhone">02-XXX-XXXX</span>
+                    </li>
+                    <li class="flex items-start"><span class="mr-2">📍</span> <span id="footerAddress">123
+                            ถนนการศึกษา<br>กรุงเทพฯ 10110</span></li>
+                </ul>
+
+                <!-- Social Media Buttons -->
+                <h4 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Follow Us</h4>
+                <div class="flex space-x-3" id="footerSocials">
+                    <!-- Filled by JS -->
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white hover:bg-pink-500 transition-colors"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"><i
+                            class="fab fa-tiktok"></i></a>
                 </div>
             </div>
         </div>
-    </footer>
-
-    <!-- Floating Rate Button -->
-    <button id="floatingRateBtn" onclick="openModal('ratingModal')"
-        class="fixed bottom-4 right-4 z-40 bg-yellow-400 text-blue-900 px-4 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
-        <span>⭐</span> ให้คะแนน
-    </button>
-
-    <!-- Modals -->
-
-    <!-- Member Details Modal -->
-    <div id="memberModal" class="modal-overlay" onclick="closeModal('memberModal')">
-        <div class="modal-content max-w-5xl bg-transparent shadow-none p-0 overflow-y-auto"
-            onclick="event.stopPropagation()">
-            <div class="relative bg-white rounded-3xl shadow-2xl" id="memberModalContent">
+        <div class="border-t border-gray-700 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-center md:text-left mb-4 md:mb-0">© 2024 PAKTANA .
+                    All rights reserved.
+                </p>
             </div>
-            <button onclick="closeModal('memberModal')"
-                class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-md">✕</button>
         </div>
     </div>
+</footer>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="modal-overlay bg-black/95 backdrop-blur-xl" onclick="closeModal('imageModal')">
-        <div class="modal-content max-w-screen-xl bg-transparent shadow-none w-full" onclick="event.stopPropagation()">
-            <div id="imageModalContent" class="relative"></div>
-            <button onclick="closeModal('imageModal')"
-                class="fixed top-6 right-6 z-50 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all text-xl">✕</button>
+<!-- Floating Rate Button -->
+<button id="floatingRateBtn" onclick="openModal('ratingModal')"
+    class="fixed bottom-4 right-4 z-40 bg-yellow-400 text-blue-900 px-4 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+    <span>⭐</span> ให้คะแนน
+</button>
+
+<!-- Modals -->
+
+<!-- Member Details Modal -->
+<div id="memberModal" class="modal-overlay" onclick="closeModal('memberModal')">
+    <div class="modal-content max-w-5xl bg-transparent shadow-none p-0 overflow-y-auto"
+        onclick="event.stopPropagation()">
+        <div class="relative bg-white rounded-3xl shadow-2xl" id="memberModalContent">
         </div>
+        <button onclick="closeModal('memberModal')"
+            class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-md">✕</button>
     </div>
+</div>
 
-    <!-- Member Management Modal -->
-    <div id="memberManagementModal" class="modal-overlay" onclick="closeModal('memberManagementModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading" id="managementModalTitle">เพิ่ม/แก้ไข สมาชิก
-                    </h3>
-                    <button onclick="closeModal('memberManagementModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
-                </div>
+<!-- Image Modal -->
+<div id="imageModal" class="modal-overlay bg-black/95 backdrop-blur-xl" onclick="closeModal('imageModal')">
+    <div class="modal-content max-w-screen-xl bg-transparent shadow-none w-full" onclick="event.stopPropagation()">
+        <div id="imageModalContent" class="relative"></div>
+        <button onclick="closeModal('imageModal')"
+            class="fixed top-6 right-6 z-50 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all text-xl">✕</button>
+    </div>
+</div>
 
-                <form id="memberManagementForm" class="space-y-6">
-                    <input type="hidden" id="manageMemberId">
-                    <input type="hidden" id="manageMemberPhotoUrl">
+<!-- Member Management Modal -->
+<div id="memberManagementModal" class="modal-overlay" onclick="closeModal('memberManagementModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading" id="managementModalTitle">เพิ่ม/แก้ไข สมาชิก
+                </h3>
+                <button onclick="closeModal('memberManagementModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
 
-                    <div class="flex flex-col md:flex-row gap-8 items-start">
-                        <!-- Photo Section -->
-                        <div class="w-full md:w-auto flex flex-col items-center md:items-start shrink-0">
-                            <label
-                                class="block text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">รูปถ่าย</label>
-                            <div class="relative group cursor-pointer"
-                                onclick="document.getElementById('manageMemberPhoto').click()">
-                                <div class="w-40 h-40 bg-gray-100 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 group-hover:border-blue-500 transition-colors flex items-center justify-center shadow-inner"
-                                    id="managePhotoPreview">
-                                    <div class="text-4xl text-gray-300 group-hover:text-blue-500 transition-colors">📷
-                                    </div>
+            <form id="memberManagementForm" class="space-y-6">
+                <input type="hidden" id="manageMemberId">
+                <input type="hidden" id="manageMemberPhotoUrl">
+
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <!-- Photo Section -->
+                    <div class="w-full md:w-auto flex flex-col items-center md:items-start shrink-0">
+                        <label
+                            class="block text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">รูปถ่าย</label>
+                        <div class="relative group cursor-pointer"
+                            onclick="document.getElementById('manageMemberPhoto').click()">
+                            <div class="w-40 h-40 bg-gray-100 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 group-hover:border-blue-500 transition-colors flex items-center justify-center shadow-inner"
+                                id="managePhotoPreview">
+                                <div class="text-4xl text-gray-300 group-hover:text-blue-500 transition-colors">📷
                                 </div>
-                                <div
-                                    class="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl font-bold text-sm backdrop-blur-sm">
-                                    เปลี่ยนรูป</div>
                             </div>
-                            <input type="file" id="manageMemberPhoto" class="hidden" accept="image/*"
-                                onchange="previewSelectedFile(this)">
-                            <p class="text-xs text-gray-400 mt-3 text-center w-full" id="fileName">คลิกเพื่อเลือกไฟล์
-                            </p>
+                            <div
+                                class="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl font-bold text-sm backdrop-blur-sm">
+                                เปลี่ยนรูป</div>
                         </div>
-
-                        <!-- Form Fields -->
-                        <div class="flex-1 space-y-5 w-full">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">ชื่อ-นามสกุล <span
-                                            class="text-red-500">*</span></label>
-                                    <input type="text" id="manageMemberName" required
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                                        placeholder="เช่น นายสมชาย ใจดี">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">ตำแหน่ง/หน้าที่ <span
-                                            class="text-red-500">*</span></label>
-                                    <input type="text" id="manageMemberPosition" required
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                                        placeholder="เช่น รองประธาน">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">หมวดหมู่</label>
-                                    <div class="relative">
-                                        <select id="manageMemberCategory"
-                                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium appearance-none text-slate-700">
-
-                                            <option value="ประธาน">ประธานสภา</option>
-                                            <option value="รองประธาน">รองประธาน</option>
-                                            <option value="เลขานุการ">เลขานุการ</option>
-                                            <option value="เหรัญญิก">เหรัญญิก</option>
-                                            <option value="เทคนิค">ฝ่ายเทคนิค</option>
-                                            <option value="ปฏิคม">ฝ่ายปฏิคม</option>
-                                            <option value="สวัสดิการ">ฝ่ายสวัสดิการ</option>
-                                            <option value="ประชาสัมพันธ์">ฝ่ายประชาสัมพันธ์</option>
-                                            <option value="วิชาการ">ฝ่ายวิชาการ</option>
-                                            <option value="อาคารสถานที่">ฝ่ายอาคารสถานที่</option>
-                                            <option value="นันทนาการ">ฝ่ายนันทนาการ</option>
-                                            <option value="Committee">คณะกรรมการ</option>
-                                            <option value="Member">สมาชิกทั่วไป</option>
-                                        </select>
-                                        <div
-                                            class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                                            ▼</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">ลำดับ (Rank)</label>
-                                    <input type="number" id="manageMemberRank" value="10"
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-heading mb-2">คติพจน์</label>
-                                <input type="text" id="manageMemberMotto"
-                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                                    placeholder="คติประจำใจ...">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-heading mb-2">ประวัติโดยย่อ</label>
-                                <textarea id="manageMemberBio" rows="3"
-                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium resize-none text-slate-700 placeholder-slate-400"
-                                    placeholder="ประวัติการศึกษา หรือผลงานที่ผ่านมา..."></textarea>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">ชั้น (Class)</label>
-                                    <input type="text" id="manageMemberClass"
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                                        placeholder="เช่น ม.5/1">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">เลขที่ (No.)</label>
-                                    <input type="text" id="manageMemberNumber"
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                                        placeholder="-">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-heading mb-2">ข้อมูลติดต่อ & Social Media
-                                    <span
-                                        class="text-xs font-normal text-gray-400 font-sans ml-1">(หากไม่ต้องการให้แสดงให้เว้นว่างไว้)</span></label>
-                                <div class="space-y-3">
-                                    <div class="flex items-center gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600 text-lg">📞</span>
-                                        <input type="text" id="manageMemberPhone" placeholder="เบอร์โทรศัพท์"
-                                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white text-lg"><i
-                                                class="fab fa-facebook-f"></i></span>
-                                        <input type="text" id="manageMemberFb" placeholder="Facebook URL"
-                                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center text-white text-lg"><i
-                                                class="fab fa-instagram"></i></span>
-                                        <input type="text" id="manageMemberIg" placeholder="Instagram URL"
-                                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white text-lg"><i
-                                                class="fab fa-tiktok"></i></span>
-                                        <input type="text" id="manageMemberTt" placeholder="TikTok URL"
-                                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Achievements Section -->
-                    <div class="pt-8 border-t border-gray-100 mb-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <label class="block text-lg font-bold text-heading">🏆 ผลงานและที่มาของสมาชิก</label>
-                            <button type="button" onclick="window.AdminManagement.addAchievementField()"
-                                class="text-sm bg-blue-50 text-blue-600 px-5 py-2.5 rounded-xl font-bold hover:bg-blue-100 transition-all flex items-center gap-2 border border-blue-100 shadow-sm">
-                                <span>➕</span> เพิ่มผลงานประวัติ
-                            </button>
-                        </div>
-                        <div id="manageMemberAchievementsList" class="space-y-6">
-                            <!-- Dynamic Achievement Fields -->
-                        </div>
-                        <p class="text-xs text-slate-400 mt-4 italic font-medium">
-                            * คุณสามารถอัปโหลดรูปภาพกิจกรรมหรือใบประกาศ และระบุคำอธิบายเพื่อแสดงในโปรไฟล์สมาชิกได้
+                        <input type="file" id="manageMemberPhoto" class="hidden" accept="image/*"
+                            onchange="previewSelectedFile(this)">
+                        <p class="text-xs text-gray-400 mt-3 text-center w-full" id="fileName">คลิกเพื่อเลือกไฟล์
                         </p>
                     </div>
 
-                    <!-- Actions -->
-                    <div
-                        class="flex flex-col-reverse md:flex-row justify-between items-center gap-6 pt-10 mt-10 border-t border-gray-100">
-                        <button type="button" id="deleteMemberBtn" onclick="window.AdminManagement.deleteMember()"
-                            class="w-full md:w-auto px-8 py-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-red-100"
-                            style="display:none;">
-                            <span>🗑️</span> ลบสมาชิก
-                        </button>
-                        <div class="flex w-full md:w-auto gap-4 justify-end flex-1">
-                            <button type="button" onclick="closeModal('memberManagementModal')"
-                                class="flex-1 md:flex-none px-8 py-4 rounded-2xl bg-white text-slate-500 font-bold hover:bg-slate-50 border border-slate-200 transition-all duration-300">
-                                ยกเลิก
-                            </button>
-                            <button type="submit"
-                                class="flex-1 md:flex-none px-12 py-4 rounded-2xl bg-gradient-to-r from-[#74040E] to-[#b91c1c] text-white font-bold shadow-[0_10px_25px_rgba(116,4,14,0.3)] hover:shadow-[0_15px_35px_rgba(116,4,14,0.4)] hover:-translate-y-1 active:scale-95 transition-all duration-300">
-                                ยืนยันบันทึกข้อมูล
-                            </button>
+                    <!-- Form Fields -->
+                    <div class="flex-1 space-y-5 w-full">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-bold text-heading mb-2">ชื่อ-นามสกุล <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" id="manageMemberName" required
+                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
+                                    placeholder="เช่น นายสมชาย ใจดี">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-heading mb-2">ตำแหน่ง/หน้าที่ <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" id="manageMemberPosition" required
+                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
+                                    placeholder="เช่น รองประธาน">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-bold text-heading mb-2">หมวดหมู่</label>
+                                <div class="relative">
+                                    <select id="manageMemberCategory"
+                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium appearance-none text-slate-700">
+
+                                        <option value="ประธาน">ประธานสภา</option>
+                                        <option value="รองประธาน">รองประธาน</option>
+                                        <option value="เลขานุการ">เลขานุการ</option>
+                                        <option value="เหรัญญิก">เหรัญญิก</option>
+                                        <option value="เทคนิค">ฝ่ายเทคนิค</option>
+                                        <option value="ปฏิคม">ฝ่ายปฏิคม</option>
+                                        <option value="สวัสดิการ">ฝ่ายสวัสดิการ</option>
+                                        <option value="ประชาสัมพันธ์">ฝ่ายประชาสัมพันธ์</option>
+                                        <option value="วิชาการ">ฝ่ายวิชาการ</option>
+                                        <option value="อาคารสถานที่">ฝ่ายอาคารสถานที่</option>
+                                        <option value="นันทนาการ">ฝ่ายนันทนาการ</option>
+                                        <option value="Committee">คณะกรรมการ</option>
+                                        <option value="Member">สมาชิกทั่วไป</option>
+                                    </select>
+                                    <div
+                                        class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                        ▼</div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-heading mb-2">ลำดับ (Rank)</label>
+                                <input type="number" id="manageMemberRank" value="10"
+                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-heading mb-2">คติพจน์</label>
+                            <input type="text" id="manageMemberMotto"
+                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
+                                placeholder="คติประจำใจ...">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-heading mb-2">ประวัติโดยย่อ</label>
+                            <textarea id="manageMemberBio" rows="3"
+                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium resize-none text-slate-700 placeholder-slate-400"
+                                placeholder="ประวัติการศึกษา หรือผลงานที่ผ่านมา..."></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-bold text-heading mb-2">ชั้น (Class)</label>
+                                <input type="text" id="manageMemberClass"
+                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
+                                    placeholder="เช่น ม.5/1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-heading mb-2">เลขที่ (No.)</label>
+                                <input type="text" id="manageMemberNumber"
+                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
+                                    placeholder="-">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-heading mb-2">ข้อมูลติดต่อ & Social Media
+                                <span
+                                    class="text-xs font-normal text-gray-400 font-sans ml-1">(หากไม่ต้องการให้แสดงให้เว้นว่างไว้)</span></label>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600 text-lg">📞</span>
+                                    <input type="text" id="manageMemberPhone" placeholder="เบอร์โทรศัพท์"
+                                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white text-lg"><i
+                                            class="fab fa-facebook-f"></i></span>
+                                    <input type="text" id="manageMemberFb" placeholder="Facebook URL"
+                                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center text-white text-lg"><i
+                                            class="fab fa-instagram"></i></span>
+                                    <input type="text" id="manageMemberIg" placeholder="Instagram URL"
+                                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white text-lg"><i
+                                            class="fab fa-tiktok"></i></span>
+                                    <input type="text" id="manageMemberTt" placeholder="TikTok URL"
+                                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Policy Management Modal -->
-    <div id="policyManagementModal" class="modal-overlay" onclick="closeModal('policyManagementModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading" id="policyModalTitle">จัดการนโยบาย</h3>
-                    <button onclick="closeModal('policyManagementModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
                 </div>
 
-                <form id="policyManagementForm" class="space-y-6">
-                    <input type="hidden" id="managePolicyId">
-
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-                        <div class="md:col-span-1">
-                            <label class="block text-sm font-bold text-heading mb-2">Icon (Emoji)</label>
-                            <input type="text" id="managePolicyIcon"
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl text-center text-2xl outline-none transition-all placeholder-gray-300"
-                                placeholder="📖">
-                        </div>
-                        <div class="md:col-span-1">
-                            <label class="block text-sm font-bold text-heading mb-2">ลำดับ</label>
-                            <input type="number" id="managePolicyRank" value="1"
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-heading mb-2">หัวข้อนโยบาย <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" id="managePolicyTitle" required
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-bold text-lg"
-                                placeholder="ชื่อนโยบาย">
-                        </div>
+                <!-- Achievements Section -->
+                <div class="pt-8 border-t border-gray-100 mb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <label class="block text-lg font-bold text-heading">🏆 ผลงานและที่มาของสมาชิก</label>
+                        <button type="button" onclick="window.AdminManagement.addAchievementField()"
+                            class="text-sm bg-blue-50 text-blue-600 px-5 py-2.5 rounded-xl font-bold hover:bg-blue-100 transition-all flex items-center gap-2 border border-blue-100 shadow-sm">
+                            <span>➕</span> เพิ่มผลงานประวัติ
+                        </button>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-sm font-bold text-heading mb-2">ใจความสำคัญ (Summary)</label>
-                            <textarea id="managePolicySummary" rows="3"
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-heading mb-2">วัตถุประสงค์</label>
-                            <textarea id="managePolicyObjective" rows="3"
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"></textarea>
-                        </div>
+                    <div id="manageMemberAchievementsList" class="space-y-6">
+                        <!-- Dynamic Achievement Fields -->
                     </div>
+                    <p class="text-xs text-slate-400 mt-4 italic font-medium">
+                        * คุณสามารถอัปโหลดรูปภาพกิจกรรมหรือใบประกาศ และระบุคำอธิบายเพื่อแสดงในโปรไฟล์สมาชิกได้
+                    </p>
+                </div>
 
-                    <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
-                        <div class="flex justify-between items-center mb-4">
-                            <label class="block text-base font-bold text-blue-900">📋 แนวทางการดำเนินงาน</label>
-                            <button type="button" onclick="addGuidelineRow()"
-                                class="text-sm bg-white text-blue-600 px-4 py-2 rounded-lg font-bold shadow-sm border border-blue-200 hover:bg-blue-50 transition-colors">
-                                + เพิ่มข้อ</button>
-                        </div>
-                        <div id="guidelinesContainer" class="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                        </div>
+                <!-- Actions -->
+                <div
+                    class="flex flex-col-reverse md:flex-row justify-between items-center gap-6 pt-10 mt-10 border-t border-gray-100">
+                    <button type="button" id="deleteMemberBtn" onclick="window.AdminManagement.deleteMember()"
+                        class="w-full md:w-auto px-8 py-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-red-100"
+                        style="display:none;">
+                        <span>🗑️</span> ลบสมาชิก
+                    </button>
+                    <div class="flex w-full md:w-auto gap-4 justify-end flex-1">
+                        <button type="button" onclick="closeModal('memberManagementModal')"
+                            class="flex-1 md:flex-none px-8 py-4 rounded-2xl bg-white text-slate-500 font-bold hover:bg-slate-50 border border-slate-200 transition-all duration-300">
+                            ยกเลิก
+                        </button>
+                        <button type="submit"
+                            class="flex-1 md:flex-none px-12 py-4 rounded-2xl bg-gradient-to-r from-[#74040E] to-[#b91c1c] text-white font-bold shadow-[0_10px_25px_rgba(116,4,14,0.3)] hover:shadow-[0_15px_35px_rgba(116,4,14,0.4)] hover:-translate-y-1 active:scale-95 transition-all duration-300">
+                            ยืนยันบันทึกข้อมูล
+                        </button>
                     </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- Policy Management Modal -->
+<div id="policyManagementModal" class="modal-overlay" onclick="closeModal('policyManagementModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading" id="policyModalTitle">จัดการนโยบาย</h3>
+                <button onclick="closeModal('policyManagementModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
+
+            <form id="policyManagementForm" class="space-y-6">
+                <input type="hidden" id="managePolicyId">
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                    <div class="md:col-span-1">
+                        <label class="block text-sm font-bold text-heading mb-2">Icon (Emoji)</label>
+                        <input type="text" id="managePolicyIcon"
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl text-center text-2xl outline-none transition-all placeholder-gray-300"
+                            placeholder="📖">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-sm font-bold text-heading mb-2">ลำดับ</label>
+                        <input type="number" id="managePolicyRank" value="1"
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-heading mb-2">หัวข้อนโยบาย <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="managePolicyTitle" required
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-bold text-lg"
+                            placeholder="ชื่อนโยบาย">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-sm font-bold text-heading mb-2">ผลลัพธ์ที่คาดหวัง</label>
-                        <textarea id="managePolicyResults" rows="2"
+                        <label class="block text-sm font-bold text-heading mb-2">ใจความสำคัญ (Summary)</label>
+                        <textarea id="managePolicySummary" rows="3"
                             class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"></textarea>
                     </div>
-
-                    <div
-                        class="flex flex-col-reverse md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
-                        <button type="button" id="deletePolicyBtn" onclick="deletePolicy()"
-                            class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
-                            style="display:none;">🗑️ ลบนโยบาย</button>
-                        <div class="flex w-full md:w-auto gap-3">
-                            <button type="button" onclick="closeModal('policyManagementModal')"
-                                class="flex-1 md:flex-none px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">ยกเลิก</button>
-                            <button type="submit"
-                                class="flex-1 md:flex-none px-8 py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">บันทึก</button>
-                        </div>
+                    <div>
+                        <label class="block text-sm font-bold text-heading mb-2">วัตถุประสงค์</label>
+                        <textarea id="managePolicyObjective" rows="3"
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"></textarea>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gallery/Activity Management Modal -->
-    <div id="galleryManagementModal" class="modal-overlay" onclick="closeModal('galleryManagementModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading">จัดการกิจกรรม</h3>
-                    <button onclick="closeModal('galleryManagementModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
                 </div>
 
-                <form id="galleryForm" class="space-y-6">
-                    <input type="hidden" id="manageGalleryId">
-                    <input type="hidden" id="manageGalleryUrls">
+                <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <label class="block text-base font-bold text-blue-900">📋 แนวทางการดำเนินงาน</label>
+                        <button type="button" onclick="addGuidelineRow()"
+                            class="text-sm bg-white text-blue-600 px-4 py-2 rounded-lg font-bold shadow-sm border border-blue-200 hover:bg-blue-50 transition-colors">
+                            + เพิ่มข้อ</button>
+                    </div>
+                    <div id="guidelinesContainer" class="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                    </div>
+                </div>
 
-                    <!-- Multiple Image Upload Section -->
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-2">ผลลัพธ์ที่คาดหวัง</label>
+                    <textarea id="managePolicyResults" rows="2"
+                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"></textarea>
+                </div>
+
+                <div
+                    class="flex flex-col-reverse md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
+                    <button type="button" id="deletePolicyBtn" onclick="deletePolicy()"
+                        class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
+                        style="display:none;">🗑️ ลบนโยบาย</button>
+                    <div class="flex w-full md:w-auto gap-3">
+                        <button type="button" onclick="closeModal('policyManagementModal')"
+                            class="flex-1 md:flex-none px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">ยกเลิก</button>
+                        <button type="submit"
+                            class="flex-1 md:flex-none px-8 py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">บันทึก</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Gallery/Activity Management Modal -->
+<div id="galleryManagementModal" class="modal-overlay" onclick="closeModal('galleryManagementModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading">จัดการกิจกรรม</h3>
+                <button onclick="closeModal('galleryManagementModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
+
+            <form id="galleryForm" class="space-y-6">
+                <input type="hidden" id="manageGalleryId">
+                <input type="hidden" id="manageGalleryUrls">
+
+                <!-- Multiple Image Upload Section -->
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-2">📸 รูปภาพกิจกรรม <span
+                            class="text-red-500">*</span></label>
+                    <p class="text-xs text-gray-500 mb-3">💡 สามารถเลือกได้หลายรูป (แนะนำ 1-5 รูป)</p>
+
+                    <!-- Upload Button -->
+                    <div class="mb-4">
+                        <button type="button" onclick="document.getElementById('manageGalleryFiles').click()"
+                            class="w-full px-6 py-4 bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-dashed border-blue-300 rounded-2xl hover:border-blue-500 hover:bg-blue-100 transition-all cursor-pointer group">
+                            <div class="flex items-center justify-center gap-3">
+                                <span class="text-3xl group-hover:scale-110 transition-transform">🖼️</span>
+                                <span class="font-bold text-blue-600 group-hover:text-blue-700">คลิกเพื่อเลือกรูปภาพ
+                                    (เลือกได้หลายรูป)</span>
+                            </div>
+                        </button>
+                        <input type="file" id="manageGalleryFiles" class="hidden" accept="image/*" multiple
+                            onchange="previewGalleryImages(this)">
+                    </div>
+
+                    <!-- Image Previews Grid -->
+                    <div id="galleryPreviewGrid" class="grid grid-cols-2 md:grid-cols-3 gap-4 empty:hidden">
+                        <!-- Thumbnails will be inserted here by JS -->
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-sm font-bold text-heading mb-2">📸 รูปภาพกิจกรรม <span
+                        <label class="block text-sm font-bold text-heading mb-2">หัวข้อกิจกรรม <span
                                 class="text-red-500">*</span></label>
-                        <p class="text-xs text-gray-500 mb-3">💡 สามารถเลือกได้หลายรูป (แนะนำ 1-5 รูป)</p>
-
-                        <!-- Upload Button -->
-                        <div class="mb-4">
-                            <button type="button" onclick="document.getElementById('manageGalleryFiles').click()"
-                                class="w-full px-6 py-4 bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-dashed border-blue-300 rounded-2xl hover:border-blue-500 hover:bg-blue-100 transition-all cursor-pointer group">
-                                <div class="flex items-center justify-center gap-3">
-                                    <span class="text-3xl group-hover:scale-110 transition-transform">🖼️</span>
-                                    <span class="font-bold text-blue-600 group-hover:text-blue-700">คลิกเพื่อเลือกรูปภาพ
-                                        (เลือกได้หลายรูป)</span>
-                                </div>
-                            </button>
-                            <input type="file" id="manageGalleryFiles" class="hidden" accept="image/*" multiple
-                                onchange="previewGalleryImages(this)">
-                        </div>
-
-                        <!-- Image Previews Grid -->
-                        <div id="galleryPreviewGrid" class="grid grid-cols-2 md:grid-cols-3 gap-4 empty:hidden">
-                            <!-- Thumbnails will be inserted here by JS -->
-                        </div>
+                        <input type="text" id="manageGalleryTitle" required
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium">
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-sm font-bold text-heading mb-2">หัวข้อกิจกรรม <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" id="manageGalleryTitle" required
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-heading mb-2">วันที่จัดกิจกรรม <span
-                                    class="text-red-500">*</span></label>
-                            <input type="date" id="manageGalleryDate" required
-                                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium text-slate-700">
-                        </div>
-                    </div>
-
                     <div>
-                        <label class="block text-sm font-bold text-heading mb-2">รายละเอียด / คำบรรยาย</label>
-                        <textarea id="manageGalleryDesc" rows="4"
-                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"
-                            placeholder="เล่าเรื่องราวของกิจกรรมนี้..."></textarea>
+                        <label class="block text-sm font-bold text-heading mb-2">วันที่จัดกิจกรรม <span
+                                class="text-red-500">*</span></label>
+                        <input type="date" id="manageGalleryDate" required
+                            class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium text-slate-700">
                     </div>
+                </div>
 
-                    <div
-                        class="flex flex-col-reverse md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
-                        <button type="button" id="deleteItemBtn" onclick="deleteGalleryItem()"
-                            class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
-                            style="display:none;">🗑️ ลบกิจกรรม</button>
-                        <div class="flex w-full md:w-auto gap-3">
-                            <button type="button" onclick="closeModal('galleryManagementModal')"
-                                class="flex-1 md:flex-none px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">ยกเลิก</button>
-                            <button type="submit"
-                                class="flex-1 md:flex-none px-8 py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">บันทึก</button>
-                        </div>
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-2">รายละเอียด / คำบรรยาย</label>
+                    <textarea id="manageGalleryDesc" rows="4"
+                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-medium resize-none"
+                        placeholder="เล่าเรื่องราวของกิจกรรมนี้..."></textarea>
+                </div>
+
+                <div
+                    class="flex flex-col-reverse md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
+                    <button type="button" id="deleteItemBtn" onclick="deleteGalleryItem()"
+                        class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
+                        style="display:none;">🗑️ ลบกิจกรรม</button>
+                    <div class="flex w-full md:w-auto gap-3">
+                        <button type="button" onclick="closeModal('galleryManagementModal')"
+                            class="flex-1 md:flex-none px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">ยกเลิก</button>
+                        <button type="submit"
+                            class="flex-1 md:flex-none px-8 py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">บันทึก</button>
                     </div>
-                </form>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Slide Modal -->
+<div id="heroSlideModal" class="modal-overlay" onclick="closeModal('heroSlideModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading">จัดการภาพสไลด์</h3>
+                <button onclick="closeModal('heroSlideModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
+
+            <form id="heroSlideForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-1">📸 เลือกรูปภาพสไลด์</label>
+                    <p class="text-xs text-gray-500 mb-3">
+                        💡 <span class="font-bold text-red-600">ต้องเป็นรูปแนวนอนเท่านั้น</span> | แนะนำขนาด:
+                        <span class="font-bold text-blue-600">1920 x 1080 px</span> (16:9) หรือ
+                        <span class="font-bold text-blue-600">1280 x 720 px</span> (16:9)
+                    </p>
+                    <input type="file" id="slideFile" accept="image/*" onchange="previewSlideImage(this)"
+                        class="block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 file:cursor-pointer cursor-pointer border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-all">
+                </div>
+
+                <div class="aspect-video bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-300"
+                    id="slidePreview">
+                    <div class="text-center p-6">
+                        <span class="text-4xl block mb-2 opacity-50">🖼️</span>
+                        <span class="text-gray-400 text-sm">ภาพตัวอย่างจะแสดงที่นี่</span>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                    <span class="text-xl">+</span> เพิ่มรูปสไลด์ใหม่
+                </button>
+            </form>
+
+            <div class="mt-8 pt-8 border-t border-gray-100">
+                <h4 class="font-bold text-heading mb-4 flex items-center gap-2"><span
+                        class="w-2 h-6 bg-yellow-400 rounded-full"></span> สไลด์ที่แสดงผลอยู่</h4>
+                <div id="heroSlidesList" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
+                    <!-- Filled by JS -->
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Hero Slide Modal -->
-    <div id="heroSlideModal" class="modal-overlay" onclick="closeModal('heroSlideModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading">จัดการภาพสไลด์</h3>
-                    <button onclick="closeModal('heroSlideModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
-                </div>
+<!-- Analytics Modal -->
+<div id="analyticsModal" class="modal-overlay" onclick="closeModal('analyticsModal')">
+    <div class="modal-content max-w-5xl" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading flex items-center gap-3">
+                    <span class="bg-blue-100 p-2 rounded-lg text-2xl">📊</span> สถิติเว็บไซต์
+                </h3>
+                <button onclick="closeModal('analyticsModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
 
-                <form id="heroSlideForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-bold text-heading mb-1">📸 เลือกรูปภาพสไลด์</label>
-                        <p class="text-xs text-gray-500 mb-3">
-                            💡 <span class="font-bold text-red-600">ต้องเป็นรูปแนวนอนเท่านั้น</span> | แนะนำขนาด:
-                            <span class="font-bold text-blue-600">1920 x 1080 px</span> (16:9) หรือ
-                            <span class="font-bold text-blue-600">1280 x 720 px</span> (16:9)
-                        </p>
-                        <input type="file" id="slideFile" accept="image/*" onchange="previewSlideImage(this)"
-                            class="block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 file:cursor-pointer cursor-pointer border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-all">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-3xl border border-blue-100 shadow-sm">
+                    <h4 class="text-blue-900 font-bold mb-1 opacity-70">ยอดผู้เข้าชมรวม</h4>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-5xl font-black text-blue-600 tracking-tight" id="totalVisitorsDisplay">-</p>
+                        <span class="text-sm text-blue-400 font-medium">คน (Unique)</span>
                     </div>
-
-                    <div class="aspect-video bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-300"
-                        id="slidePreview">
-                        <div class="text-center p-6">
-                            <span class="text-4xl block mb-2 opacity-50">🖼️</span>
-                            <span class="text-gray-400 text-sm">ภาพตัวอย่างจะแสดงที่นี่</span>
+                </div>
+                <div
+                    class="bg-gradient-to-br from-yellow-50 to-white p-6 rounded-3xl border border-yellow-100 shadow-sm">
+                    <h4 class="text-yellow-900 font-bold mb-1 opacity-70">คะแนนความพึงพอใจ</h4>
+                    <div class="flex items-baseline gap-3">
+                        <p class="text-5xl font-black text-yellow-500 tracking-tight" id="avgRatingDisplay">-</p>
+                        <div class="flex flex-col">
+                            <div class="text-yellow-400 text-lg">★★★★★</div>
+                            <span class="text-xs text-yellow-600 font-bold" id="totalRatingsDisplay">จาก - คน</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <button type="submit"
-                        class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                        <span class="text-xl">+</span> เพิ่มรูปสไลด์ใหม่
-                    </button>
-                </form>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Page View Stats Section -->
+            <div
+                class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col min-h-[500px]">
+                <h4 class="font-bold text-heading mb-6 flex items-center gap-2 border-b border-gray-50 pb-4">
+                    <span class="w-1 h-5 bg-blue-500 rounded-full"></span> รายละเอียดการเข้าชมรายหน้า
+                </h4>
 
-                <div class="mt-8 pt-8 border-t border-gray-100">
-                    <h4 class="font-bold text-heading mb-4 flex items-center gap-2"><span
-                            class="w-2 h-6 bg-yellow-400 rounded-full"></span> สไลด์ที่แสดงผลอยู่</h4>
-                    <div id="heroSlidesList" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
+                <div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-8 overflow-hidden">
+                    <!-- List View -->
+                    <div class="md:col-span-2 overflow-y-auto pr-2 space-y-2 custom-scrollbar max-h-[400px]"
+                        id="analyticsPageViews">
                         <!-- Filled by JS -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Analytics Modal -->
-    <div id="analyticsModal" class="modal-overlay" onclick="closeModal('analyticsModal')">
-        <div class="modal-content max-w-5xl" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading flex items-center gap-3">
-                        <span class="bg-blue-100 p-2 rounded-lg text-2xl">📊</span> สถิติเว็บไซต์
-                    </h3>
-                    <button onclick="closeModal('analyticsModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div
-                        class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-3xl border border-blue-100 shadow-sm">
-                        <h4 class="text-blue-900 font-bold mb-1 opacity-70">ยอดผู้เข้าชมรวม</h4>
-                        <div class="flex items-baseline gap-2">
-                            <p class="text-5xl font-black text-blue-600 tracking-tight" id="totalVisitorsDisplay">-</p>
-                            <span class="text-sm text-blue-400 font-medium">คน (Unique)</span>
+                        <div class="animate-pulse space-y-3">
+                            <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
+                            <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
+                            <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
                         </div>
                     </div>
-                    <div
-                        class="bg-gradient-to-br from-yellow-50 to-white p-6 rounded-3xl border border-yellow-100 shadow-sm">
-                        <h4 class="text-yellow-900 font-bold mb-1 opacity-70">คะแนนความพึงพอใจ</h4>
-                        <div class="flex items-baseline gap-3">
-                            <p class="text-5xl font-black text-yellow-500 tracking-tight" id="avgRatingDisplay">-</p>
-                            <div class="flex flex-col">
-                                <div class="text-yellow-400 text-lg">★★★★★</div>
-                                <span class="text-xs text-yellow-600 font-bold" id="totalRatingsDisplay">จาก - คน</span>
-                            </div>
-                        </div>
+
+                    <!-- Graph View -->
+                    <div class="md:col-span-3 h-full min-h-[300px] relative">
+                        <canvas id="analyticsChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Page View Stats Section -->
-                <div
-                    class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col min-h-[500px]">
-                    <h4 class="font-bold text-heading mb-6 flex items-center gap-2 border-b border-gray-50 pb-4">
-                        <span class="w-1 h-5 bg-blue-500 rounded-full"></span> รายละเอียดการเข้าชมรายหน้า
-                    </h4>
-
-                    <div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-8 overflow-hidden">
-                        <!-- List View -->
-                        <div class="md:col-span-2 overflow-y-auto pr-2 space-y-2 custom-scrollbar max-h-[400px]"
-                            id="analyticsPageViews">
-                            <!-- Filled by JS -->
-                            <div class="animate-pulse space-y-3">
-                                <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
-                                <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
-                                <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
-                            </div>
-                        </div>
-
-                        <!-- Graph View -->
-                        <div class="md:col-span-3 h-full min-h-[300px] relative">
-                            <canvas id="analyticsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Feedback Section -->
-                <div
-                    class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col max-h-[500px]">
-                    <h4 class="font-bold text-heading mb-4 flex items-center gap-2 border-b border-gray-100 pb-4">
-                        <span class="w-1 h-5 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
-                    </h4>
-                    <div id="analyticsFeedbackList" class="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                        <!-- Injected by JS -->
-                        <div class="text-center py-10 text-gray-400">กำลังโหลดคำนิยม...</div>
-                    </div>
+            <!-- Feedback Section -->
+            <div class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col max-h-[500px]">
+                <h4 class="font-bold text-heading mb-4 flex items-center gap-2 border-b border-gray-100 pb-4">
+                    <span class="w-1 h-5 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
+                </h4>
+                <div id="analyticsFeedbackList" class="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+                    <!-- Injected by JS -->
+                    <div class="text-center py-10 text-gray-400">กำลังโหลดคำนิยม...</div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+</div>
+</div>
 
-    <!-- Rating Modal -->
-    <div id="ratingModal" class="modal-overlay" onclick="closeModal('ratingModal')">
-        <div class="modal-content max-w-md" onclick="event.stopPropagation()">
-            <div class="p-8 text-center">
-                <div
-                    class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-sm">
-                    ⭐
-                </div>
-                <h3 class="text-2xl font-bold text-heading mb-2">ให้คะแนนเว็บไซต์</h3>
-                <p class="text-gray-500 mb-8">ความคิดเห็นของคุณมีความหมายต่อเรา</p>
+<!-- Rating Modal -->
+<div id="ratingModal" class="modal-overlay" onclick="closeModal('ratingModal')">
+    <div class="modal-content max-w-md" onclick="event.stopPropagation()">
+        <div class="p-8 text-center">
+            <div
+                class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-sm">
+                ⭐
+            </div>
+            <h3 class="text-2xl font-bold text-heading mb-2">ให้คะแนนเว็บไซต์</h3>
+            <p class="text-gray-500 mb-8">ความคิดเห็นของคุณมีความหมายต่อเรา</p>
 
-                <div class="flex justify-center gap-2 mb-8" id="starRating">
-                    <span
-                        class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
-                        onclick="setRating(1)">★</span>
-                    <span
-                        class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
-                        onclick="setRating(2)">★</span>
-                    <span
-                        class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
-                        onclick="setRating(3)">★</span>
-                    <span
-                        class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
-                        onclick="setRating(4)">★</span>
-                    <span
-                        class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
-                        onclick="setRating(5)">★</span>
-                </div>
+            <div class="flex justify-center gap-2 mb-8" id="starRating">
+                <span
+                    class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
+                    onclick="setRating(1)">★</span>
+                <span
+                    class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
+                    onclick="setRating(2)">★</span>
+                <span
+                    class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
+                    onclick="setRating(3)">★</span>
+                <span
+                    class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
+                    onclick="setRating(4)">★</span>
+                <span
+                    class="text-5xl cursor-pointer text-gray-200 transition-all hover:text-yellow-400 hover:scale-110 active:scale-95 transform duration-200"
+                    onclick="setRating(5)">★</span>
+            </div>
 
-                <textarea id="ratingComment"
-                    class="w-full p-4 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-yellow-400 rounded-2xl mb-6 outline-none transition-all resize-none placeholder-gray-400"
-                    placeholder="ข้อเสนอแนะเพิ่มเติม (ถ้ามี)..." rows="3"></textarea>
+            <textarea id="ratingComment"
+                class="w-full p-4 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-yellow-400 rounded-2xl mb-6 outline-none transition-all resize-none placeholder-gray-400"
+                placeholder="ข้อเสนอแนะเพิ่มเติม (ถ้ามี)..." rows="3"></textarea>
 
-                <div class="flex gap-3">
-                    <button onclick="closeModal('ratingModal')"
-                        class="flex-1 py-3.5 rounded-xl bg-gray-100 font-bold text-gray-600 hover:bg-gray-200 transition-colors">ไว้ทีหลัง</button>
-                    <button onclick="submitRating()"
-                        class="flex-1 py-3.5 rounded-xl bg-yellow-400 text-blue-900 font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">ส่งคะแนน</button>
-                </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('ratingModal')"
+                    class="flex-1 py-3.5 rounded-xl bg-gray-100 font-bold text-gray-600 hover:bg-gray-200 transition-colors">ไว้ทีหลัง</button>
+                <button onclick="submitRating()"
+                    class="flex-1 py-3.5 rounded-xl bg-yellow-400 text-blue-900 font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">ส่งคะแนน</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Contact Edit Modal -->
-    <div id="contactEditModal" class="modal-overlay" onclick="closeModal('contactEditModal')">
-        <div class="modal-content max-w-lg" onclick="event.stopPropagation()">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading">แก้ไขข้อมูลติดต่อ</h3>
-                    <button onclick="closeModal('contactEditModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+<!-- Contact Edit Modal -->
+<div id="contactEditModal" class="modal-overlay" onclick="closeModal('contactEditModal')">
+    <div class="modal-content max-w-lg" onclick="event.stopPropagation()">
+        <div class="p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading">แก้ไขข้อมูลติดต่อ</h3>
+                <button onclick="closeModal('contactEditModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
+
+            <form id="contactEditForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-1">อีเมล</label>
+                    <input type="text" id="editEmail"
+                        class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-1">เบอร์โทรศัพท์</label>
+                    <input type="text" id="editPhone"
+                        class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-1">ที่อยู่ (ใช้ Enter
+                        ขึ้นบรรทัดใหม่)</label>
+                    <textarea id="editAddress" rows="3"
+                        class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none resize-none"></textarea>
                 </div>
 
-                <form id="contactEditForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-heading mb-1">อีเมล</label>
-                        <input type="text" id="editEmail"
-                            class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-heading mb-1">เบอร์โทรศัพท์</label>
-                        <input type="text" id="editPhone"
-                            class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-heading mb-1">ที่อยู่ (ใช้ Enter
-                            ขึ้นบรรทัดใหม่)</label>
-                        <textarea id="editAddress" rows="3"
-                            class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none resize-none"></textarea>
-                    </div>
+                <hr class="border-gray-100 my-4">
+                <h4 class="font-bold text-gray-500 mb-2">Social Media Links</h4>
 
-                    <hr class="border-gray-100 my-4">
-                    <h4 class="font-bold text-gray-500 mb-2">Social Media Links</h4>
-
-                    <div class="flex items-center gap-3">
-                        <span
-                            class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs"><i
-                                class="fab fa-facebook-f"></i></span>
-                        <input type="text" id="editFb" placeholder="Facebook URL (ว่างไว้เพื่อลบ)"
-                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span
-                            class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-white text-xs"><i
-                                class="fab fa-instagram"></i></span>
-                        <input type="text" id="editIg" placeholder="Instagram URL (ว่างไว้เพื่อลบ)"
-                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span
-                            class="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white text-xs"><i
-                                class="fab fa-tiktok"></i></span>
-                        <input type="text" id="editTt" placeholder="TikTok URL (ว่างไว้เพื่อลบ)"
-                            class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
-                    </div>
-
-                    <button type="submit"
-                        class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg mt-6 hover:bg-blue-700 transition-all">บันทึกข้อมูล</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Summary Edit Modal -->
-    <div id="summaryEditModal" class="modal-overlay" onclick="closeModal('summaryEditModal')">
-        <div class="modal-content max-w-xl" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading">แก้ไขข้อความหน้าแรก</h3>
-                    <button onclick="closeModal('summaryEditModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs"><i
+                            class="fab fa-facebook-f"></i></span>
+                    <input type="text" id="editFb" placeholder="Facebook URL (ว่างไว้เพื่อลบ)"
+                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
+                </div>
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-white text-xs"><i
+                            class="fab fa-instagram"></i></span>
+                    <input type="text" id="editIg" placeholder="Instagram URL (ว่างไว้เพื่อลบ)"
+                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white text-xs"><i
+                            class="fab fa-tiktok"></i></span>
+                    <input type="text" id="editTt" placeholder="TikTok URL (ว่างไว้เพื่อลบ)"
+                        class="flex-1 px-4 py-2 bg-gray-50 border rounded-xl outline-none text-sm">
                 </div>
 
-                <form id="summaryEditForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-heading mb-1">หัวข้อหลัก</label>
-                        <input type="text" id="editSummaryHeading"
-                            class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-heading mb-1">คำบรรยาย</label>
-                        <textarea id="editSummaryIntro" rows="4"
-                            class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none resize-none"></textarea>
-                    </div>
-
-                    <button type="submit"
-                        class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg mt-6 hover:bg-blue-700 transition-all font-sans">บันทึกข้อมูล</button>
-                </form>
-            </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg mt-6 hover:bg-blue-700 transition-all">บันทึกข้อมูล</button>
+            </form>
         </div>
     </div>
+</div>
+
+<!-- Summary Edit Modal -->
+<div id="summaryEditModal" class="modal-overlay" onclick="closeModal('summaryEditModal')">
+    <div class="modal-content max-w-xl" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="text-2xl font-serif font-bold text-heading">แก้ไขข้อความหน้าแรก</h3>
+                <button onclick="closeModal('summaryEditModal')"
+                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
+            </div>
+
+            <form id="summaryEditForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-1">หัวข้อหลัก</label>
+                    <input type="text" id="editSummaryHeading"
+                        class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-heading mb-1">คำบรรยาย</label>
+                    <textarea id="editSummaryIntro" rows="4"
+                        class="w-full px-4 py-2 bg-gray-50 border rounded-xl outline-none resize-none"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg mt-6 hover:bg-blue-700 transition-all font-sans">บันทึกข้อมูล</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

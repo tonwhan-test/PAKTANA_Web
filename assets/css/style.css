@@ -51,24 +51,8 @@ body {
     display: block;
 }
 
-.admin-toolbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    padding: 12px 24px;
-    z-index: 1001;
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
-}
-
-.admin-toolbar.show {
-    display: flex;
+.admin-edit-btn.show {
+    display: block;
 }
 
 .admin-toolbar-title {
@@ -95,23 +79,7 @@ body {
     color: var(--primary);
 }
 
-/* Mobile Admin Toolbar Adjustments */
 @media (max-width: 640px) {
-    .admin-toolbar {
-        padding: 10px 16px;
-        gap: 8px;
-    }
-
-    .admin-toolbar-title {
-        font-size: 14px;
-        gap: 6px;
-    }
-
-    .admin-toolbar-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-        border-width: 1.5px;
-    }
 
     /* Hide slider arrows on mobile */
     .slider-arrow {
@@ -690,9 +658,9 @@ body:not(.admin-active) .admin-only {
     transition: transform 0.3s ease, top 0.3s ease;
 }
 
-/* When admin is logged in, push nav bar down */
+/* When admin is logged in, no more special top offset needed */
 body.admin-active .nav-bar {
-    top: 60px;
+    top: 0;
 }
 
 /* Add padding to body to prevent content from hiding under fixed nav */
@@ -700,19 +668,15 @@ body.nav-fixed-padding {
     padding-top: 80px;
 }
 
-/* When admin is active, increase body padding */
+/* When admin is active, same padding as visitor */
+/* Standard padding when admin is logged in */
 body.admin-active {
-    padding-top: 140px !important;
+    padding-top: 80px !important;
 }
 
-/* Mobile specific spacing for Admin */
 @media (max-width: 640px) {
-    body.admin-active .nav-bar {
-        top: 45px;
-    }
-
     body.admin-active {
-        padding-top: 125px !important;
+        padding-top: 80px !important;
     }
 }
 

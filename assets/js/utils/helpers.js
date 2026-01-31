@@ -21,6 +21,8 @@ window.Helpers = {
 
     checkAdminAuth() {
         if (!window.AppState) return;
+
+        // Handle Admin-only elements
         const adminElements = document.querySelectorAll('.admin-only');
         adminElements.forEach(el => {
             if (window.AppState.isAdminLoggedIn) {
@@ -30,14 +32,15 @@ window.Helpers = {
             }
         });
 
-        const toolbar = document.getElementById('adminToolbar');
-        if (toolbar) {
+        // Handle Visitor-only elements (e.g. Login link in navbar)
+        const visitorElements = document.querySelectorAll('.visitor-only');
+        visitorElements.forEach(el => {
             if (window.AppState.isAdminLoggedIn) {
-                toolbar.classList.add('show');
+                el.classList.add('hidden');
             } else {
-                toolbar.classList.remove('show');
+                el.classList.remove('hidden');
             }
-        }
+        });
     }
 };
 window.showSuccessToast = (msg) => window.Helpers.showSuccessToast(msg);

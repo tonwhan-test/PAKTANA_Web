@@ -37,8 +37,6 @@ window.AdminAuth = {
 
     updateAdminUI(loggedIn) {
         document.body.classList.toggle('admin-active', loggedIn);
-        const toolbar = document.getElementById('adminToolbar');
-        if (toolbar) toolbar.classList.toggle('show', loggedIn);
 
         // Show/hide edit buttons that might already exist
         document.querySelectorAll('.admin-edit-btn').forEach(btn => {
