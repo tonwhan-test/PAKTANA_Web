@@ -682,6 +682,95 @@ window.Renderers = {
 
         window.HeroSlider.init();
     }
+    // --- Departments ---
+    async renderDepartments() {
+        const container = document.getElementById('departmentsGrid');
+        if (!container) return;
+
+        try {
+            const departments = await window.DepartmentService.fetchDepartments();
+
+            if (!departments || departments.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                        <div class="text-4xl mb-4">🏛️</div>
+                        <h3 class="text-xl font-bold text-gray-400">ยังไม่มีข้อมูลฝ่ายบริหาร</h3>
+                        <p class="text-gray-400 text-sm mt-2">แอดมินสามารถเพิ่มข้อมูลได้</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = departments.map(dept => `
+                 <div class="group bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                     
+                    <div class="relative z-10">
+                        <!-- Icon/Image -->
+                        <div class="w-16 h-16 rounded-2xl bg-white shadow-md border border-gray-100 flex items-center justify-center mb-6 text-3xl overflow-hidden">
+                            ${dept.icon_url
+                    ? `<img src="${dept.icon_url}" class="w-full h-full object-cover">`
+                    : '🏛️'}
+                        </div>
+
+                        <h3 class="text-xl font-black text-heading font-serif mb-2 group-hover:text-blue-600 transition-colors">${dept.title}</h3>
+                        ${dept.role ? `<span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg mb-4 uppercase tracking-wider">${dept.role}</span>` : ''}
+                        
+                        <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4 min-h-[3rem]">
+                            ${dept.description || 'ไม่มีรายละเอียด'}
+                        </p>
+
+                        <!-- Admin Actions -->
+                        <div class="admin-only hidden pt-4 border-t border-gray-50 mt-4 flex justify-end">
+                             <button onclick="window.AdminManagement.openDepartmentManagementModal('${dept.id}')" 
+                                class="text-sm font-bold text-gray-400 hover:text-blue-600 flex items-center gap-1 transition-colors">
+                                <span>✏️</span> แก้ไข
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-check admin visibility after rendering
+            window.Helpers.checkAdminAuth();
+
+        } catch (error) {
+            console.error('Failed to render departments:', error);
+            container.innerHTML = '<p class="text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+        }
+    },
+
+    // --- Utils ---
+    setupSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    },
+
+    // Initialize all renderers
+    init() {
+        this.renderPolicies();
+        this.renderMembers();
+        this.renderGallery();
+        this.renderDepartments();
+        // this.renderHeroSlides(); // Called by main.js separately usually, or here
+        this.setupSmoothScroll();
+
+        // Listen for data updates
+        window.addEventListener('app-data-updated', () => {
+            this.renderPolicies();
+            this.renderMembers();
+            this.renderGallery();
+            this.renderDepartments();
+        });
+    }
 };
 
 window.openMemberModal = (id) => window.Renderers.openMemberModal(id);

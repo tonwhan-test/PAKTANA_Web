@@ -2,12 +2,125 @@
 window.deleteMember = () => window.AdminManagement.deleteMember();
 
 window.AdminManagement = {
+    setupDepartmentForm() {
+        const form = document.getElementById('departmentManagementForm');
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = 'กำลังบันทึก...';
+            btn.disabled = true;
+
+            try {
+                const id = document.getElementById('manageDeptId').value;
+                const fileInput = document.getElementById('manageDeptIcon');
+                let iconUrl = document.getElementById('manageDeptIconUrl').value;
+
+                if (fileInput.files.length > 0) {
+                    iconUrl = await window.DepartmentService.uploadDepartmentIcon(fileInput.files[0]);
+                }
+
+                const payload = {
+                    title: document.getElementById('manageDeptTitle').value,
+                    role: document.getElementById('manageDeptRole').value,
+                    description: document.getElementById('manageDeptDesc').value,
+                    rank: parseInt(document.getElementById('manageDeptRank').value) || 0,
+                    icon_url: iconUrl
+                };
+
+                if (id) {
+                    await window.DepartmentService.updateDepartment(id, payload);
+                    alert('อัปเดตข้อมูลสำเร็จ');
+                } else {
+                    await window.DepartmentService.addDepartment(payload);
+                    alert('เพิ่มข้อมูลสำเร็จ');
+                }
+
+                window.Modals.closeModal('departmentManagementModal');
+                window.Renderers.renderDepartments(); // Refresh
+
+            } catch (error) {
+                console.error(error);
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
+    },
+
+    async openDepartmentManagementModal(id = null) {
+        document.getElementById('departmentManagementForm').reset();
+        document.getElementById('manageDeptId').value = '';
+        document.getElementById('manageDeptIconUrl').value = '';
+        document.getElementById('manageDeptPreview').innerHTML = '<div class="text-4xl text-gray-300 group-hover:text-blue-500 transition-colors">🖼️</div>';
+        document.getElementById('deleteDeptBtn').style.display = 'none';
+        document.getElementById('deptModalTitle').innerText = 'เพิ่มฝ่ายบริหาร';
+
+        if (id) {
+            document.getElementById('deptModalTitle').innerText = 'แก้ไขฝ่ายบริหาร';
+            document.getElementById('deleteDeptBtn').style.display = 'block';
+
+            // We need to find the dept in the list rendered or fetch again
+            // Optimistic: grab from DOM or fetch all (since we don't have a global state for depts easily accessible unless we store it)
+            // Let's verify if we stored it. Renderers.renderDepartments fetch it but doesn't store in global State like members.
+            // Let's fetch freshly for simplicity
+            const depts = await window.DepartmentService.fetchDepartments();
+            const dept = depts.find(d => d.id == id); // loose equality for string/int
+
+            if (dept) {
+                document.getElementById('manageDeptId').value = dept.id;
+                document.getElementById('manageDeptTitle').value = dept.title;
+                document.getElementById('manageDeptRole').value = dept.role || '';
+                document.getElementById('manageDeptDesc').value = dept.description || '';
+                document.getElementById('manageDeptRank').value = dept.rank || 0;
+                document.getElementById('manageDeptIconUrl').value = dept.icon_url || '';
+
+                if (dept.icon_url) {
+                    document.getElementById('manageDeptPreview').innerHTML = `<img src="${dept.icon_url}" class="w-full h-full object-cover">`;
+                }
+            }
+        }
+
+        window.Modals.openModal('departmentManagementModal');
+    },
+
+    async deleteDepartment() {
+        if (!confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่?')) return;
+
+        const id = document.getElementById('manageDeptId').value;
+        if (!id) return;
+
+        try {
+            await window.DepartmentService.deleteDepartment(id);
+            alert('ลบข้อมูลสำเร็จ');
+            window.Modals.closeModal('departmentManagementModal');
+            window.Renderers.renderDepartments();
+        } catch (error) {
+            console.error(error);
+            alert('เกิดข้อผิดพลาด: ' + error.message);
+        }
+    },
+
+    previewDeptIcon(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('manageDeptPreview').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    },
+
     init() {
         this.setupMemberForm();
         this.setupPolicyForm();
         this.setupGalleryForm();
-        this.setupSliderForm();
-        this.setupContactEditForm();
+        this.setupHeroSlideForm();
+        this.setupContactForm(); // Ensure this exists if used
+        this.setupDepartmentForm(); // Added
     },
 
     // --- Member Management ---
