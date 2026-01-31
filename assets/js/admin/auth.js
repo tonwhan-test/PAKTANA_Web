@@ -16,6 +16,9 @@ window.AdminAuth = {
 
         window.AppState.isAdminLoggedIn = true;
         this.updateAdminUI(true);
+
+        await this.refreshData(); // Re-render UI with admin controls
+
         // Navigate to home or show admin panel
         if (window.Navigation) window.Navigation.navigateToPage('home');
         window.Helpers.showSuccessToast('เข้าสู่ระบบสำเร็จ');
@@ -28,7 +31,8 @@ window.AdminAuth = {
         if (error) throw error;
         window.AppState.isAdminLoggedIn = false;
         this.updateAdminUI(false);
-        location.reload();
+        await this.refreshData(); // Re-render UI to remove admin controls
+        // location.reload(); // No longer needed
     },
 
     updateAdminUI(loggedIn) {
@@ -36,7 +40,7 @@ window.AdminAuth = {
         const toolbar = document.getElementById('adminToolbar');
         if (toolbar) toolbar.classList.toggle('show', loggedIn);
 
-        // Show/hide edit buttons
+        // Show/hide edit buttons that might already exist
         document.querySelectorAll('.admin-edit-btn').forEach(btn => {
             btn.style.display = loggedIn ? 'block' : 'none';
         });
@@ -47,7 +51,7 @@ window.AdminAuth = {
             rateBtn.style.display = loggedIn ? 'none' : '';
         }
 
-        // --- NEW: Call checkAdminAuth to handle .admin-only links (remove 'hidden' class) ---
+        // Call checkAdminAuth to handle .admin-only links
         if (window.Helpers && window.Helpers.checkAdminAuth) {
             window.Helpers.checkAdminAuth();
         }
@@ -55,10 +59,30 @@ window.AdminAuth = {
         // Toggle admin section visibility
         const adminSection = document.getElementById('adminLoginSection');
         if (adminSection) {
-            // If logged in, we might want to hide the login form
             if (loggedIn) {
-                // But we usually just rely on navigation to other pages
+                // relying on navigation
             }
+        }
+    },
+
+    async refreshData() {
+        try {
+            // Re-fetch and render all dynamic data to ensure admin controls appear/disappear
+            const [members, policies, gallery] = await Promise.all([
+                window.MemberService.fetchMembers(),
+                window.PolicyService.fetchPolicies(),
+                window.GalleryService.fetchGallery()
+            ]);
+
+            window.Renderers.renderMembers(members);
+            window.Renderers.renderPolicies(policies);
+            window.Renderers.renderGallery(gallery);
+
+            if (window.fetchHeroSlides) {
+                await window.fetchHeroSlides();
+            }
+        } catch (err) {
+            console.error('Error refreshing data:', err);
         }
     }
 };
