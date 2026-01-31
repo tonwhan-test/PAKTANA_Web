@@ -798,12 +798,14 @@ window.Renderers = {
             </div>
             ${adminBtn}
             
-            <div class="slider-arrow left" onclick="window.changeSlide(-1)">❮</div>
-            <div class="slider-arrow right" onclick="window.changeSlide(1)">❯</div>
+            <div class="slider-arrow left" onclick="window.changeSlide(-1)">‹</div>
+            <div class="slider-arrow right" onclick="window.changeSlide(1)">›</div>
             
+            ${slides.length > 1 ? `
             <div class="slider-nav">
                 ${slides.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}" onclick="window.goToSlide(${i})"></div>`).join('')}
             </div>
+            ` : ''}
         `;
 
         // Reset and Initialize Slider State to prevent sync issues

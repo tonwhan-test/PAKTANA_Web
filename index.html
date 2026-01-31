@@ -157,21 +157,11 @@
     <!-- Page 1: Homepage -->
     <div class="page active" data-page="home">
         <section class="hero-slider" id="heroSliderSection">
-            <div id="heroSlider">
-                <div class="slide active editable-section" style="background-color: var(--gray); overflow: hidden;"
-                    id="slidePlaceholder">
-                    <button class="admin-edit-btn" onclick="openHeroSlideModal()">⚙️ จัดการสไลด์</button>
-                    <div
-                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #cbd5e1;">
-                        <div style="font-size: 80px;">🖼️</div>
-                        <p class="text-xl mt-4 font-serif">ยังไม่มีภาพสไลด์</p>
-                    </div>
+            <div id="heroSlider" class="h-full w-full">
+                <!-- Content will be injected by window.Renderers.renderHeroSlides -->
+                <div class="flex items-center justify-center h-full bg-gray-900">
+                    <div class="animate-spin text-4xl text-white">⏳</div>
                 </div>
-            </div>
-            <div class="slider-arrow left" onclick="changeSlide(-1)">‹</div>
-            <div class="slider-arrow right" onclick="changeSlide(1)">›</div>
-            <div class="slider-nav">
-                <div class="slider-dot active" onclick="goToSlide(0)"></div>
             </div>
         </section>
 
