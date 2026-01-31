@@ -1009,7 +1009,11 @@ footer {
     }
 
     .hero-slider {
-        height: 300px;
+        height: 400px;
+    }
+
+    .slide-content {
+        padding-top: 60px !important;
     }
 
     .slider-arrow {
@@ -1140,7 +1144,7 @@ footer {
     /* Extra Small Screen Adjustments */
     @media (max-width: 480px) {
         .hero-slider {
-            height: 220px !important;
+            height: 340px !important;
         }
 
         .hero-slider h1 {
@@ -1170,7 +1174,7 @@ footer {
         }
 
         .slide-content {
-            padding: 0 12px !important;
+            padding: 40px 12px 0 !important;
         }
 
         .slider-nav {
