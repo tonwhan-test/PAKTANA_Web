@@ -134,7 +134,7 @@ body:not(.admin-active) .admin-only {
     align-items: center;
     justify-content: center;
     background-size: cover;
-    background-position: center center;
+    background-position: center top;
     background-repeat: no-repeat;
     background-color: #1a1a1a;
     user-select: none;
@@ -665,16 +665,18 @@ body.admin-active .nav-bar {
 
 /* Add padding to body to prevent content from hiding under fixed nav */
 body.nav-fixed-padding {
-    padding-top: 80px;
+    padding-top: 90px;
 }
 
 /* When admin is active, same padding as visitor */
 /* Standard padding when admin is logged in */
 body.admin-active {
-    padding-top: 80px !important;
+    padding-top: 90px !important;
 }
 
 @media (max-width: 640px) {
+
+    body.nav-fixed-padding,
     body.admin-active {
         padding-top: 80px !important;
     }
