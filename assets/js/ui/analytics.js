@@ -8,40 +8,50 @@ window.AnalyticsUI = {
 
             const pageViews = await window.AnalyticsService.fetchPageViews();
             const container = document.getElementById('analyticsPageViews');
+
+            const labelsMap = {
+                'home': 'หน้าแรก',
+                'policies': 'นโยบาย',
+                'leadership': 'ทำเนียบสมาชิก',
+                'activities': 'กิจกรรม',
+                'contact': 'เสนอนโยบาย',
+                'contact_us_new': 'ติดต่อสอบถาม',
+                'admin': 'Admin',
+                'manage_members': 'จัดการสมาชิก',
+                'manage_policies': 'จัดการนโยบาย',
+                'gallery': 'แกลเลอรี่'
+            };
+
             if (container) {
                 if (pageViews && pageViews.length > 0) {
-                    // Sort descending by views
                     pageViews.sort((a, b) => b.view_count - a.view_count);
-
                     container.innerHTML = '';
-                    const labelsMap = {
-                        'home': 'หน้าแรก',
-                        'policies': 'นโยบาย',
-                        'leadership': 'ทำเนียบสมาชิก',
-                        'activities': 'กิจกรรม',
-                        'contact': 'ติดต่อเรา',
-                        'admin': 'ผู้ดูแลระบบ',
-                        'manage_members': 'จัดการสมาชิก',
-                        'gallery': 'แกลเลอรี่'
-                    };
+
+                    const maxViews = Math.max(...pageViews.map(v => v.view_count));
 
                     pageViews.forEach(row => {
                         const label = labelsMap[row.page_id] || row.page_id;
+                        const percentage = (row.view_count / maxViews) * 100;
                         const el = document.createElement('div');
-                        el.className = 'flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-default';
+                        el.className = 'group p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-300';
                         el.innerHTML = `
-                            <div class="flex items-center gap-3">
-                                <span class="w-2 h-2 rounded-full ${row.view_count > 100 ? 'bg-green-500' : 'bg-gray-300'}"></span>
-                                <span class="font-bold text-gray-700 font-serif">${label}</span>
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full ${row.view_count > (maxViews * 0.7) ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-gray-300'}"></span>
+                                    <span class="font-bold text-gray-800 text-sm">${label}</span>
+                                </div>
+                                <span class="bg-white px-2 py-0.5 rounded-lg border border-gray-100 text-[10px] font-black text-blue-600 shadow-sm">
+                                    ${row.view_count.toLocaleString()} Views
+                                </span>
                             </div>
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-black shadow-inner flex items-center gap-1">
-                                👁️ ${row.view_count.toLocaleString()}
-                            </span>
+                            <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
+                            </div>
                         `;
                         container.appendChild(el);
                     });
                 } else {
-                    container.innerHTML = '<div class="text-center text-gray-400 py-4 flex flex-col items-center gap-2"><span class="text-2xl">📉</span><span>ไม่มีข้อมูลการเข้าชม</span></div>';
+                    container.innerHTML = '<div class="text-center text-gray-400 py-10">📉 ไม่มีข้อมูลการเข้าชม</div>';
                 }
             }
 
@@ -61,98 +71,83 @@ window.AnalyticsUI = {
                     feedbackList.innerHTML = '';
                     ratings.slice(0, 20).forEach(r => {
                         const el = document.createElement('div');
-                        el.className = 'p-3 bg-white rounded-lg border border-gray-100';
+                        el.className = 'p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all';
                         el.innerHTML = `
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-yellow-500 font-bold">${'★'.repeat(r.rating)}</span>
-                                <span class="text-gray-400 text-xs">${new Date(r.created_at).toLocaleDateString('th-TH')}</span>
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex text-yellow-400 text-xs">
+                                    ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
+                                </div>
+                                <span class="text-gray-400 text-[10px] font-bold uppercase tracking-tighter">${new Date(r.created_at).toLocaleDateString('th-TH')}</span>
                             </div>
-                            ${r.comment ? `<p class="text-gray-700 text-sm italic">"${r.comment}"</p>` : ''}
+                            ${r.comment ? `<p class="text-gray-600 text-xs italic leading-relaxed">"${r.comment}"</p>` : '<p class="text-gray-300 text-[10px] italic">ไม่มีความเห็น</p>'}
                         `;
                         feedbackList.appendChild(el);
                     });
                 }
+            } else {
+                const feedbackList = document.getElementById('analyticsFeedbackList');
+                if (feedbackList) feedbackList.innerHTML = '<div class="text-center py-10 text-gray-300 text-sm">ยังไม่มีความคิดเห็น</div>';
             }
 
-            // Render chart regardless of ratings
-            this.renderAnalyticsChart(pageViews);
+            this.renderAnalyticsChart(pageViews, labelsMap);
 
         } catch (err) {
             console.error('Fetch Analytics UI Error:', err);
         }
     },
 
-    renderAnalyticsChart(pageViews) {
+    renderAnalyticsChart(pageViews, labelsMap) {
         const ctx = document.getElementById('analyticsChart');
         if (!ctx) return;
 
-        // Ensure pageViews is an array
         const views = pageViews || [];
-
         if (window.analyticsChartInstance) window.analyticsChartInstance.destroy();
 
-        const labelsMap = {
-            'home': 'หน้าแรก',
-            'policies': 'นโยบาย',
-            'leadership': 'ทำเนียบ',
-            'activities': 'กิจกรรม',
-            'contact': 'ติดต่อเรา',
-            'admin': 'Admin'
-        };
-
-        // Prepare data with default zeros if needed, or just map existing
-        const labels = views.map(v => labelsMap[v.page_id] || v.page_id);
-        const data = views.map(v => v.view_count);
+        // Sort views for chart too
+        const sortedViews = [...views].sort((a, b) => b.view_count - a.view_count).slice(0, 8);
+        const labels = sortedViews.map(v => labelsMap[v.page_id] || v.page_id);
+        const data = sortedViews.map(v => v.view_count);
 
         window.analyticsChartInstance = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'จำนวนการเข้าชม (ครั้ง)',
+                    label: 'ยอดเข้าชม',
                     data: data,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 6,
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    hoverBackgroundColor: 'rgba(37, 99, 235, 1)',
+                    borderRadius: 8,
+                    borderWidth: 0,
                     barPercentage: 0.6
                 }]
             },
             options: {
+                indexAxis: 'y', // Horizontal bars look better for labels
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        backgroundColor: '#1e293b',
                         padding: 12,
-                        titleFont: { size: 14, family: "'Sarabun', sans-serif" },
-                        bodyFont: { size: 14, family: "'Sarabun', sans-serif" }
+                        titleFont: { size: 12, family: "'Sarabun', sans-serif", weight: 'bold' },
+                        bodyFont: { size: 12, family: "'Sarabun', sans-serif" },
+                        displayColors: false,
+                        callbacks: {
+                            label: (context) => `👁️ ${context.raw.toLocaleString()} ครั้ง`
+                        }
                     }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: '#f3f4f6' },
-                        ticks: { font: { family: "'Sarabun', sans-serif" } }
-                    },
                     x: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { family: "'Sarabun', sans-serif", size: 10 } }
+                    },
+                    y: {
                         grid: { display: false },
-                        ticks: { font: { family: "'Sarabun', sans-serif", weight: 'bold' } }
+                        ticks: { font: { family: "'Sarabun', sans-serif", size: 12, weight: 'bold' } }
                     }
                 }
             }

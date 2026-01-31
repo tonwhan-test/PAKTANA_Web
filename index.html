@@ -1069,24 +1069,42 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[500px]">
-                <!-- Chart Section -->
-                <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col">
-                    <h4 class="font-bold text-heading mb-6 flex items-center gap-2">
-                        <span class="w-1 h-5 bg-blue-500 rounded-full"></span> ยอดเข้าชมรายหน้า
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Page View Stats Section -->
+                <div
+                    class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col min-h-[500px]">
+                    <h4 class="font-bold text-heading mb-6 flex items-center gap-2 border-b border-gray-50 pb-4">
+                        <span class="w-1 h-5 bg-blue-500 rounded-full"></span> รายละเอียดการเข้าชมรายหน้า
                     </h4>
-                    <div class="flex-1 relative w-full h-full min-h-[300px]">
-                        <canvas id="analyticsChart"></canvas>
+
+                    <div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-8 overflow-hidden">
+                        <!-- List View -->
+                        <div class="md:col-span-2 overflow-y-auto pr-2 space-y-2 custom-scrollbar max-h-[400px]"
+                            id="analyticsPageViews">
+                            <!-- Filled by JS -->
+                            <div class="animate-pulse space-y-3">
+                                <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
+                                <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
+                                <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
+                            </div>
+                        </div>
+
+                        <!-- Graph View -->
+                        <div class="md:col-span-3 h-full min-h-[300px] relative">
+                            <canvas id="analyticsChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Feedback Section -->
-                <div class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col">
-                    <h4 class="font-bold text-heading mb-4 flex items-center gap-2">
+                <div
+                    class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col max-h-[500px]">
+                    <h4 class="font-bold text-heading mb-4 flex items-center gap-2 border-b border-gray-100 pb-4">
                         <span class="w-1 h-5 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
                     </h4>
                     <div id="analyticsFeedbackList" class="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
                         <!-- Injected by JS -->
+                        <div class="text-center py-10 text-gray-400">กำลังโหลดคำนิยม...</div>
                     </div>
                 </div>
             </div>
