@@ -740,12 +740,21 @@ window.AdminManagement = {
             const ig = document.getElementById('editIg').value.trim();
             const tt = document.getElementById('editTt').value.trim();
 
-            // Update UI
+            // Update UI (Footer)
             document.getElementById('footerEmail').innerText = email;
             document.getElementById('footerPhone').innerText = phone;
             document.getElementById('footerAddress').innerHTML = address;
 
+            // Update UI (Contact Page)
+            const pageEmail = document.getElementById('pageContactEmail');
+            const pagePhone = document.getElementById('pageContactPhone');
+            const pageAddress = document.getElementById('pageContactAddress');
+            if (pageEmail) pageEmail.innerText = email;
+            if (pagePhone) pagePhone.innerText = phone;
+            if (pageAddress) pageAddress.innerHTML = address;
+
             const socialContainer = document.getElementById('footerSocials');
+            const pageSocialContainer = document.getElementById('pageContactSocials');
             let socialHtml = '';
 
             if (fb && fb !== '#') {
@@ -759,6 +768,7 @@ window.AdminManagement = {
             }
 
             socialContainer.innerHTML = socialHtml;
+            if (pageSocialContainer) pageSocialContainer.innerHTML = socialHtml;
 
             window.Helpers.showSuccessToast('บันทึกข้อมูลติดต่อเรียบร้อย');
             window.Modals.closeModal('contactEditModal');
