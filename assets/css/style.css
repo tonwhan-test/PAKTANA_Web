@@ -879,6 +879,11 @@ body.admin-active {
     /* Push footer down */
 }
 
+footer {
+    background-color: #0f172a !important;
+    /* Force slate-900 background */
+}
+
 .page.active {
     display: block;
     animation: fadeIn 0.4s ease-out;
