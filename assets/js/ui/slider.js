@@ -13,27 +13,26 @@ window.HeroSlider = {
         const slider = document.querySelector('.hero-slider');
         if (!slider) return;
 
-        slider.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
-        slider.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: true });
-    },
+        slider.addEventListener('touchstart', (e) => {
+            this.touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
 
-    handleTouchStart(e) {
-        this.touchStartX = e.changedTouches[0].screenX;
-    },
-
-    handleTouchEnd(e) {
-        this.touchEndX = e.changedTouches[0].screenX;
-        this.handleSwipeGesture();
+        slider.addEventListener('touchend', (e) => {
+            this.touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipeGesture();
+        }, { passive: true });
     },
 
     handleSwipeGesture() {
-        const swipeThreshold = 50; // Minimum distance for a swipe
+        const swipeThreshold = 50;
         if (this.touchEndX < this.touchStartX - swipeThreshold) {
-            this.changeSlide(1); // Swipe Left -> Next Slide
+            this.changeSlide(1); // Swipe Left -> Next
+        } else if (this.touchEndX > this.touchStartX + swipeThreshold) {
+            this.changeSlide(-1); // Swipe Right -> Prev
         }
-        if (this.touchEndX > this.touchStartX + swipeThreshold) {
-            this.changeSlide(-1); // Swipe Right -> Prev Slide
-        }
+        // Reset
+        this.touchStartX = 0;
+        this.touchEndX = 0;
     },
 
     showSlide(n) {
@@ -43,14 +42,13 @@ window.HeroSlider = {
 
         if (slides.length === 0 || !track) return;
 
-        // Reset dots active state
-        dots.forEach(d => d.classList.remove('active'));
-
         // Calculate index
         this.currentSlide = (n + slides.length) % slides.length;
 
-        // Update dots active state
-        if (dots[this.currentSlide]) dots[this.currentSlide].classList.add('active');
+        // Update dots
+        dots.forEach((d, i) => {
+            d.classList.toggle('active', i === this.currentSlide);
+        });
 
         // Apply Sliding Effect
         track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
