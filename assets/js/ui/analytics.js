@@ -204,14 +204,8 @@ window.AnalyticsUI = {
         }
     },
 
-    openAnalyticsModal() {
-        if (!window.AppState.isAdminLoggedIn) return;
-        this.fetchAnalyticsData();
-        window.Modals.openModal('analyticsModal');
-    }
 };
 
 window.setRating = (n) => window.AnalyticsUI.setRating(n);
 window.submitRating = () => window.AnalyticsUI.submitRating();
 window.fetchAnalyticsData = () => window.AnalyticsUI.fetchAnalyticsData();
-window.openAnalyticsModal = () => window.AnalyticsUI.openAnalyticsModal();

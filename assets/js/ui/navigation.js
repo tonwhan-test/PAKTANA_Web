@@ -109,6 +109,11 @@ window.Navigation = {
             if (window.AnalyticsService) {
                 window.AnalyticsService.trackPageView(pageId);
             }
+
+            // If navigating to analytics page, fetch fresh data
+            if (pageId === 'analytics' && window.AnalyticsUI) {
+                window.AnalyticsUI.fetchAnalyticsData();
+            }
         }
     },
 

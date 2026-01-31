@@ -79,6 +79,7 @@
                 <a href="#" class="nav-link" data-page="activities">กิจกรรม</a>
                 <a href="#" class="nav-link" data-page="contact">เสนอนโยบาย</a>
                 <a href="#" class="nav-link" data-page="contact_us_new">ติดต่อสอบถาม</a>
+                <a href="#" class="nav-link" data-page="analytics">สถิติเข้าชม Website</a>
 
                 <a href="#" class="nav-link admin-only hidden" data-page="manage_policies">จัดการนโยบาย</a>
                 <a href="#" class="nav-link admin-only hidden" data-page="manage_members">จัดการสมาชิก</a>
@@ -96,11 +97,17 @@
                         <div class="px-4 py-2 mb-2 border-b border-gray-50">
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Admin Control</p>
                         </div>
-                        <a href="#" onclick="openAnalyticsModal()"
+                        <a href="#" onclick="navigateToPage('manage_policies')"
                             class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
                             <span
-                                class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">📊</span>
-                            <span class="font-bold">สถิติเข้าชม Website</span>
+                                class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">📋</span>
+                            <span class="font-bold">จัดการนโยบาย</span>
+                        </a>
+                        <a href="#" onclick="navigateToPage('manage_members')"
+                            class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                            <span
+                                class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600">👥</span>
+                            <span class="font-bold">จัดการสมาชิก</span>
                         </a>
                         <div class="my-2 border-t border-gray-50"></div>
                         <a href="#" onclick="logoutAdmin()"
@@ -162,6 +169,10 @@
             onclick="toggleMobileMenu(); navigateToPage('contact_us_new')">
             <i>✉️</i> ติดต่อสอบถาม
         </a>
+        <a href="#" class="mobile-nav-link" data-page="analytics"
+            onclick="toggleMobileMenu(); navigateToPage('analytics')">
+            <i>📊</i> สถิติเข้าชม Website
+        </a>
 
         <!-- Mobile Admin Section -->
         <div class="admin-only hidden">
@@ -175,9 +186,6 @@
             <a href="#" class="mobile-nav-link" data-page="manage_members"
                 onclick="toggleMobileMenu(); navigateToPage('manage_members')">
                 <i>⚙️</i> จัดการสมาชิก
-            </a>
-            <a href="#" class="mobile-nav-link text-purple-600" onclick="toggleMobileMenu(); openAnalyticsModal()">
-                <i>📊</i> สถิติเข้าชม Website
             </a>
             <a href="#" class="mobile-nav-link text-red-600 font-bold" onclick="toggleMobileMenu(); logoutAdmin()">
                 <i>🚪</i> ออกจากระบบ
@@ -462,6 +470,77 @@
                             ส่งข้อความ
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Page: Analytics (Public) -->
+<div class="page" data-page="analytics">
+    <section class="py-20 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black text-heading font-serif mb-4">สถิติเข้าชม Website</h2>
+                <p class="text-gray-500 text-lg">สรุปข้อมูลการเข้าชมและความพึงพอใจของผู้ใช้งาน</p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-10 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col items-center">
+                    <div
+                        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm">
+                        👥</div>
+                    <h4 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-2">ยอดผู้เข้าชมรวม</h4>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-6xl font-black text-blue-600 tracking-tighter" id="totalVisitorsDisplay">-</p>
+                        <span class="text-gray-400 font-bold">คน</span>
+                    </div>
+                </div>
+                <div class="bg-white p-10 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col items-center">
+                    <div
+                        class="w-16 h-16 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm">
+                        ⭐</div>
+                    <h4 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-2">คะแนนความพึงพอใจ</h4>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-6xl font-black text-yellow-500 tracking-tighter" id="avgRatingDisplay">-</p>
+                        <span class="text-gray-400 font-bold">/ 5.0</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 font-bold uppercase tracking-wider" id="totalRatingsDisplay">
+                        จากทั้งหมด - รีวิว</p>
+                </div>
+            </div>
+
+            <!-- Charts & Details -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <div class="lg:col-span-2 bg-white rounded-[2.5rem] shadow-xl border border-gray-100 p-10">
+                    <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-50">
+                        <h4 class="text-xl font-black text-heading flex items-center gap-3">
+                            <span class="w-2 h-8 bg-blue-600 rounded-full"></span> รายละเอียดการเข้าชมรายหน้า
+                        </h4>
+                    </div>
+                    <div class="grid grid-cols-1 xl:grid-cols-5 gap-10">
+                        <div class="xl:col-span-2 space-y-3 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar"
+                            id="analyticsPageViews">
+                            <!-- JS Injected Content -->
+                        </div>
+                        <div class="xl:col-span-3 min-h-[400px] relative">
+                            <canvas id="analyticsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 p-10 flex flex-col">
+                    <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-50">
+                        <h4 class="text-xl font-black text-heading flex items-center gap-3">
+                            <span class="w-2 h-8 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
+                        </h4>
+                    </div>
+                    <div id="analyticsFeedbackList"
+                        class="space-y-4 overflow-y-auto max-h-[500px] pr-4 custom-scrollbar">
+                        <!-- JS Injected Content -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1069,81 +1148,6 @@
     </div>
 </div>
 
-<!-- Analytics Modal -->
-<div id="analyticsModal" class="modal-overlay" onclick="closeModal('analyticsModal')">
-    <div class="modal-content max-w-5xl" onclick="event.stopPropagation()">
-        <div class="p-6 md:p-8">
-            <div class="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
-                <h3 class="text-2xl font-serif font-bold text-heading flex items-center gap-3">
-                    <span class="bg-blue-100 p-2 rounded-lg text-2xl">📊</span> สถิติเว็บไซต์
-                </h3>
-                <button onclick="closeModal('analyticsModal')"
-                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-3xl border border-blue-100 shadow-sm">
-                    <h4 class="text-blue-900 font-bold mb-1 opacity-70">ยอดผู้เข้าชมรวม</h4>
-                    <div class="flex items-baseline gap-2">
-                        <p class="text-5xl font-black text-blue-600 tracking-tight" id="totalVisitorsDisplay">-</p>
-                        <span class="text-sm text-blue-400 font-medium">คน (Unique)</span>
-                    </div>
-                </div>
-                <div
-                    class="bg-gradient-to-br from-yellow-50 to-white p-6 rounded-3xl border border-yellow-100 shadow-sm">
-                    <h4 class="text-yellow-900 font-bold mb-1 opacity-70">คะแนนความพึงพอใจ</h4>
-                    <div class="flex items-baseline gap-3">
-                        <p class="text-5xl font-black text-yellow-500 tracking-tight" id="avgRatingDisplay">-</p>
-                        <div class="flex flex-col">
-                            <div class="text-yellow-400 text-lg">★★★★★</div>
-                            <span class="text-xs text-yellow-600 font-bold" id="totalRatingsDisplay">จาก - คน</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Page View Stats Section -->
-            <div
-                class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col min-h-[500px]">
-                <h4 class="font-bold text-heading mb-6 flex items-center gap-2 border-b border-gray-50 pb-4">
-                    <span class="w-1 h-5 bg-blue-500 rounded-full"></span> รายละเอียดการเข้าชมรายหน้า
-                </h4>
-
-                <div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-8 overflow-hidden">
-                    <!-- List View -->
-                    <div class="md:col-span-2 overflow-y-auto pr-2 space-y-2 custom-scrollbar max-h-[400px]"
-                        id="analyticsPageViews">
-                        <!-- Filled by JS -->
-                        <div class="animate-pulse space-y-3">
-                            <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
-                            <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
-                            <div class="h-10 bg-gray-100 rounded-lg w-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- Graph View -->
-                    <div class="md:col-span-3 h-full min-h-[300px] relative">
-                        <canvas id="analyticsChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feedback Section -->
-            <div class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col max-h-[500px]">
-                <h4 class="font-bold text-heading mb-4 flex items-center gap-2 border-b border-gray-100 pb-4">
-                    <span class="w-1 h-5 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
-                </h4>
-                <div id="analyticsFeedbackList" class="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                    <!-- Injected by JS -->
-                    <div class="text-center py-10 text-gray-400">กำลังโหลดคำนิยม...</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 
 <!-- Rating Modal -->
 <div id="ratingModal" class="modal-overlay" onclick="closeModal('ratingModal')">
