@@ -94,8 +94,8 @@ async function loadSiteSettings() {
             'social_fb': '#',
             'social_ig': '#',
             'social_tt': '#',
-            'home_summary_heading': 'นโยบายหลักของเรา',
-            'home_summary_intro': 'PAKTANA มุ่งมั่นพัฒนาการศึกษาไทยด้วย 4 นโยบายหลักที่ครอบคลุมทุกมิติ'
+            'home_summary_heading': '-',
+            'home_summary_intro': '-'
         };
 
         settings.forEach(s => config[s.key] = s.value);
