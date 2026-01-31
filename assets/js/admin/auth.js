@@ -47,6 +47,11 @@ window.AdminAuth = {
             rateBtn.style.display = loggedIn ? 'none' : '';
         }
 
+        // --- NEW: Call checkAdminAuth to handle .admin-only links (remove 'hidden' class) ---
+        if (window.Helpers && window.Helpers.checkAdminAuth) {
+            window.Helpers.checkAdminAuth();
+        }
+
         // Toggle admin section visibility
         const adminSection = document.getElementById('adminLoginSection');
         if (adminSection) {

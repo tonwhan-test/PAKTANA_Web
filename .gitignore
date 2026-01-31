@@ -1,5 +1,7 @@
 # Environment variables / Config
-assets/js/config.js
+# Environment variables / Config
+# assets/js/config.js
+
 .env
 .DS_Store
 node_modules/
