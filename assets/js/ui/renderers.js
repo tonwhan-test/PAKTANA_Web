@@ -364,11 +364,22 @@ window.Renderers = {
             });
         }
 
+        const formatUrl = (url) => {
+            if (!url || url === '#' || url.trim() === '') return null;
+            let formatted = url.trim();
+            if (!formatted.startsWith('http')) formatted = 'https://' + formatted;
+            return formatted;
+        };
+
+        const fbUrl = formatUrl(contacts.fb);
+        const igUrl = formatUrl(contacts.ig);
+        const ttUrl = formatUrl(contacts.tt);
+
         // Social Media Icons Block
         const socialItems = [];
-        if (contacts.fb) socialItems.push(`<a href="${contacts.fb}" target="_blank" class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-facebook-f"></i></a>`);
-        if (contacts.ig) socialItems.push(`<a href="${contacts.ig}" target="_blank" class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-instagram"></i></a>`);
-        if (contacts.tt) socialItems.push(`<a href="${contacts.tt}" target="_blank" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-tiktok"></i></a>`);
+        if (fbUrl) socialItems.push(`<a href="${fbUrl}" target="_blank" class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-facebook-f"></i></a>`);
+        if (igUrl) socialItems.push(`<a href="${igUrl}" target="_blank" class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-instagram"></i></a>`);
+        if (ttUrl) socialItems.push(`<a href="${ttUrl}" target="_blank" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-tiktok"></i></a>`);
 
         const socialHtml = socialItems.length > 0 ? `<div class="flex gap-4 mt-6 items-center justify-center">${socialItems.join('')}</div>` : '';
 

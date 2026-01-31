@@ -109,6 +109,16 @@ async function loadSiteSettings() {
         const summaryHeading = config['home_summary_heading'] || defaults['home_summary_heading'];
         const summaryIntro = config['home_summary_intro'] || defaults['home_summary_intro'];
 
+        const formatUrl = (url) => {
+            if (!url || url === '#') return '#';
+            if (!url.startsWith('http')) return 'https://' + url;
+            return url;
+        };
+
+        const fbUrl = formatUrl(fb);
+        const igUrl = formatUrl(ig);
+        const ttUrl = formatUrl(tt);
+
         // Update UI (Summary)
         const sHeading = document.getElementById('summaryHeading');
         const sIntro = document.getElementById('summaryIntro');
@@ -128,14 +138,14 @@ async function loadSiteSettings() {
         // Update Socials (Footer)
         if (fSocials) {
             let socialHtml = '';
-            if (fb && fb !== '#') {
-                socialHtml += `<a href="${fb}" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"><i class="fab fa-facebook-f"></i></a>`;
+            if (fbUrl !== '#') {
+                socialHtml += `<a href="${fbUrl}" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"><i class="fab fa-facebook-f"></i></a>`;
             }
-            if (ig && ig !== '#') {
-                socialHtml += `<a href="${ig}" target="_blank" class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white hover:bg-pink-500 transition-colors"><i class="fab fa-instagram"></i></a>`;
+            if (igUrl !== '#') {
+                socialHtml += `<a href="${igUrl}" target="_blank" class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white hover:bg-pink-500 transition-colors"><i class="fab fa-instagram"></i></a>`;
             }
-            if (tt && tt !== '#') {
-                socialHtml += `<a href="${tt}" target="_blank" class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"><i class="fab fa-tiktok"></i></a>`;
+            if (ttUrl !== '#') {
+                socialHtml += `<a href="${ttUrl}" target="_blank" class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"><i class="fab fa-tiktok"></i></a>`;
             }
             fSocials.innerHTML = socialHtml;
         }
@@ -149,7 +159,20 @@ async function loadSiteSettings() {
         if (pEmail) pEmail.innerText = email;
         if (pPhone) pPhone.innerText = phone;
         if (pAddress) pAddress.innerHTML = address.replace(/\n/g, '<br>');
-        if (pSocials && fSocials) pSocials.innerHTML = fSocials.innerHTML;
+
+        if (pSocials) {
+            let pSocialHtml = '';
+            if (fbUrl !== '#') {
+                pSocialHtml += `<a href="${fbUrl}" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform"><i class="fab fa-facebook-f"></i></a>`;
+            }
+            if (igUrl !== '#') {
+                pSocialHtml += `<a href="${igUrl}" target="_blank" class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center hover:scale-110 transition-transform"><i class="fab fa-instagram"></i></a>`;
+            }
+            if (ttUrl !== '#') {
+                pSocialHtml += `<a href="${ttUrl}" target="_blank" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 transition-transform"><i class="fab fa-tiktok"></i></a>`;
+            }
+            pSocials.innerHTML = pSocialHtml;
+        }
 
     } catch (err) {
         console.error('Error loading site settings:', err);
