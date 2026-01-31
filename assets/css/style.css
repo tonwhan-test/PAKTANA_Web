@@ -654,16 +654,11 @@ body.admin-active {
 /* Mobile specific spacing for Admin */
 @media (max-width: 640px) {
     body.admin-active .nav-bar {
-        top: 70px;
+        top: 45px;
     }
 
     body.admin-active {
-        padding-top: 150px !important;
-    }
-
-    .nav-bar .mx-auto.px-6.py-4 {
-        padding-top: 1.5rem;
-        /* Increase top padding on mobile to move content down */
+        padding-top: 125px !important;
     }
 }
 
