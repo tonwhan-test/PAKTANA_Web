@@ -820,7 +820,7 @@ body.admin-active {
     text-align: center;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1250px) {
     .nav-links-desktop {
         display: none !important;
     }
