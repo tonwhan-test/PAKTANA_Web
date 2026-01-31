@@ -1,126 +1,15 @@
-// Make deleteMember globally accessible
+// Make management functions globally accessible
 window.deleteMember = () => window.AdminManagement.deleteMember();
+window.addMember = () => window.AdminManagement.addMember();
+window.editMember = (id) => window.AdminManagement.editMember(id);
 
 window.AdminManagement = {
-    setupDepartmentForm() {
-        const form = document.getElementById('departmentManagementForm');
-        if (!form) return;
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = form.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-            btn.innerText = 'กำลังบันทึก...';
-            btn.disabled = true;
-
-            try {
-                const id = document.getElementById('manageDeptId').value;
-                const fileInput = document.getElementById('manageDeptIcon');
-                let iconUrl = document.getElementById('manageDeptIconUrl').value;
-
-                if (fileInput.files.length > 0) {
-                    iconUrl = await window.DepartmentService.uploadDepartmentIcon(fileInput.files[0]);
-                }
-
-                const payload = {
-                    title: document.getElementById('manageDeptTitle').value,
-                    role: document.getElementById('manageDeptRole').value,
-                    description: document.getElementById('manageDeptDesc').value,
-                    rank: parseInt(document.getElementById('manageDeptRank').value) || 0,
-                    icon_url: iconUrl
-                };
-
-                if (id) {
-                    await window.DepartmentService.updateDepartment(id, payload);
-                    alert('อัปเดตข้อมูลสำเร็จ');
-                } else {
-                    await window.DepartmentService.addDepartment(payload);
-                    alert('เพิ่มข้อมูลสำเร็จ');
-                }
-
-                window.Modals.closeModal('departmentManagementModal');
-                window.Renderers.renderDepartments(); // Refresh
-
-            } catch (error) {
-                console.error(error);
-                alert('เกิดข้อผิดพลาด: ' + error.message);
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        });
-    },
-
-    async openDepartmentManagementModal(id = null) {
-        document.getElementById('departmentManagementForm').reset();
-        document.getElementById('manageDeptId').value = '';
-        document.getElementById('manageDeptIconUrl').value = '';
-        document.getElementById('manageDeptPreview').innerHTML = '<div class="text-4xl text-gray-300 group-hover:text-blue-500 transition-colors">🖼️</div>';
-        document.getElementById('deleteDeptBtn').style.display = 'none';
-        document.getElementById('deptModalTitle').innerText = 'เพิ่มฝ่ายบริหาร';
-
-        if (id) {
-            document.getElementById('deptModalTitle').innerText = 'แก้ไขฝ่ายบริหาร';
-            document.getElementById('deleteDeptBtn').style.display = 'block';
-
-            // We need to find the dept in the list rendered or fetch again
-            // Optimistic: grab from DOM or fetch all (since we don't have a global state for depts easily accessible unless we store it)
-            // Let's verify if we stored it. Renderers.renderDepartments fetch it but doesn't store in global State like members.
-            // Let's fetch freshly for simplicity
-            const depts = await window.DepartmentService.fetchDepartments();
-            const dept = depts.find(d => d.id == id); // loose equality for string/int
-
-            if (dept) {
-                document.getElementById('manageDeptId').value = dept.id;
-                document.getElementById('manageDeptTitle').value = dept.title;
-                document.getElementById('manageDeptRole').value = dept.role || '';
-                document.getElementById('manageDeptDesc').value = dept.description || '';
-                document.getElementById('manageDeptRank').value = dept.rank || 0;
-                document.getElementById('manageDeptIconUrl').value = dept.icon_url || '';
-
-                if (dept.icon_url) {
-                    document.getElementById('manageDeptPreview').innerHTML = `<img src="${dept.icon_url}" class="w-full h-full object-cover">`;
-                }
-            }
-        }
-
-        window.Modals.openModal('departmentManagementModal');
-    },
-
-    async deleteDepartment() {
-        if (!confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่?')) return;
-
-        const id = document.getElementById('manageDeptId').value;
-        if (!id) return;
-
-        try {
-            await window.DepartmentService.deleteDepartment(id);
-            alert('ลบข้อมูลสำเร็จ');
-            window.Modals.closeModal('departmentManagementModal');
-            window.Renderers.renderDepartments();
-        } catch (error) {
-            console.error(error);
-            alert('เกิดข้อผิดพลาด: ' + error.message);
-        }
-    },
-
-    previewDeptIcon(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('manageDeptPreview').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    },
-
     init() {
         this.setupMemberForm();
         this.setupPolicyForm();
         this.setupGalleryForm();
-        this.setupHeroSlideForm();
-        this.setupContactForm(); // Ensure this exists if used
-        this.setupDepartmentForm(); // Added
+        this.setupSliderForm();
+        this.setupContactEditForm();
     },
 
     // --- Member Management ---
@@ -133,6 +22,10 @@ window.AdminManagement = {
         document.getElementById('deleteMemberBtn').style.display = 'none'; // Hide delete
         document.getElementById('managePhotoPreview').innerHTML = '<div class="text-4xl">👤</div>';
         document.getElementById('fileName').textContent = 'ยังไม่ได้เลือกไฟล์';
+
+        // Clear achievements
+        document.getElementById('manageMemberAchievementsList').innerHTML = '';
+
         window.Modals.openModal('memberManagementModal');
     },
 
@@ -186,6 +79,12 @@ window.AdminManagement = {
         document.getElementById('manageMemberIg').value = contacts.ig || '';
         document.getElementById('manageMemberTt').value = contacts.tt || '';
 
+        // Populate Achievements
+        const achievementsList = document.getElementById('manageMemberAchievementsList');
+        achievementsList.innerHTML = '';
+        const achievements = (rawBio.trim().startsWith('{') ? JSON.parse(rawBio).achievements : []) || [];
+        achievements.forEach(ach => this.addAchievementField(ach));
+
         const preview = document.getElementById('managePhotoPreview');
         if (member.photo_url) {
             preview.innerHTML = `<img src="${member.photo_url}" class="w-full h-full object-cover">`;
@@ -216,7 +115,29 @@ window.AdminManagement = {
                     imageUrl = await window.MemberService.uploadMemberImage(fileInput.files[0]);
                 }
 
-                // Construct Rich Data Object
+                // Construct Rich Data Object and handle Achievement Uploads
+                const achievementItems = document.querySelectorAll('.achievement-item');
+                const achievements = [];
+
+                for (const item of achievementItems) {
+                    const fileInput = item.querySelector('.ach-file-input');
+                    const desc = item.querySelector('.ach-desc').value;
+                    let imgUrl = item.querySelector('.ach-img-url').value;
+
+                    if (fileInput.files.length > 0) {
+                        try {
+                            submitBtn.textContent = `กำลังอัปโหลดรูปผลงาน...`;
+                            imgUrl = await window.MemberService.uploadMemberImage(fileInput.files[0]);
+                        } catch (err) {
+                            console.error('Failed to upload achievement image:', err);
+                        }
+                    }
+
+                    if (imgUrl || desc) {
+                        achievements.push({ image_url: imgUrl, description: desc });
+                    }
+                }
+
                 const richData = {
                     motto: document.getElementById('manageMemberMotto').value,
                     history: document.getElementById('manageMemberBio').value,
@@ -227,7 +148,8 @@ window.AdminManagement = {
                         fb: document.getElementById('manageMemberFb').value,
                         ig: document.getElementById('manageMemberIg').value,
                         tt: document.getElementById('manageMemberTt').value
-                    }
+                    },
+                    achievements: achievements
                 };
 
                 const data = {
@@ -244,8 +166,13 @@ window.AdminManagement = {
 
                 window.Helpers.showSuccessToast('บันทึกข้อมูลสมาชิกสำเร็จ');
                 window.Modals.closeModal('memberManagementModal');
-                if (typeof fetchMembers === 'function') fetchMembers();
-                else location.reload();
+
+                // Refresh data manually or reload
+                const members = await window.MemberService.fetchMembers();
+                window.Renderers.renderMembers(members);
+
+                // If it's first-time add, reload might be safer for complex state
+                if (!id) setTimeout(() => location.reload(), 500);
             } catch (err) {
                 alert('Error: ' + err.message);
             } finally {
@@ -253,6 +180,55 @@ window.AdminManagement = {
                 submitBtn.textContent = originalText;
             }
         });
+    },
+
+    addAchievementField(data = { image_url: '', description: '' }) {
+        const container = document.getElementById('manageMemberAchievementsList');
+        const id = 'ach_' + Date.now() + Math.random().toString(36).substr(2, 5);
+
+        const div = document.createElement('div');
+        div.className = 'achievement-item bg-gray-50/50 p-5 rounded-3xl border border-gray-100 relative group transition-all hover:bg-white hover:shadow-md';
+        div.innerHTML = `
+            <button type="button" onclick="this.parentElement.remove()" 
+                class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm shadow-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110 z-20">✕</button>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-4">
+                    <div class="relative cursor-pointer group/ach" onclick="document.getElementById('input_${id}').click()">
+                        <div class="aspect-video bg-gray-100 rounded-2xl overflow-hidden border-2 border-dashed border-gray-200 group-hover/ach:border-blue-400 transition-colors flex items-center justify-center relative">
+                            <img src="${data.image_url || ''}" 
+                                 class="w-full h-full object-cover ach-preview ${data.image_url ? '' : 'hidden'}" id="preview_${id}">
+                            <div class="flex flex-col items-center gap-2 text-gray-400 ${data.image_url ? 'hidden' : ''}" id="placeholder_${id}">
+                                <span class="text-3xl">📷</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider">อัปโหลดรูป</span>
+                            </div>
+                            <div class="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 group-hover/ach:opacity-100 transition-opacity font-bold text-xs backdrop-blur-sm">เปลี่ยนรูป</div>
+                        </div>
+                        <input type="file" id="input_${id}" class="hidden ach-file-input" accept="image/*" 
+                            onchange="window.AdminManagement.previewAchievementImage(this, '${id}')">
+                        <input type="hidden" class="ach-img-url" value="${data.image_url}">
+                    </div>
+                </div>
+                <div class="md:col-span-8">
+                    <textarea placeholder="คำอธิบายผลงาน หรือที่มาของรูปภาพนี้..." 
+                        class="w-full min-h-[100px] rounded-2xl px-5 py-4 bg-white border border-gray-100 focus:border-blue-500 outline-none text-sm resize-none ach-desc transition-all shadow-sm">${data.description}</textarea>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    },
+
+    previewAchievementImage(input, id) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.getElementById(`preview_${id}`);
+                const placeholder = document.getElementById(`placeholder_${id}`);
+                img.src = e.target.result;
+                img.classList.remove('hidden');
+                if (placeholder) placeholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     },
 
     async deleteMember() {

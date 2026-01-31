@@ -539,8 +539,11 @@ body:not(.admin-active) .admin-only {
 }
 
 /* Leadership Directory */
-.leadership-grid {
-    display: grid;
+.leadership-grid,
+.member-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 32px;
 }
 

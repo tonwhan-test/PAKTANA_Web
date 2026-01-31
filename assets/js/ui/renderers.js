@@ -1,5 +1,22 @@
 window.Renderers = {
     // --- Members ---
+    categoryMap: {
+        'Leadership': 'ประธานสภา',
+        'Committee': 'คณะกรรมการ',
+        'Member': 'สมาชิกทั่วไป',
+        'ประธาน': 'ประธานสภา',
+        'รองประธาน': 'รองประธานสภา',
+        'เลขานุการ': 'เลขานุการ',
+        'เหรัญญิก': 'เหรัญญิก',
+        'เทคนิค': 'ฝ่ายเทคนิค',
+        'ปฏิคม': 'ฝ่ายปฏิคม',
+        'สวัสดิการ': 'ฝ่ายสวัสดิการ',
+        'ประชาสัมพันธ์': 'ฝ่ายประชาสัมพันธ์',
+        'วิชาการ': 'ฝ่ายวิชาการ',
+        'อาคารสถานที่': 'ฝ่ายอาคารสถานที่',
+        'นันทนาการ': 'ฝ่ายนันทนาการ'
+    },
+
     renderMembers(members) {
         window.AppState.memberData = {}; // Store in app state for lookup
         members.forEach(m => window.AppState.memberData[m.id] = m);
@@ -8,88 +25,87 @@ window.Renderers = {
         const homeLeadershipContainer = document.getElementById('homeLeadershipGrid');
         const pageLeadershipContainer = document.getElementById('pageLeadershipGrid');
 
-        // Filter Groups
-        const allLeaders = members.filter(m => m.category === 'Leadership').sort((a, b) => a.rank - b.rank);
-        const presidents = allLeaders.filter(m => m.position.includes('ประธาน') || m.rank === 1);
-        const executives = allLeaders.filter(m => !presidents.includes(m)); // Executives are the rest
+        // Define Category order and titles
+        const categories = [
+            { id: 'ประธาน', title: 'ประธานสภา', color: 'border-yellow-400' },
+            { id: 'รองประธาน', title: 'รองประธานสภา', color: 'border-blue-900' },
+            { id: 'เลขานุการ', title: 'เลขานุการ', color: 'border-blue-900' },
+            { id: 'เหรัญญิก', title: 'เหรัญญิก', color: 'border-blue-900' },
+            { id: 'เทคนิค', title: 'ฝ่ายเทคนิค', color: 'border-blue-900' },
+            { id: 'ปฏิคม', title: 'ฝ่ายปฏิคม', color: 'border-blue-900' },
+            { id: 'สวัสดิการ', title: 'ฝ่ายสวัสดิการ', color: 'border-blue-900' },
+            { id: 'ประชาสัมพันธ์', title: 'ฝ่ายประชาสัมพันธ์', color: 'border-blue-900' },
+            { id: 'วิชาการ', title: 'ฝ่ายวิชาการ', color: 'border-blue-900' },
+            { id: 'อาคารสถานที่', title: 'ฝ่ายอาคารสถานที่', color: 'border-blue-900' },
+            { id: 'นันทนาการ', title: 'ฝ่ายนันทนาการ', color: 'border-blue-900' },
+            { id: 'Leadership', title: 'ประธานสภา', color: 'border-blue-900' },
+            { id: 'Committee', title: 'คณะกรรมการ', color: 'border-yellow-400' },
+            { id: 'Member', title: 'สมาชิกทั่วไป', color: 'border-gray-300' }
+        ];
 
-        const committees = members.filter(m => m.category === 'Committee').sort((a, b) => a.rank - b.rank);
-        const generalMembers = members.filter(m => m.category === 'Member').sort((a, b) => a.rank - b.rank);
-
-        // --- Render Functions ---
-
-        // 1. Home Page Leadership (Mixed but Presidents top)
+        // 1. Home Page Leadership
         if (homeLeadershipContainer) {
-            let html = '';
-            // Presidents
-            html += presidents.map(m => this.createMemberCard(m, true)).join('');
+            const presidents = members.filter(m => m.category === 'ประธาน' || (m.category === 'Leadership' && (m.position.includes('ประธาน') || m.rank === 1))).sort((a, b) => a.rank - b.rank);
+            const others = members.filter(m => m.category !== 'Member' && !presidents.includes(m)).sort((a, b) => a.rank - b.rank).slice(0, 8);
 
-            // Executives Grid (Centered)
-            if (executives.length > 0) {
-                html += `<div class="col-span-full flex flex-wrap justify-center gap-6 mt-6">`;
-                html += executives.map(m => this.createMemberCard(m, true)).join('');
-                html += `</div>`;
-            }
+            let html = '';
+            html += presidents.map(m => this.createMemberCard(m, true, true)).join('');
+            html += others.map(m => this.createMemberCard(m, true, true)).join('');
             homeLeadershipContainer.innerHTML = html;
         }
 
         // 2. Full Leadership Page (Sectioned)
         if (pageLeadershipContainer) {
             let html = '';
+            const processedCategories = [];
 
-            // Section: President
-            if (presidents.length > 0) {
-                html += `<div class="col-span-full mb-8 text-center"><h3 class="text-3xl font-bold font-serif text-heading relative inline-block">ประธานสภา <span class="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></span></h3></div>`;
-                html += presidents.map(m => this.createMemberCard(m, true)).join('');
-            }
+            categories.forEach(cat => {
+                if (cat.id === 'Leadership' && processedCategories.includes('ประธาน')) return;
 
-            // Section: Executives (Centered)
-            if (executives.length > 0) {
-                html += `<div class="col-span-full mb-6 mt-12"><h4 class="text-2xl font-bold font-serif text-heading pl-4 border-l-4 border-blue-900">คณะผู้บริหาร</h4></div>`;
-                html += `<div class="col-span-full flex flex-wrap justify-center gap-6">`; // Changed from grid to flex
-                html += executives.map(m => this.createMemberCard(m, true)).join('');
-                html += `</div>`;
-            }
+                let group;
+                if (cat.id === 'ประธาน') {
+                    group = members.filter(m => m.category === 'ประธาน' || m.category === 'Leadership').sort((a, b) => a.rank - b.rank);
+                    processedCategories.push('ประธาน');
+                } else {
+                    group = members.filter(m => m.category === cat.id).sort((a, b) => a.rank - b.rank);
+                    processedCategories.push(cat.id);
+                }
 
+                if (group.length > 0) {
+                    const accentColor = cat.color.replace('border-', 'text-').replace('border-', 'bg-');
+                    const borderColor = cat.color;
+
+                    html += `
+                    <div class="w-full mb-16 mt-24 flex flex-col items-center justify-center">
+                        <div class="relative px-8 md:px-16 py-6 group">
+                            <!-- Decorative Border Corners -->
+                            <div class="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700"></div>
+                            <div class="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700"></div>
+                            
+                            <h4 class="text-3xl md:text-5xl font-black text-heading tracking-[0.15em] text-center relative z-10 px-4">
+                                ${cat.title}
+                            </h4>
+                            
+                            <!-- Premium Accent Line -->
+                            <div class="flex items-center justify-center mt-6 gap-6 relative z-10">
+                                <div class="h-[2px] w-12 md:w-32 bg-gradient-to-r from-transparent to-[#C5A059]"></div>
+                                <div class="w-4 h-4 rotate-45 border-2 border-[#C5A059] bg-white shadow-[0_0_15px_rgba(197,160,89,0.4)]"></div>
+                                <div class="h-[2px] w-12 md:w-32 bg-gradient-to-l from-transparent to-[#C5A059]"></div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    html += `<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">`;
+                    html += group.map(m => this.createMemberCard(m, cat.id !== 'Member', false)).join('');
+                    html += `</div>`;
+                }
+            });
             pageLeadershipContainer.innerHTML = html;
-        }
-
-        // Render Others
-        if (container) {
-            let html = '';
-
-            if (committees.length > 0) {
-                html += `<div class="col-span-full mb-6 mt-2"><h4 class="text-2xl font-bold font-serif text-heading pl-4 border-l-4 border-yellow-400">คณะกรรมการ</h4></div>`;
-                html += `<div class="col-span-full flex flex-wrap justify-center gap-6 w-full">`; // Wrapper for centering
-                html += committees.map(m => this.createMemberCard(m, false)).join('');
-                html += `</div>`;
-            }
-
-            if (generalMembers.length > 0) {
-                html += `<div class="col-span-full mb-6 ${committees.length > 0 ? 'mt-12' : 'mt-2'}"><h4 class="text-2xl font-bold font-serif text-heading pl-4 border-l-4 border-blue-900">สมาชิกพรรค</h4></div>`;
-                html += `<div class="col-span-full flex flex-wrap justify-center gap-6 w-full">`; // Wrapper for centering
-                html += generalMembers.map(m => this.createMemberCard(m, false)).join('');
-                html += `</div>`;
-            }
-
-            if (committees.length === 0 && generalMembers.length === 0) {
-                html = '<div class="col-span-full text-center text-gray-400 py-10">ไม่พบข้อมูลสมาชิก</div>';
-            }
-
-            container.innerHTML = html;
+            if (container) container.innerHTML = '';
         }
 
         const adminTable = document.getElementById('managementTableBody');
         if (adminTable) {
-            const translateCategory = (cat) => {
-                const map = {
-                    'Leadership': 'ผู้บริหาร',
-                    'Committee': 'คณะกรรมการ',
-                    'Member': 'สมาชิกทั่วไป'
-                };
-                return map[cat] || cat;
-            };
-
             adminTable.innerHTML = members.map(m => `
                 <div class="group hover:bg-gray-50 transition-all duration-200 p-4 md:px-6 md:py-4">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
@@ -109,7 +125,7 @@ window.Renderers = {
                         <div class="md:col-span-3 flex flex-row md:flex-col items-center md:items-start gap-2 md:gap-1 mt-2 md:mt-0 ml-[4.5rem] md:ml-0">
                             <div class="text-sm font-medium text-gray-500 hidden md:block truncate w-full" title="${m.position}">${m.position}</div>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
-                                ${translateCategory(m.category)}
+                                ${window.Renderers.categoryMap[m.category] || m.category}
                             </span>
                         </div>
 
@@ -133,28 +149,68 @@ window.Renderers = {
         }
     },
 
-    createMemberCard(m, isLeader) {
+    createMemberCard(m, isLeader, isHome = true) {
         const photoHtml = m.photo_url
             ? `<img src="${m.photo_url}" alt="${m.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`
             : `<div class="w-full h-full flex items-center justify-center bg-gray-100 text-4xl text-gray-400">👤</div>`;
 
-        // 1. PRESIDENT & TOP LEADERSHIP (Special Layout)
-        // Check for 'ประธาน' or rank 1 to display the highlight big card
-        if (m.category === 'Leadership' && (m.position.includes('ประธาน') || m.rank === 1)) {
-            const motto = (m.bio || '').split('<SEP>')[0] || '';
+        const categoryTitle = window.Renderers.categoryMap[m.category] || m.category;
+
+        // --- Data Parsing Logic (Fix for JSON showing in UI) ---
+        let motto = '', history = '';
+        const rawBio = m.bio || '';
+        try {
+            if (rawBio.trim().startsWith('{')) {
+                const parsed = JSON.parse(rawBio);
+                motto = parsed.motto || '';
+                history = parsed.history || '';
+            } else if (rawBio.includes('<SEP>')) {
+                const parts = rawBio.split('<SEP>');
+                motto = parts[0] || '';
+            } else if (m.position.includes('ประธาน') || m.rank === 1) {
+                motto = rawBio;
+            }
+        } catch (e) {
+            motto = rawBio;
+        }
+
+        // 1. PRESIDENT & TOP LEADERSHIP (Hero Card - Rank 1 only and ONLY for Home)
+        if (isHome && m.rank === 1) {
             return `
-                <div class="col-span-full mb-8">
-                    <div class="president-card group relative bg-gradient-to-r from-blue-900 to-slate-900 rounded-[2rem] overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer border border-white/10" onclick="window.Renderers.openMemberModal('${m.id}')">
-                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                        <div class="relative p-6 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-                            <div class="w-32 h-32 md:w-60 md:h-60 rounded-full overflow-hidden border-4 md:border-8 border-white/20 shadow-2xl shrink-0 group-hover:scale-105 transition-transform bg-white">
-                                ${photoHtml}
+                <div class="w-full mb-12 flex justify-center px-4">
+                    <div class="president-card group relative bg-gradient-to-br from-[#74040E] to-[#4a0309] rounded-[2.5rem] overflow-hidden shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer border border-white/10 w-full max-w-5xl" onclick="window.Modals.closeModal('memberModal'); window.Renderers.openMemberModal('${m.id}')">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-10"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        
+                        <div class="relative p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-14">
+                            <!-- Image Section (Portrait Rectangle) -->
+                            <div class="relative shrink-0">
+                                <div class="w-48 h-64 md:w-64 md:h-80 rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700 bg-white/5 backdrop-blur-sm">
+                                    ${photoHtml}
+                                </div>
                             </div>
+
+                            <!-- Content Section -->
                             <div class="text-center md:text-left flex-1 text-white">
-                                <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-4 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-black mb-4 inline-block uppercase tracking-widest shadow-lg transform group-hover:-translate-y-1 transition-transform">${m.position}</span>
-                                <h3 class="text-2xl md:text-5xl font-black mb-4 font-serif tracking-tight leading-tight">${m.name}</h3>
-                                ${motto ? `<p class="text-base md:text-xl text-yellow-200/90 italic font-serif leading-relaxed line-clamp-3 md:line-clamp-none">"${motto}"</p>` : ''}
-                                <div class="mt-6 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 text-xs font-bold tracking-widest text-white/50 hidden md:block">CLICK TO VIEW PROFILE</div>
+                                <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-5 py-2 rounded-full text-xs md:text-sm font-black mb-6 inline-block uppercase tracking-[0.2em] shadow-lg transform group-hover:-translate-y-1 transition-transform italic">${categoryTitle}</span>
+                                <h3 class="text-3xl md:text-6xl font-black mb-2 tracking-tight leading-tight drop-shadow-lg">${m.name}</h3>
+                                <p class="text-yellow-400 text-lg md:text-2xl mb-8 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
+                                
+                                ${motto ? `
+                                <div class="relative max-w-2xl mx-auto md:mx-0">
+                                    <div class="flex gap-1">
+                                        <span class="text-4xl text-yellow-400/30 leading-none shrink-0">“</span>
+                                        <p class="text-base md:text-xl text-white/90 italic leading-relaxed line-clamp-4 md:line-clamp-none">
+                                            ${motto}
+                                            <span class="text-4xl text-yellow-400/30 leading-none inline-block align-bottom ml-1">”</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                ` : ''}
+
+                                <div class="mt-10 flex items-center justify-center md:justify-start gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 text-xs font-bold tracking-widest">
+                                    <span class="px-5 py-2.5 bg-white/10 rounded-full backdrop-blur-md border border-white/10 text-yellow-400 border-yellow-400/30">CLICK TO VIEW PROFILE</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -162,33 +218,79 @@ window.Renderers = {
             `;
         }
 
-        // 2. LEADERSHIP (Executive Card)
-        if (m.category === 'Leadership') {
+        // --- NEW: RED HORIZONTAL CARD FOR MEMBER DIRECTORY PAGE ---
+        if (!isHome) {
             return `
-                <div class="w-[calc(50%-0.75rem)] md:w-64 group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-gray-100" onclick="window.Renderers.openMemberModal('${m.id}')">
+                <div class="w-full group relative bg-gradient-to-br from-[#74040E] to-[#4a0309] rounded-[2rem] overflow-hidden shadow-lg hover:shadow-primary/30 transition-all duration-500 cursor-pointer border border-white/10" onclick="window.Renderers.openMemberModal('${m.id}')">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-10"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
+                    
+                    <div class="relative p-5 md:p-8 flex items-center gap-5 md:gap-8">
+                        <!-- Image Section -->
+                        <div class="relative shrink-0">
+                            <div class="w-24 h-32 md:w-36 md:h-48 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700 bg-white/5 backdrop-blur-sm">
+                                ${photoHtml}
+                            </div>
+                        </div>
+
+                        <!-- Content Section -->
+                        <div class="text-left flex-1 text-white">
+                            <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
+                            <h3 class="text-xl md:text-4xl font-black mb-1 leading-tight drop-shadow-md">${m.name}</h3>
+                            <p class="text-yellow-400 text-sm md:text-xl mb-4 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
+                            
+                            ${motto ? `
+                            <div class="relative">
+                                <div class="flex gap-1">
+                                    <span class="text-lg md:text-2xl text-yellow-400/30 leading-none shrink-0">“</span>
+                                    <p class="text-[10px] md:text-sm text-white/80 italic font-medium leading-relaxed line-clamp-2">
+                                        ${motto}
+                                        <span class="text-lg md:text-2xl text-yellow-400/30 leading-none inline-block align-bottom ml-1">”</span>
+                                    </p>
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <!-- Hover Effect Text -->
+                    <div class="absolute bottom-4 right-6 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0 text-[10px] font-bold tracking-widest text-yellow-400/50">
+                        VIEW PROFILE →
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. LEADERSHIP (Executive Card - All other leaders - ONLY FOR HOME)
+        if (m.category === 'Leadership' || m.category === 'ประธาน' || (isLeader && m.category !== 'Member')) {
+            return `
+                <div class="w-full sm:w-[320px] m-4 shrink-0 group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-gray-100" onclick="window.Renderers.openMemberModal('${m.id}')">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
                     <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity z-10"></div>
                         ${photoHtml}
                         <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                             <p class="text-[10px] md:text-xs font-bold text-yellow-400 uppercase tracking-wider mb-1 truncate">${m.position}</p>
-                             <h4 class="text-base md:text-xl font-bold font-serif leading-tight line-clamp-2">${m.name}</h4>
+                             <p class="text-[10px] md:text-xs font-bold text-yellow-400 uppercase tracking-wider mb-1 truncate">${categoryTitle}</p>
+                             <h4 class="text-base md:text-xl font-bold leading-tight line-clamp-1">${m.name}</h4>
+                             <p class="text-[10px] md:text-xs text-white/70 truncate">${m.position}</p>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // 3. COMMITTEE & GENERAL MEMBER (Minimal Card)
-        // Removed specific Committee block to use the unified design below
+        // 3. COMMITTEE & GENERAL MEMBER (Minimal Card - ONLY FOR HOME)
         return `
-            <div class="w-[calc(33.33%-0.75rem)] md:w-48 group relative bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100 hover:border-blue-200" onclick="window.Renderers.openMemberModal('${m.id}')">
+            <div class="w-full sm:w-[260px] m-3 shrink-0 group relative bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100 hover:border-blue-200" onclick="window.Renderers.openMemberModal('${m.id}')">
                 <div class="aspect-square overflow-hidden bg-gray-50 relative">
                     ${photoHtml}
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                    <div class="absolute top-2 right-2">
+                         <span class="bg-blue-600/90 text-white text-[8px] md:text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">${categoryTitle}</span>
+                    </div>
                 </div>
-                <div class="p-2 md:p-3 text-center">
-                    <h4 class="font-bold text-slate-700 text-xs md:text-sm mb-0.5 group-hover:text-blue-600 transition-colors truncate px-1">${m.name}</h4>
+                <div class="p-3 md:p-4 text-center">
+                    <h4 class="font-bold text-slate-700 text-xs md:text-base mb-0.5 group-hover:text-blue-600 transition-colors truncate px-1">${m.name}</h4>
                     <p class="text-[10px] md:text-xs text-slate-400 truncate px-1">${m.position}</p>
                 </div>
             </div>
@@ -200,7 +302,7 @@ window.Renderers = {
         if (!data) return;
 
         // Parse Bio logic to handle JSON or Legacy
-        let motto = '', history = '', studentClass = '', studentNumber = '', contacts = {};
+        let motto = '', history = '', studentClass = '', studentNumber = '', contacts = {}, achievements = [];
         const rawBio = data.bio || '';
 
         try {
@@ -211,6 +313,7 @@ window.Renderers = {
                 studentClass = parsed.studentClass || '';
                 studentNumber = parsed.studentNumber || '';
                 contacts = parsed.contacts || {};
+                achievements = parsed.achievements || [];
             } else if (rawBio.includes('<SEP>')) {
                 const parts = rawBio.split('<SEP>');
                 motto = parts[0];
@@ -225,34 +328,47 @@ window.Renderers = {
         const displayMotto = motto;
         const displayHistory = history;
 
-        // Construct Info for Modal
+        // Construct Info and Social Media for Modal
         const infoItems = [];
         if (studentClass) infoItems.push(['ระดับชั้น', studentClass]);
         if (studentNumber) infoItems.push(['เลขที่', studentNumber]);
         if (contacts.phone) infoItems.push(['เบอร์โทร', contacts.phone]);
-        if (contacts.fb) infoItems.push(['Facebook', `<a href="${contacts.fb}" target="_blank" class="text-blue-600 hover:underline">Link</a>`]);
-        if (contacts.ig) infoItems.push(['Instagram', `<a href="${contacts.ig}" target="_blank" class="text-pink-600 hover:underline">Link</a>`]);
-        if (contacts.tt) infoItems.push(['TikTok', `<a href="${contacts.tt}" target="_blank" class="text-black hover:underline">Link</a>`]);
 
-        const info = data.info || {}; // Fallback for really old data
+        const info = data.info || {};
         if (Object.keys(info).length > 0) {
-            // Merge old info if not covered (Phone/Email legacy)
             Object.entries(info).forEach(([k, v]) => {
                 if (k === 'เบอร์โทร' && !contacts.phone) infoItems.push([k, v]);
                 if (k === 'อีเมล' && !contacts.email) infoItems.push([k, v]);
             });
         }
 
-        let cardInfoHtml = '';
-        if (infoItems.length > 0) {
-            cardInfoHtml = `
-                <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100 mt-4">
-                    <h5 class="font-bold text-heading mb-4 text-sm">ข้อมูลทั่วไป</h5>
-                    <div class="space-y-3">
-                        ${infoItems.map(([key, value]) => `
-                            <div class="flex justify-between items-center text-sm border-b border-gray-100 pb-2 last:border-0 last:pb-0">
-                                <span class="text-gray-500 font-medium">${key}</span>
-                                <span class="text-heading font-bold">${value}</span>
+        // Social Media Icons Block
+        const socialItems = [];
+        if (contacts.fb) socialItems.push(`<a href="${contacts.fb}" target="_blank" class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-facebook-f"></i></a>`);
+        if (contacts.ig) socialItems.push(`<a href="${contacts.ig}" target="_blank" class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-instagram"></i></a>`);
+        if (contacts.tt) socialItems.push(`<a href="${contacts.tt}" target="_blank" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"><i class="fab fa-tiktok"></i></a>`);
+
+        const socialHtml = socialItems.length > 0 ? `<div class="flex gap-4 mt-6 items-center justify-center">${socialItems.join('')}</div>` : '';
+
+        // Achievements Block
+        let achievementsHtml = '';
+        if (achievements.length > 0) {
+            achievementsHtml = `
+                <div class="mt-12">
+                    <h4 class="text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-6 flex items-center justify-center md:justify-start gap-2">
+                        <span class="w-8 h-[1px] bg-gray-200"></span> ผลงานและที่มาของสมาชิก
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${achievements.map(ach => `
+                            <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+                                ${ach.image_url ? `
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="${ach.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                </div>
+                                ` : ''}
+                                <div class="p-6">
+                                    <p class="text-slate-600 text-sm leading-relaxed">${ach.description || 'ไม่มีคำอธิบาย'}</p>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
@@ -261,21 +377,22 @@ window.Renderers = {
         }
 
         const adminEditBtn = window.AppState.isAdminLoggedIn
-            ? `<button onclick="window.AdminManagement.editMember('${memberId}'); window.Modals.closeModal('memberModal');" class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-slate-600 py-2 px-4 rounded-full font-bold text-xs transition-all border border-gray-200 mt-4">✏️ แก้ไขข้อมูล</button>`
+            ? `<button onclick="window.Modals.closeModal('memberModal'); window.AdminManagement.editMember('${memberId}');" class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-slate-600 py-2 px-4 rounded-full font-bold text-xs transition-all border border-gray-200 mt-4">✏️ แก้ไขข้อมูล</button>`
             : '';
 
         const content = `
             <div class="p-8 md:p-12">
                 <!-- Profile Header -->
                 <div class="flex flex-col items-center text-center mb-10">
-                    <div class="w-48 h-48 md:w-72 md:h-72 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl mb-8 bg-gray-100 relative group rotate-0 hover:rotate-1 transition-transform duration-500">
+                    <div class="w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border-8 border-white shadow-2xl mb-8 bg-gray-100 relative group rotate-0 hover:rotate-1 transition-transform duration-500">
                         ${data.photo_url ? `<img src="${data.photo_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">` : '<div class="w-full h-full flex items-center justify-center text-6xl text-gray-300">👤</div>'}
                     </div>
                     
                     <span class="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-widest mb-3 border border-blue-100">${data.position}</span>
-                    <h3 class="text-3xl md:text-5xl font-black font-serif text-slate-800 mb-3 leading-tight">${data.name}</h3>
-                    ${displayMotto ? `<p class="text-lg md:text-xl text-slate-500 font-serif italic max-w-2xl px-4">"${displayMotto}"</p>` : ''}
+                    <h3 class="text-3xl md:text-5xl font-black text-slate-800 mb-3 leading-tight">${data.name}</h3>
+                    ${displayMotto ? `<p class="text-lg md:text-xl text-slate-500 italic max-w-2xl px-4">"${displayMotto}"</p>` : ''}
                     
+                    ${socialHtml}
                     ${adminEditBtn}
                 </div>
 
@@ -285,15 +402,17 @@ window.Renderers = {
                          <h4 class="text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-4 flex items-center justify-center md:justify-start gap-2">
                             <span class="w-8 h-[1px] bg-gray-200"></span> ประวัติและวิสัยทัศน์
                         </h4>
-                        <p class="text-lg text-slate-600 leading-relaxed font-serif text-center md:text-left">
+                        <p class="text-lg text-slate-600 leading-relaxed text-center md:text-left">
                             ${(displayHistory || 'มุ่งมั่นพัฒนาโรงเรียนและสร้างสรรค์สิ่งดีๆ ให้กับสังคม').replace(/\n/g, '<br>')}
                         </p>
                     </div>
 
+                    ${achievementsHtml}
+
                     <!-- Info Grid -->
                     ${infoItems.length > 0 ? `
-                    <div class="bg-gray-50 rounded-3xl p-6 md:p-8 border border-gray-100">
-                        <h5 class="font-bold text-heading mb-6 text-sm flex items-center gap-2">
+                    <div class="bg-gray-50 rounded-3xl p-6 md:p-8 border border-gray-100 mt-12">
+                        <h5 class="font-bold text-heading mb-6 text-sm flex items-center justify-center md:justify-start gap-2">
                              <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> ข้อมูลทั่วไป
                         </h5>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
@@ -373,7 +492,7 @@ window.Renderers = {
             return `
             <div class="policy-detail-section mb-20" id="policy${i + 1}">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 pb-6 border-b border-gray-100">
-                    <h3 class="text-3xl md:text-4xl font-black text-heading font-serif">
+                    <h3 class="text-3xl md:text-4xl font-black text-heading">
                         <span class="text-4xl md:text-5xl mr-2">${p.icon || '📖'}</span> 
                         ${p.title}
                     </h3>
@@ -576,7 +695,7 @@ window.Renderers = {
                     <!-- Title & Date -->
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-4 md:pb-6">
                         <div class="w-full">
-                            <h3 class="text-xl md:text-3xl font-black text-slate-800 font-serif leading-tight mb-2 md:mb-2">${data.title}</h3>
+                            <h3 class="text-xl md:text-3xl font-black text-slate-800 leading-tight mb-2 md:mb-2">${data.title}</h3>
                              <div class="inline-flex items-center gap-2 text-gray-500 text-xs md:text-sm font-bold uppercase tracking-wider">
                                 <span>📅</span> ${dateDesc}
                             </div>
@@ -584,7 +703,7 @@ window.Renderers = {
                     </div>
                     
                     <!-- Description -->
-                    <div class="prose prose-sm md:prose-lg text-slate-600 font-serif max-w-none leading-relaxed">
+                    <div class="prose prose-sm md:prose-lg text-slate-600 max-none leading-relaxed">
                          <p>${(data.description || '').split('<METADATA>')[0].replace(/\n/g, '<br>')}</p>
                     </div>
                 </div>
@@ -681,65 +800,7 @@ window.Renderers = {
         }
 
         window.HeroSlider.init();
-    }
-    // --- Departments ---
-    async renderDepartments() {
-        const container = document.getElementById('departmentsGrid');
-        if (!container) return;
-
-        try {
-            const departments = await window.DepartmentService.fetchDepartments();
-
-            if (!departments || departments.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full py-12 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-                        <div class="text-4xl mb-4">🏛️</div>
-                        <h3 class="text-xl font-bold text-gray-400">ยังไม่มีข้อมูลฝ่ายบริหาร</h3>
-                        <p class="text-gray-400 text-sm mt-2">แอดมินสามารถเพิ่มข้อมูลได้</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = departments.map(dept => `
-                 <div class="group bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                     
-                    <div class="relative z-10">
-                        <!-- Icon/Image -->
-                        <div class="w-16 h-16 rounded-2xl bg-white shadow-md border border-gray-100 flex items-center justify-center mb-6 text-3xl overflow-hidden">
-                            ${dept.icon_url
-                    ? `<img src="${dept.icon_url}" class="w-full h-full object-cover">`
-                    : '🏛️'}
-                        </div>
-
-                        <h3 class="text-xl font-black text-heading font-serif mb-2 group-hover:text-blue-600 transition-colors">${dept.title}</h3>
-                        ${dept.role ? `<span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg mb-4 uppercase tracking-wider">${dept.role}</span>` : ''}
-                        
-                        <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4 min-h-[3rem]">
-                            ${dept.description || 'ไม่มีรายละเอียด'}
-                        </p>
-
-                        <!-- Admin Actions -->
-                        <div class="admin-only hidden pt-4 border-t border-gray-50 mt-4 flex justify-end">
-                             <button onclick="window.AdminManagement.openDepartmentManagementModal('${dept.id}')" 
-                                class="text-sm font-bold text-gray-400 hover:text-blue-600 flex items-center gap-1 transition-colors">
-                                <span>✏️</span> แก้ไข
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            // Re-check admin visibility after rendering
-            window.Helpers.checkAdminAuth();
-
-        } catch (error) {
-            console.error('Failed to render departments:', error);
-            container.innerHTML = '<p class="text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
-        }
     },
-
     // --- Utils ---
     setupSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -759,8 +820,6 @@ window.Renderers = {
         this.renderPolicies();
         this.renderMembers();
         this.renderGallery();
-        this.renderDepartments();
-        // this.renderHeroSlides(); // Called by main.js separately usually, or here
         this.setupSmoothScroll();
 
         // Listen for data updates
@@ -768,7 +827,6 @@ window.Renderers = {
             this.renderPolicies();
             this.renderMembers();
             this.renderGallery();
-            this.renderDepartments();
         });
     }
 };

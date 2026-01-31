@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAKTANA - The Learning Party</title>
+    <link rel="icon" type="image/png" href="paktana_logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -59,8 +60,6 @@
     <div class="admin-toolbar" id="adminToolbar">
         <div class="admin-toolbar-title"><span>🔐</span> <span>โหมดแก้ไข Admin</span></div>
         <div class="flex gap-4">
-            <button class="admin-toolbar-btn bg-blue-600 hover:bg-blue-700 text-white"
-                onclick="navigateToPage('manage_policies')">📋 จัดการนโยบาย</button>
             <button class="admin-toolbar-btn bg-purple-600 hover:bg-purple-700 text-white"
                 onclick="openAnalyticsModal()">📊 สถิติ</button>
             <button class="admin-toolbar-btn" onclick="logoutAdmin()">ออกจากระบบ</button>
@@ -511,9 +510,9 @@
 
     <!-- Member Details Modal -->
     <div id="memberModal" class="modal-overlay" onclick="closeModal('memberModal')">
-        <div class="modal-content max-w-5xl bg-transparent shadow-none p-0 overflow-hidden"
+        <div class="modal-content max-w-5xl bg-transparent shadow-none p-0 overflow-y-auto"
             onclick="event.stopPropagation()">
-            <div class="relative bg-white rounded-3xl overflow-hidden shadow-2xl" id="memberModalContent">
+            <div class="relative bg-white rounded-3xl shadow-2xl" id="memberModalContent">
             </div>
             <button onclick="closeModal('memberModal')"
                 class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-md">✕</button>
@@ -577,7 +576,7 @@
                                         placeholder="เช่น นายสมชาย ใจดี">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">ตำแหน่ง <span
+                                    <label class="block text-sm font-bold text-heading mb-2">ตำแหน่ง/หน้าที่ <span
                                             class="text-red-500">*</span></label>
                                     <input type="text" id="manageMemberPosition" required
                                         class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
@@ -591,7 +590,18 @@
                                     <div class="relative">
                                         <select id="manageMemberCategory"
                                             class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl transition-all outline-none font-medium appearance-none text-slate-700">
-                                            <option value="Leadership">ผู้บริหาร</option>
+
+                                            <option value="ประธาน">ประธานสภา</option>
+                                            <option value="รองประธาน">รองประธาน</option>
+                                            <option value="เลขานุการ">เลขานุการ</option>
+                                            <option value="เหรัญญิก">เหรัญญิก</option>
+                                            <option value="เทคนิค">ฝ่ายเทคนิค</option>
+                                            <option value="ปฏิคม">ฝ่ายปฏิคม</option>
+                                            <option value="สวัสดิการ">ฝ่ายสวัสดิการ</option>
+                                            <option value="ประชาสัมพันธ์">ฝ่ายประชาสัมพันธ์</option>
+                                            <option value="วิชาการ">ฝ่ายวิชาการ</option>
+                                            <option value="อาคารสถานที่">ฝ่ายอาคารสถานที่</option>
+                                            <option value="นันทนาการ">ฝ่ายนันทนาการ</option>
                                             <option value="Committee">คณะกรรมการ</option>
                                             <option value="Member">สมาชิกทั่วไป</option>
                                         </select>
@@ -637,8 +647,9 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-heading mb-2">ข้อมูลติดต่อ & Social
-                                    Media</label>
+                                <label class="block text-sm font-bold text-heading mb-2">ข้อมูลติดต่อ & Social Media
+                                    <span
+                                        class="text-xs font-normal text-gray-400 font-sans ml-1">(หากไม่ต้องการให้แสดงให้เว้นว่างไว้)</span></label>
                                 <div class="space-y-3">
                                     <div class="flex items-center gap-3">
                                         <span
@@ -672,16 +683,40 @@
                         </div>
                     </div>
 
+                    <!-- Achievements Section -->
+                    <div class="pt-8 border-t border-gray-100 mb-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <label class="block text-lg font-bold text-heading">🏆 ผลงานและที่มาของสมาชิก</label>
+                            <button type="button" onclick="window.AdminManagement.addAchievementField()"
+                                class="text-sm bg-blue-50 text-blue-600 px-5 py-2.5 rounded-xl font-bold hover:bg-blue-100 transition-all flex items-center gap-2 border border-blue-100 shadow-sm">
+                                <span>➕</span> เพิ่มผลงานประวัติ
+                            </button>
+                        </div>
+                        <div id="manageMemberAchievementsList" class="space-y-6">
+                            <!-- Dynamic Achievement Fields -->
+                        </div>
+                        <p class="text-xs text-slate-400 mt-4 italic font-medium">
+                            * คุณสามารถอัปโหลดรูปภาพกิจกรรมหรือใบประกาศ และระบุคำอธิบายเพื่อแสดงในโปรไฟล์สมาชิกได้
+                        </p>
+                    </div>
+
+                    <!-- Actions -->
                     <div
-                        class="flex flex-col-reverse md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
-                        <button type="button" id="deleteMemberBtn" onclick="deleteMember()"
-                            class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
-                            style="display:none;">🗑️ ลบสมาชิก</button>
-                        <div class="flex w-full md:w-auto gap-3 justify-end flex-1">
+                        class="flex flex-col-reverse md:flex-row justify-between items-center gap-6 pt-10 mt-10 border-t border-gray-100">
+                        <button type="button" id="deleteMemberBtn" onclick="window.AdminManagement.deleteMember()"
+                            class="w-full md:w-auto px-8 py-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-red-100"
+                            style="display:none;">
+                            <span>🗑️</span> ลบสมาชิก
+                        </button>
+                        <div class="flex w-full md:w-auto gap-4 justify-end flex-1">
                             <button type="button" onclick="closeModal('memberManagementModal')"
-                                class="px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">ยกเลิก</button>
+                                class="flex-1 md:flex-none px-8 py-4 rounded-2xl bg-white text-slate-500 font-bold hover:bg-slate-50 border border-slate-200 transition-all duration-300">
+                                ยกเลิก
+                            </button>
                             <button type="submit"
-                                class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">บันทึกข้อมูล</button>
+                                class="flex-1 md:flex-none px-12 py-4 rounded-2xl bg-gradient-to-r from-[#74040E] to-[#b91c1c] text-white font-bold shadow-[0_10px_25px_rgba(116,4,14,0.3)] hover:shadow-[0_15px_35px_rgba(116,4,14,0.4)] hover:-translate-y-1 active:scale-95 transition-all duration-300">
+                                ยืนยันบันทึกข้อมูล
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -929,54 +964,31 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[500px]">
-                    <!-- Departments Section (New) -->
-                    <section id="departmentsSection" class="py-20 bg-white">
-                        <div class="max-w-7xl mx-auto px-6">
-                            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
-                                <div>
-                                    <span
-                                        class="text-blue-600 font-bold tracking-widest uppercase text-sm mb-2 block">Organization</span>
-                                    <h2 class="text-4xl md:text-5xl font-bold text-heading font-serif">ทำเนียบฝ่ายบริหาร
-                                    </h2>
-                                </div>
-                                <!-- Admin Add Button (Hidden by default) -->
-                                <button onclick="window.AdminManagement.openDepartmentManagementModal()"
-                                    class="mt-4 md:mt-0 bg-blue-600 text-white px-6 py-2 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all flex items-center gap-2 admin-only hidden">
-                                    <span>➕</span> เพิ่มฝ่าย
-                                </button>
-                            </div>
-
-                            <div id="departmentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                <!-- Departments will be rendered here -->
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Leadership Section -->
-                    <!-- Chart Section -->
-                    <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col">
-                        <h4 class="font-bold text-heading mb-6 flex items-center gap-2">
-                            <span class="w-1 h-5 bg-blue-500 rounded-full"></span> ยอดเข้าชมรายหน้า
-                        </h4>
-                        <div class="flex-1 relative w-full h-full min-h-[300px]">
-                            <canvas id="analyticsChart"></canvas>
-                        </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[500px]">
+                <!-- Chart Section -->
+                <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm flex flex-col">
+                    <h4 class="font-bold text-heading mb-6 flex items-center gap-2">
+                        <span class="w-1 h-5 bg-blue-500 rounded-full"></span> ยอดเข้าชมรายหน้า
+                    </h4>
+                    <div class="flex-1 relative w-full h-full min-h-[300px]">
+                        <canvas id="analyticsChart"></canvas>
                     </div>
+                </div>
 
-                    <!-- Feedback Section -->
-                    <div class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col">
-                        <h4 class="font-bold text-heading mb-4 flex items-center gap-2">
-                            <span class="w-1 h-5 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
-                        </h4>
-                        <div id="analyticsFeedbackList" class="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                            <!-- Injected by JS -->
-                        </div>
+                <!-- Feedback Section -->
+                <div class="lg:col-span-1 bg-gray-50 rounded-3xl border border-gray-100 p-6 flex flex-col">
+                    <h4 class="font-bold text-heading mb-4 flex items-center gap-2">
+                        <span class="w-1 h-5 bg-yellow-500 rounded-full"></span> ความคิดเห็นล่าสุด
+                    </h4>
+                    <div id="analyticsFeedbackList" class="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+                        <!-- Injected by JS -->
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Rating Modal -->
@@ -1082,87 +1094,6 @@
         </div>
     </div>
 
-    <!-- Department Management Modal -->
-    <div id="departmentManagementModal" class="modal-overlay" onclick="closeModal('departmentManagementModal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                    <h3 class="text-2xl font-serif font-bold text-heading" id="deptModalTitle">จัดการทำเนียบฝ่ายบริหาร
-                    </h3>
-                    <button onclick="closeModal('departmentManagementModal')"
-                        class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">✕</button>
-                </div>
-
-                <form id="departmentManagementForm" class="space-y-6">
-                    <input type="hidden" id="manageDeptId">
-                    <input type="hidden" id="manageDeptIconUrl">
-
-                    <div class="flex flex-col md:flex-row gap-8 items-start">
-                        <!-- Icon Upload -->
-                        <div class="w-full md:w-auto flex flex-col items-center md:items-start shrink-0">
-                            <label
-                                class="block text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">รูปภาพ/ไอคอน</label>
-                            <div class="relative group cursor-pointer"
-                                onclick="document.getElementById('manageDeptIcon').click()">
-                                <div class="w-32 h-32 bg-gray-100 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 group-hover:border-blue-500 transition-colors flex items-center justify-center shadow-inner"
-                                    id="manageDeptPreview">
-                                    <div class="text-4xl text-gray-300 group-hover:text-blue-500 transition-colors">🖼️
-                                    </div>
-                                </div>
-                                <div
-                                    class="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl font-bold text-sm backdrop-blur-sm">
-                                    เปลี่ยนรูป</div>
-                            </div>
-                            <input type="file" id="manageDeptIcon" class="hidden" accept="image/*"
-                                onchange="window.AdminManagement.previewDeptIcon(this)">
-                        </div>
-
-                        <!-- Fields -->
-                        <div class="flex-1 space-y-5 w-full">
-                            <div>
-                                <label class="block text-sm font-bold text-heading mb-2">ชื่อฝ่าย/ตำแหน่ง</label>
-                                <input type="text" id="manageDeptTitle" required
-                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none font-bold"
-                                    placeholder="เช่น ฝ่ายเทคนิค">
-                            </div>
-                            <div class="grid grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">บทบาท (Role)</label>
-                                    <input type="text" id="manageDeptRole"
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none"
-                                        placeholder="เช่น Technical">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-heading mb-2">ลำดับ</label>
-                                    <input type="number" id="manageDeptRank" value="1"
-                                        class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-heading mb-2">รายละเอียด</label>
-                                <textarea id="manageDeptDesc" rows="3"
-                                    class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-500 rounded-xl outline-none resize-none"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col-reverse md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
-                        <button type="button" id="deleteDeptBtn" onclick="window.AdminManagement.deleteDepartment()"
-                            class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
-                            style="display:none;">🗑️ ลบ</button>
-                        <div class="flex w-full md:w-auto gap-3 justify-end flex-1">
-                            <button type="button" onclick="closeModal('departmentManagementModal')"
-                                class="px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">ยกเลิก</button>
-                            <button type="submit"
-                                class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">บันทึก</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <script src="assets/js/api/DepartmentService.js"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@ window.MemberService = {
             .from('members')
             .select('*')
             .order('rank', { ascending: true });
-        
+
         if (error) throw error;
         return data || [];
     },
@@ -27,7 +27,8 @@ window.MemberService = {
     async uploadMemberImage(file) {
         const fileExt = file.name.split('.').pop();
         const hash = await window.Helpers.getFileHash(file);
-        const fileName = `m_${hash}.${fileExt}`;
+        const randomSuffix = Math.random().toString(36).substring(2, 7);
+        const fileName = `m_${hash}_${randomSuffix}.${fileExt}`;
         const filePath = `${fileName}`;
 
         const { data, error } = await window.supabaseClient.storage

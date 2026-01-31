@@ -17,6 +17,27 @@ window.Helpers = {
             toast.style.animation = 'fadeOut 0.3s ease';
             setTimeout(() => toast.remove(), 300);
         }, 2000);
+    },
+
+    checkAdminAuth() {
+        if (!window.AppState) return;
+        const adminElements = document.querySelectorAll('.admin-only');
+        adminElements.forEach(el => {
+            if (window.AppState.isAdminLoggedIn) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        });
+
+        const toolbar = document.getElementById('adminToolbar');
+        if (toolbar) {
+            if (window.AppState.isAdminLoggedIn) {
+                toolbar.classList.add('show');
+            } else {
+                toolbar.classList.remove('show');
+            }
+        }
     }
 };
 window.showSuccessToast = (msg) => window.Helpers.showSuccessToast(msg);

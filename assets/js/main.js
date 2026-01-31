@@ -21,6 +21,7 @@ window.fetchHeroSlides = async () => {
 async function initApp() {
     // 1. Check Admin Session
     window.AppState.isAdminLoggedIn = await window.AdminAuth.checkSession();
+    if (window.Helpers.checkAdminAuth) window.Helpers.checkAdminAuth();
 
     // 2. Initialize UI Components
     window.Navigation.init();
