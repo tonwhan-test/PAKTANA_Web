@@ -99,15 +99,15 @@ body:not(.admin-active) .admin-only {
 /* Hero Slider Styles */
 .hero-slider {
     position: relative;
-    height: 700px;
+    width: 100%;
+    aspect-ratio: 1800 / 909;
+    height: auto;
     overflow: hidden;
     background: #000;
 }
 
 @media (max-width: 768px) {
-    .hero-slider {
-        height: 400px;
-    }
+    /* Height is handled by aspect-ratio */
 }
 
 #heroSlider {
@@ -1008,8 +1008,9 @@ footer {
         max-height: 85%;
     }
 
+    /* Hero Slider height handled by aspect-ratio */
     .hero-slider {
-        height: 400px;
+        height: auto;
     }
 
     .slide-content {
@@ -1143,8 +1144,10 @@ footer {
 
     /* Extra Small Screen Adjustments */
     @media (max-width: 480px) {
+
+        /* Hero Slider height handled by aspect-ratio */
         .hero-slider {
-            height: 250px !important;
+            height: auto !important;
         }
 
         .hero-slider h1 {
