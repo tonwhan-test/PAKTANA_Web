@@ -81,7 +81,7 @@
                     <a href="#" class="nav-link" data-page="activities">กิจกรรม</a>
                     <a href="#" class="nav-link" data-page="contact">เสนอนโยบาย</a>
                     <a href="#" class="nav-link" data-page="contact_us_new">ติดต่อสอบถาม</a>
-                    <a href="#" class="nav-link" data-page="analytics">สถิติเข้าชม Website</a>
+                    <a href="#" class="nav-link admin-only hidden" data-page="analytics">สถิติเข้าชม Website</a>
 
                     <a href="#" class="nav-link admin-only hidden" data-page="manage_policies">จัดการนโยบาย</a>
                     <a href="#" class="nav-link admin-only hidden" data-page="manage_members">จัดการสมาชิก</a>
@@ -161,10 +161,6 @@
                 onclick="toggleMobileMenu(); navigateToPage('contact_us_new')">
                 <i>✉️</i> ติดต่อสอบถาม
             </a>
-            <a href="#" class="mobile-nav-link" data-page="analytics"
-                onclick="toggleMobileMenu(); navigateToPage('analytics')">
-                <i>📊</i> สถิติเข้าชม Website
-            </a>
 
             <!-- Mobile Admin Section -->
             <div class="admin-only hidden">
@@ -178,6 +174,10 @@
                 <a href="#" class="mobile-nav-link" data-page="manage_members"
                     onclick="toggleMobileMenu(); navigateToPage('manage_members')">
                     <i>⚙️</i> จัดการสมาชิก
+                </a>
+                <a href="#" class="mobile-nav-link" data-page="analytics"
+                    onclick="toggleMobileMenu(); navigateToPage('analytics')">
+                    <i>📊</i> สถิติเข้าชม Website
                 </a>
                 <a href="#" class="mobile-nav-link text-red-600 font-bold" onclick="toggleMobileMenu(); logoutAdmin()">
                     <i>🚪</i> ออกจากระบบ
