@@ -25,23 +25,28 @@ window.HeroSlider = {
         if (!slider) return;
 
         slider.addEventListener('touchstart', (e) => {
-            this.touchStartX = e.changedTouches[0].screenX;
+            this.touchStartX = e.touches[0].clientX;
         }, { passive: true });
 
         slider.addEventListener('touchend', (e) => {
-            this.touchEndX = e.changedTouches[0].screenX;
+            this.touchEndX = e.changedTouches[0].clientX;
             this.handleSwipeGesture();
         }, { passive: true });
     },
 
     handleSwipeGesture() {
-        const swipeThreshold = 50;
-        if (this.touchEndX < this.touchStartX - swipeThreshold) {
-            this.changeSlide(1); // Swipe Left -> Next
-        } else if (this.touchEndX > this.touchStartX + swipeThreshold) {
-            this.changeSlide(-1); // Swipe Right -> Previous
+        const swipeThreshold = 40; // Slightly more sensitive
+        const deltaX = this.touchEndX - this.touchStartX;
+
+        if (deltaX < -swipeThreshold) {
+            // Swipe Left (<-) -> Show Next
+            this.changeSlide(1);
+        } else if (deltaX > swipeThreshold) {
+            // Swipe Right (->) -> Show Previous
+            this.changeSlide(-1);
         }
-        // Reset
+
+        // Reset values
         this.touchStartX = 0;
         this.touchEndX = 0;
     },
@@ -53,8 +58,8 @@ window.HeroSlider = {
 
         if (slides.length === 0 || !track) return;
 
-        // Calculate index
-        this.currentSlide = (n + slides.length) % slides.length;
+        // Calculate index (True modulo for infinite loop in both directions)
+        this.currentSlide = ((n % slides.length) + slides.length) % slides.length;
 
         // Update dots
         dots.forEach((d, i) => {
