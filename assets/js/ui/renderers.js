@@ -1,11 +1,11 @@
 window.Renderers = {
     // --- Members ---
     categoryMap: {
-        'Leadership': 'ประธานสภา',
+        'Leadership': 'ประธาน',
         'Committee': 'คณะกรรมการ',
         'Member': 'สมาชิกทั่วไป',
-        'ประธาน': 'ประธานสภา',
-        'รองประธาน': 'รองประธานสภา',
+        'ประธาน': 'ประธาน',
+        'รองประธาน': 'รองประธาน',
         'เลขานุการ': 'เลขานุการ',
         'เหรัญญิก': 'เหรัญญิก',
         'เทคนิค': 'ฝ่ายเทคนิค',
@@ -27,8 +27,8 @@ window.Renderers = {
 
         // Define Category order and titles
         const categories = [
-            { id: 'ประธาน', title: 'ประธานสภา', color: 'border-yellow-400' },
-            { id: 'รองประธาน', title: 'รองประธานสภา', color: 'border-blue-900' },
+            { id: 'ประธาน', title: 'ประธาน', color: 'border-yellow-400' },
+            { id: 'รองประธาน', title: 'รองประธาน', color: 'border-blue-900' },
             { id: 'เลขานุการ', title: 'เลขานุการ', color: 'border-blue-900' },
             { id: 'เหรัญญิก', title: 'เหรัญญิก', color: 'border-blue-900' },
             { id: 'เทคนิค', title: 'ฝ่ายเทคนิค', color: 'border-blue-900' },
@@ -38,7 +38,7 @@ window.Renderers = {
             { id: 'วิชาการ', title: 'ฝ่ายวิชาการ', color: 'border-blue-900' },
             { id: 'อาคารสถานที่', title: 'ฝ่ายอาคารสถานที่', color: 'border-blue-900' },
             { id: 'นันทนาการ', title: 'ฝ่ายนันทนาการ', color: 'border-blue-900' },
-            { id: 'Leadership', title: 'ประธานสภา', color: 'border-blue-900' },
+            { id: 'Leadership', title: 'ประธาน', color: 'border-blue-900' },
             { id: 'Committee', title: 'คณะกรรมการ', color: 'border-yellow-400' },
             { id: 'Member', title: 'สมาชิกทั่วไป', color: 'border-gray-300' }
         ];
