@@ -544,15 +544,25 @@ window.Renderers = {
                     </div>
                 </div>
 
-                <div class="${listBgClasses[i % 5]} p-10 rounded-3xl border border-white shadow-sm">
-                    <h4 class="font-black text-xl mb-8 text-heading flex items-center gap-3">📋 แนวทางการดำเนินงาน</h4>
-                    <ul class="space-y-6">
+                <div class="${listBgClasses[i % 5]} p-6 md:p-12 rounded-[2.5rem] border border-white shadow-sm">
+                    <h4 class="font-black text-xl md:text-2xl mb-10 text-heading flex items-center gap-3">
+                        <span class="w-2 h-8 bg-primary rounded-full"></span> แนวทางการดำเนินงาน
+                    </h4>
+                    <ul class="space-y-6 md:space-y-8">
                         ${guidelines.map((g, idx) => `
-                            <li class="flex items-start gap-6 bg-white/50 p-6 rounded-2xl hover:bg-white transition-colors border border-transparent hover:border-white/50">
-                                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-black shrink-0 shadow-lg">${idx + 1}</div>
-                                <div>
-                                    <strong class="text-heading text-xl block mb-2 font-black">${g.title}</strong>
-                                    <p class="text-gray-600 leading-relaxed font-medium">${g.content}</p>
+                            <li class="bg-white/80 p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] hover:bg-white transition-all duration-300 border border-transparent hover:border-white shadow-sm hover:shadow-xl group">
+                                <div class="flex items-start gap-4 md:gap-6 mb-4 md:mb-6">
+                                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-full bg-[#74040E] text-white flex items-center justify-center font-black shrink-0 shadow-[0_10px_20px_rgba(116,4,14,0.3)] text-lg md:text-xl">
+                                        ${idx + 1}
+                                    </div>
+                                    <h5 class="text-lg md:text-3xl font-black text-heading leading-tight mt-1 md:mt-2">
+                                        ${g.title}
+                                    </h5>
+                                </div>
+                                <div class="pl-1 md:pl-20">
+                                    <p class="text-gray-600 leading-relaxed font-medium text-sm md:text-xl opacity-90">
+                                        ${g.content}
+                                    </p>
                                 </div>
                             </li>
                         `).join('')}
