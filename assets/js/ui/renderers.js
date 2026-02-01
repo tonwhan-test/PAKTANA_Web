@@ -222,24 +222,24 @@ window.Renderers = {
         // --- NEW: HIERARCHICAL HORIZONTAL CARD FOR MEMBER DIRECTORY PAGE ---
         if (!isHome) {
             // Sizing Logic
-            let maxWidth = 'max-w-2xl';
-            let imgSize = 'w-24 h-32 md:w-36 md:h-48';
-            let nameSize = 'text-xl md:text-2xl';
-            let posSize = 'text-sm md:text-base';
-            let padding = 'p-5 md:p-8';
+            let maxWidth = 'max-w-xl';
+            let imgSize = 'w-24 h-32 md:w-32 md:h-44';
+            let nameSize = 'text-lg md:text-xl';
+            let posSize = 'text-xs md:text-sm';
+            let padding = 'p-4 md:p-6';
 
             if (size === 'large') {
-                maxWidth = 'max-w-6xl';
+                maxWidth = 'max-w-5xl';
                 imgSize = 'w-32 h-44 md:w-56 md:h-72';
                 nameSize = 'text-3xl md:text-4xl';
                 posSize = 'text-lg md:text-xl';
                 padding = 'p-8 md:p-12';
             } else if (size === 'medium') {
-                maxWidth = 'max-w-4xl';
-                imgSize = 'w-28 h-38 md:w-44 md:h-60';
-                nameSize = 'text-2xl md:text-3xl';
-                posSize = 'text-base md:text-lg';
-                padding = 'p-6 md:p-10';
+                maxWidth = 'max-w-3xl';
+                imgSize = 'w-28 h-38 md:w-40 md:h-56';
+                nameSize = 'text-xl md:text-2xl';
+                posSize = 'text-sm md:text-base';
+                padding = 'p-6 md:p-8';
             }
 
             return `
@@ -256,10 +256,10 @@ window.Renderers = {
                         </div>
 
                         <!-- Content Section -->
-                        <div class="text-left flex-1 text-white pr-2 md:pr-4">
+                        <div class="text-left flex-1 text-white pr-2 md:pr-4 min-w-0">
                             <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
-                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md whitespace-nowrap" title="${m.name}">${m.name}</h3>
-                            <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90 line-clamp-1">${m.position}</p>
+                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md whitespace-nowrap truncate" title="${m.name}">${m.name}</h3>
+                            <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90 truncate">${m.position}</p>
                             
                             ${motto ? `
                             <div class="relative mt-2">
