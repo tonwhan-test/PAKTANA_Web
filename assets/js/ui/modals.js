@@ -4,6 +4,12 @@ window.Modals = {
         if (modal) {
             modal.classList.add('active');
             document.body.classList.add('overflow-hidden');
+
+            // Reset scroll position of modal content
+            const content = modal.querySelector('.modal-content');
+            if (content) {
+                content.scrollTop = 0;
+            }
         }
     },
     closeModal(modalId) {
