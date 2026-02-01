@@ -80,8 +80,8 @@ window.Renderers = {
                     <div class="w-full mb-16 mt-24 flex flex-col items-center justify-center reveal-on-scroll">
                         <div class="relative px-8 md:px-16 py-6 group">
                             <!-- Decorative Border Corners -->
-                            <div class="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700"></div>
-                            <div class="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700"></div>
+                            <div class="header-corner corner-top-left absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700 corner-animate"></div>
+                            <div class="header-corner corner-bottom-right absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700 corner-animate"></div>
                             
                             <h4 class="text-3xl md:text-5xl font-black text-heading tracking-[0.15em] text-center relative z-10 px-4">
                                 ${cat.title}
