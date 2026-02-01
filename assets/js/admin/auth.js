@@ -31,8 +31,7 @@ window.AdminAuth = {
         if (error) throw error;
         window.AppState.isAdminLoggedIn = false;
         this.updateAdminUI(false);
-        await this.refreshData(); // Re-render UI to remove admin controls
-        // location.reload(); // No longer needed
+        location.reload(); // Refresh the page after logout to reset full state
     },
 
     updateAdminUI(loggedIn) {
