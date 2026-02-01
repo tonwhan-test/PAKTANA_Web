@@ -81,9 +81,21 @@ body {
 
 @media (max-width: 640px) {
 
-    /* Hide slider arrows on mobile */
+    /* Show smaller white slider arrows on mobile */
     .slider-arrow {
-        display: none !important;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.3);
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .slider-arrow.left {
+        left: 8px;
+    }
+
+    .slider-arrow.right {
+        right: 8px;
     }
 }
 
