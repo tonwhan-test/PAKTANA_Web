@@ -4,6 +4,8 @@ window.HeroSlider = {
     touchStartX: 0,
     touchEndX: 0,
 
+    listenersSet: false,
+
     init() {
         this.currentSlide = 0; // Reset to first slide
         this.resetSlideInterval();
@@ -21,6 +23,8 @@ window.HeroSlider = {
     },
 
     setupTouchListeners() {
+        if (this.listenersSet) return; // Prevent multiple listeners
+
         const slider = document.querySelector('.hero-slider');
         if (!slider) return;
 
@@ -32,6 +36,8 @@ window.HeroSlider = {
             this.touchEndX = e.changedTouches[0].clientX;
             this.handleSwipeGesture();
         }, { passive: true });
+
+        this.listenersSet = true;
     },
 
     handleSwipeGesture() {
