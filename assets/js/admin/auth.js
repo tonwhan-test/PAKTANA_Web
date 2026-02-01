@@ -31,7 +31,8 @@ window.AdminAuth = {
         if (error) throw error;
         window.AppState.isAdminLoggedIn = false;
         this.updateAdminUI(false);
-        location.reload(); // Refresh the page after logout to reset full state
+        // Force navigate to home and refresh to clear all states
+        window.location.href = window.location.origin + window.location.pathname;
     },
 
     updateAdminUI(loggedIn) {
