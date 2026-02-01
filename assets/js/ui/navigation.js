@@ -114,6 +114,14 @@ window.Navigation = {
             if (pageId === 'analytics' && window.AnalyticsUI) {
                 window.AnalyticsUI.fetchAnalyticsData();
             }
+
+            // Reset hero slider when navigating to home page
+            if (pageId === 'home' && window.HeroSlider) {
+                // Use setTimeout to ensure DOM is ready
+                setTimeout(() => {
+                    window.HeroSlider.reset();
+                }, 100);
+            }
         }
     },
 

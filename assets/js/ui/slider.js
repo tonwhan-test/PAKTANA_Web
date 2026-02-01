@@ -5,8 +5,19 @@ window.HeroSlider = {
     touchEndX: 0,
 
     init() {
+        this.currentSlide = 0; // Reset to first slide
         this.resetSlideInterval();
         this.setupTouchListeners();
+        this.showSlide(0); // Ensure first slide is shown
+    },
+
+    reset() {
+        // Clear any existing interval
+        clearInterval(this.slideInterval);
+        // Reset to first slide
+        this.currentSlide = 0;
+        // Re-initialize
+        this.init();
     },
 
     setupTouchListeners() {
