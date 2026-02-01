@@ -81,27 +81,9 @@ body {
 
 @media (max-width: 640px) {
 
-    /* Show simple arrow icons on mobile without circles */
+    /* Hide slider arrows on mobile - use swipe gestures instead */
     .slider-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 24px;
-        background: transparent;
-        border: none;
-        border-radius: 0;
-        z-index: 20;
-        color: white;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-        /* Increase touch target */
-        padding: 8px;
-    }
-
-    .slider-arrow.left {
-        left: 4px;
-    }
-
-    .slider-arrow.right {
-        right: 4px;
+        display: none !important;
     }
 }
 
