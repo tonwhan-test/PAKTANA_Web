@@ -41,6 +41,42 @@ window.Helpers = {
                 el.classList.remove('hidden');
             }
         });
+    },
+
+    initScrollReveal() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    // Once revealed, we don't need to observe it anymore
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+        revealElements.forEach(el => observer.observe(el));
+
+        // Create a MutationObserver to watch for newly added elements
+        const mutationObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) { // Element node
+                        if (node.classList.contains('reveal-on-scroll')) {
+                            observer.observe(node);
+                        }
+                        node.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+                    }
+                });
+            });
+        });
+
+        mutationObserver.observe(document.body, { childList: true, subtree: true });
     }
 };
 window.showSuccessToast = (msg) => window.Helpers.showSuccessToast(msg);

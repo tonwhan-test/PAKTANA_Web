@@ -222,10 +222,12 @@
             <button class="admin-edit-btn" onclick="openSummaryEditModal()" style="top: 2rem; right: 2rem;">✏️
                 แก้ไขข้อความ</button>
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold text-center text-heading mb-4 font-serif" id="summaryHeading">
+                <h2 class="text-4xl md:text-5xl font-bold text-center text-heading mb-4 font-serif reveal-on-scroll"
+                    id="summaryHeading">
                     -</h2>
                 <div class="gold-divider"></div>
-                <p class="text-xl text-body leading-relaxed mb-12 text-center max-w-3xl mx-auto" id="summaryIntro">
+                <p class="text-xl text-body leading-relaxed mb-12 text-center max-w-3xl mx-auto reveal-on-scroll reveal-delay-1"
+                    id="summaryIntro">
                     -</p>
                 <div id="policiesHomeGrid" class="grid md:grid-cols-2 gap-6 mb-10">
                     <div class="col-span-full text-center py-12">
@@ -283,7 +285,7 @@
     <div class="page" data-page="leadership">
         <section class="section-padding bg-gradient-to-b from-gray-50 to-white">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-5xl md:text-6xl font-bold text-center text-heading mb-4 font-serif"
+                <h2 class="text-5xl md:text-6xl font-bold text-center text-heading mb-4 font-serif reveal-on-scroll"
                     id="leadershipHeading">
                     ทำเนียบสมาชิก</h2>
                 <div class="gold-divider"></div>
@@ -292,7 +294,8 @@
                         class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-2 px-6 rounded-xl font-semibold hover:shadow-lg transition-all"
                         onclick="navigateToPage('manage_members')">จัดการสมาชิก</button>
                 </div>
-                <p class="text-center text-gray-600 text-xl mb-16">โครงสร้างองค์กรและผู้นำที่มีวิสัยทัศน์</p>
+                <p class="text-center text-gray-600 text-xl mb-16 reveal-on-scroll reveal-delay-1">
+                    โครงสร้างองค์กรและผู้นำที่มีวิสัยทัศน์</p>
 
                 <div class="leadership-grid" id="pageLeadershipGrid">
                     <!-- Dynamic -->
@@ -312,12 +315,13 @@
     <div class="page" data-page="activities">
         <section class="section-padding bg-gradient-to-b from-white to-section-bg editable-section">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl md:text-6xl font-bold text-center text-heading mb-4 font-serif"
+                <h2 class="text-3xl md:text-6xl font-bold text-center text-heading mb-4 font-serif reveal-on-scroll"
                     id="activitiesHeading">
                     กิจกรรม &amp; แกลเลอรี่</h2>
                 <div class="gold-divider"></div>
                 <div class="flex justify-between items-center mb-8">
-                    <p class="text-left text-gray-600 text-xl">ผลงานและกิจกรรมที่ผ่านมาของ PAKTANA</p>
+                    <p class="text-left text-gray-600 text-xl reveal-on-scroll reveal-delay-1">
+                        ผลงานและกิจกรรมที่ผ่านมาของ PAKTANA</p>
                     <button
                         class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all admin-only"
                         onclick="openGalleryManagementModal()">+ เพิ่มกิจกรรม</button>

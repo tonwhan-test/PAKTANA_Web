@@ -77,7 +77,7 @@ window.Renderers = {
                     else if (cat.id === 'รองประธาน') groupSize = 'medium';
 
                     html += `
-                    <div class="w-full mb-16 mt-24 flex flex-col items-center justify-center">
+                    <div class="w-full mb-16 mt-24 flex flex-col items-center justify-center reveal-on-scroll">
                         <div class="relative px-8 md:px-16 py-6 group">
                             <!-- Decorative Border Corners -->
                             <div class="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 ${borderColor} opacity-60 transition-all group-hover:w-full group-hover:h-full group-hover:opacity-20 duration-700"></div>

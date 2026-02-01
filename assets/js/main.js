@@ -113,6 +113,10 @@ async function initApp() {
         if (window.AnalyticsService) {
             window.AnalyticsService.trackUniqueVisit();
         }
+        // 5. Initialize Scroll Reveal Animations
+        if (window.Helpers.initScrollReveal) {
+            window.Helpers.initScrollReveal();
+        }
     } catch (err) {
         console.error('Initial Data Fetch Error:', err);
     }
