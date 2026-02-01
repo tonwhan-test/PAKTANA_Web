@@ -290,17 +290,16 @@ body:not(.admin-active) .admin-only {
         flex: 1;
         justify-content: center;
     }
-}
 
-.hero-slider {
-    margin-top: 0;
-}
+    .hero-slider {
+        margin-top: 0;
+    }
 
-.slide-img-contain {
-    margin-top: 0 !important;
-    max-height: 90% !important;
-    max-width: 95% !important;
-}
+    .slide-img-contain {
+        margin-top: 0 !important;
+        max-height: 90% !important;
+        max-width: 95% !important;
+    }
 }
 
 .slider-arrow {
