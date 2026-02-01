@@ -236,6 +236,15 @@ body:not(.admin-active) .admin-only {
 }
 
 /* Carousel Switcher Styles */
+.carousel-switcher {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100 !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
 .carousel-switch-btn {
     color: rgba(255, 255, 255, 0.7);
     border: 1px solid transparent;
@@ -934,6 +943,7 @@ body.admin-active {
 
 /* Page System */
 .page {
+    position: relative;
     display: none;
     width: 100%;
     min-height: calc(100vh - 350px);
