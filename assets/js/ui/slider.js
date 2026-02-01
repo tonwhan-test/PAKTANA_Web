@@ -37,9 +37,9 @@ window.HeroSlider = {
     handleSwipeGesture() {
         const swipeThreshold = 50;
         if (this.touchEndX < this.touchStartX - swipeThreshold) {
-            this.changeSlide(1); // Swipe Left -> Next
+            this.changeSlide(-1); // Swipe Left -> Previous (like going back)
         } else if (this.touchEndX > this.touchStartX + swipeThreshold) {
-            this.changeSlide(-1); // Swipe Right -> Prev
+            this.changeSlide(1); // Swipe Right -> Next (like going forward)
         }
         // Reset
         this.touchStartX = 0;
