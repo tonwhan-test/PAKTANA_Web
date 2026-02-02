@@ -19,6 +19,7 @@ window.AdminManagement = {
         document.getElementById('managementModalTitle').textContent = 'เพิ่มสมาชิก';
         const form = document.getElementById('memberManagementForm');
         if (form) form.reset();
+        document.getElementById('manageMemberNickname').value = '';
         document.getElementById('manageMemberId').value = '';
         document.getElementById('deleteMemberBtn').style.display = 'none'; // Hide delete
         document.getElementById('managePhotoPreview').innerHTML = '<div class="text-4xl">👤</div>';
@@ -45,13 +46,14 @@ window.AdminManagement = {
         document.getElementById('manageMemberPhotoUrl').value = member.photo_url || '';
 
         // Parse Data from Bio (JSON or Separator or Text)
-        let motto = '', history = '', studentClass = '', studentNumber = '', contacts = {};
+        let nickname = '', motto = '', history = '', studentClass = '', studentNumber = '', contacts = {};
         const rawBio = member.bio || '';
 
         try {
             if (rawBio.trim().startsWith('{')) {
                 // New JSON Format
                 const data = JSON.parse(rawBio);
+                nickname = data.nickname || '';
                 motto = data.motto || '';
                 history = data.history || '';
                 studentClass = data.studentClass || '';
@@ -71,6 +73,7 @@ window.AdminManagement = {
         }
 
         // Populate Fields
+        document.getElementById('manageMemberNickname').value = nickname;
         document.getElementById('manageMemberMotto').value = motto;
         document.getElementById('manageMemberBio').value = history;
         document.getElementById('manageMemberClass').value = studentClass;
@@ -140,6 +143,7 @@ window.AdminManagement = {
                 }
 
                 const richData = {
+                    nickname: document.getElementById('manageMemberNickname').value,
                     motto: document.getElementById('manageMemberMotto').value,
                     history: document.getElementById('manageMemberBio').value,
                     studentClass: document.getElementById('manageMemberClass').value,

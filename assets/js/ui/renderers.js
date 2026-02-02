@@ -117,7 +117,7 @@ window.Renderers = {
                                 ${m.photo_url ? `<img src="${m.photo_url}" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-gray-400">👤</div>'}
                             </div>
                             <div class="min-w-0 flex-1">
-                                <h4 class="font-bold text-heading text-base truncate">${m.name}</h4>
+                                <h4 class="font-bold text-heading text-base truncate">${m.name} ${m.bio && m.bio.startsWith('{') && JSON.parse(m.bio).nickname ? `<span class="text-blue-500 font-normal">(${JSON.parse(m.bio).nickname})</span>` : ''}</h4>
                                 <p class="text-xs text-gray-400 md:hidden mt-0.5">${m.position}</p>
                             </div>
                         </div>
@@ -165,6 +165,8 @@ window.Renderers = {
                 const parsed = JSON.parse(rawBio);
                 motto = parsed.motto || '';
                 history = parsed.history || '';
+                const nickname = parsed.nickname || '';
+                m.displayName = nickname ? `${m.name} (${nickname})` : m.name;
             } else if (rawBio.includes('<SEP>')) {
                 const parts = rawBio.split('<SEP>');
                 motto = parts[0] || '';
@@ -194,7 +196,7 @@ window.Renderers = {
                             <!-- Content Section -->
                             <div class="text-center md:text-left flex-1 text-white pr-4 md:pr-12">
                                 <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-5 py-2 rounded-full text-xs md:text-sm font-black mb-6 inline-block uppercase tracking-[0.2em] shadow-lg transform group-hover:-translate-y-1 transition-transform italic">${categoryTitle}</span>
-                                <h3 class="text-2xl md:text-5xl font-black mb-2 tracking-tight leading-tight drop-shadow-lg" title="${m.name}">${m.name}</h3>
+                                <h3 class="text-2xl md:text-5xl font-black mb-2 tracking-tight leading-tight drop-shadow-lg" title="${m.name}">${m.displayName || m.name}</h3>
                                 <p class="text-yellow-400 text-base md:text-2xl mb-8 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
                                 
                                 ${motto ? `
@@ -258,7 +260,7 @@ window.Renderers = {
                         <!-- Content Section -->
                         <div class="text-center sm:text-left flex-1 text-white pr-0 sm:pr-4 min-w-0">
                             <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
-                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md" title="${m.name}">${m.name}</h3>
+                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md" title="${m.name}">${m.displayName || m.name}</h3>
                             <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
                             
                             ${motto ? `
@@ -293,7 +295,7 @@ window.Renderers = {
                         ${photoHtml}
                         <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform pr-12">
                              <p class="text-[10px] md:text-xs font-bold text-yellow-400 uppercase tracking-wider mb-1 truncate">${categoryTitle}</p>
-                             <h4 class="text-sm md:text-xl font-bold leading-tight" title="${m.name}">${m.name}</h4>
+                             <h4 class="text-sm md:text-xl font-bold leading-tight" title="${m.name}">${m.displayName || m.name}</h4>
                              <p class="text-[10px] md:text-xs text-white/70">${m.position}</p>
                         </div>
                     </div>
@@ -312,7 +314,7 @@ window.Renderers = {
                     </div>
                 </div>
                 <div class="p-3 md:p-4 text-center">
-                     <h4 class="font-bold text-slate-700 text-xs md:text-base mb-0.5 group-hover:text-blue-600 transition-colors px-1">${m.name}</h4>
+                      <h4 class="font-bold text-slate-700 text-xs md:text-base mb-0.5 group-hover:text-blue-600 transition-colors px-1">${m.displayName || m.name}</h4>
                     <p class="text-[10px] md:text-xs text-slate-400 px-1">${m.position}</p>
                 </div>
             </div>
@@ -336,6 +338,8 @@ window.Renderers = {
                 studentNumber = parsed.studentNumber || '';
                 contacts = parsed.contacts || {};
                 achievements = parsed.achievements || [];
+                const nickname = parsed.nickname || '';
+                data.displayName = nickname ? `${data.name} (${nickname})` : data.name;
             } else if (rawBio.includes('<SEP>')) {
                 const parts = rawBio.split('<SEP>');
                 motto = parts[0];
@@ -422,7 +426,7 @@ window.Renderers = {
                     </div>
                     
                     <span class="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-widest mb-3 border border-blue-100">${data.position}</span>
-                    <h3 class="text-3xl md:text-5xl font-black text-slate-800 mb-3 leading-tight">${data.name}</h3>
+                    <h3 class="text-3xl md:text-5xl font-black text-slate-800 mb-3 leading-tight">${data.displayName || data.name}</h3>
                     ${displayMotto ? `<p class="text-lg md:text-xl text-slate-500 italic max-w-2xl px-4">"${displayMotto}"</p>` : ''}
                     
                     ${socialHtml}
