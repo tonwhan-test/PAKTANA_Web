@@ -2,7 +2,7 @@ window.SettingsService = {
     async fetchSettings() {
         const { data, error } = await window.supabaseClient
             .from('site_settings')
-            .select('*');
+            .select('key, value');
 
         if (error) {
             console.warn('site_settings table might not exist, using defaults.');

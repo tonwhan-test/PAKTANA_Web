@@ -129,46 +129,77 @@ function setupRealtimeUpdates() {
     if (!window.supabaseClient) return;
 
     window.supabaseClient.channel('db-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, () => {
-            window.MemberService.fetchMembers().then(m => window.Renderers.renderMembers(m));
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'policies' }, () => {
-            window.PolicyService.fetchPolicies().then(p => window.Renderers.renderPolicies(p));
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery' }, () => {
-            window.GalleryService.fetchGallery().then(g => {
-                // Sort by rank from metadata
-                g.sort((a, b) => {
-                    let rankA = 10, rankB = 10;
-                    try {
-                        if (a.description && a.description.includes('<METADATA>')) {
-                            rankA = JSON.parse(a.description.split('<METADATA>')[1]).rank || 10;
-                        }
-                    } catch (e) { }
-                    try {
-                        if (b.description && b.description.includes('<METADATA>')) {
-                            rankB = JSON.parse(b.description.split('<METADATA>')[1]).rank || 10;
-                        }
-                    } catch (e) { }
-                    return rankA - rankB;
-                });
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, (payload) => {
+            const { eventType, new: newRecord, old: oldRecord } = payload;
+            let members = Object.values(window.AppState.memberData);
 
-                window.AppState.galleryDataArray = g;
-                window.AppState.gallerySlides = g.map(item => ({
-                    image_url: item.image_url,
-                    title: item.title,
-                    caption: item.description ? item.description.split('<METADATA>')[0] : ''
-                }));
-                window.Renderers.renderGallery(g);
-                if (window.AppState.currentCarouselSource === 'activities') {
-                    window.Renderers.renderHeroSlides(window.AppState.gallerySlides);
-                }
-            });
+            if (eventType === 'INSERT') {
+                members.push(newRecord);
+            } else if (eventType === 'UPDATE') {
+                members = members.map(m => m.id === newRecord.id ? newRecord : m);
+            } else if (eventType === 'DELETE') {
+                members = members.filter(m => m.id !== oldRecord.id);
+            }
+            // Sort by rank
+            members.sort((a, b) => (a.rank || 0) - (b.rank || 0));
+            window.Renderers.renderMembers(members);
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'policies' }, (payload) => {
+            const { eventType, new: newRecord, old: oldRecord } = payload;
+            let policies = window.AppState.policyData || [];
+
+            if (eventType === 'INSERT') {
+                policies.push(newRecord);
+            } else if (eventType === 'UPDATE') {
+                policies = policies.map(p => p.id === newRecord.id ? newRecord : p);
+            } else if (eventType === 'DELETE') {
+                policies = policies.filter(p => p.id !== oldRecord.id);
+            }
+            policies.sort((a, b) => (a.rank || 0) - (b.rank || 0));
+            window.Renderers.renderPolicies(policies);
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery' }, (payload) => {
+            const { eventType, new: newRecord, old: oldRecord } = payload;
+            let gallery = window.AppState.galleryDataArray || [];
+
+            if (eventType === 'INSERT') {
+                gallery.push(newRecord);
+            } else if (eventType === 'UPDATE') {
+                gallery = gallery.map(g => g.id === newRecord.id ? newRecord : g);
+            } else if (eventType === 'DELETE') {
+                gallery = gallery.filter(g => g.id !== oldRecord.id);
+            }
+
+            // Sort by rank from metadata
+            const getRank = (item) => {
+                try {
+                    if (item.description && item.description.includes('<METADATA>')) {
+                        return JSON.parse(item.description.split('<METADATA>')[1]).rank || 10;
+                    }
+                } catch (e) { }
+                return 10;
+            };
+
+            gallery.sort((a, b) => getRank(a) - getRank(b));
+
+            window.AppState.galleryDataArray = gallery;
+            window.AppState.gallerySlides = gallery.map(item => ({
+                image_url: item.image_url,
+                title: item.title,
+                caption: item.description ? item.description.split('<METADATA>')[0] : ''
+            }));
+            window.Renderers.renderGallery(gallery);
+            if (window.AppState.currentCarouselSource === 'activities') {
+                window.Renderers.renderHeroSlides(window.AppState.gallerySlides);
+            }
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'hero_slides' }, () => {
+            // Hero slides are usually fewer, but we can still optimize if needed.
+            // For now, keep the simple re-fetch or optimize similarly if it's high traffic.
             window.fetchHeroSlides();
         })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => {
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, (payload) => {
+            // Settings are small, but let's be consistent
             loadSiteSettings();
         })
         .subscribe();

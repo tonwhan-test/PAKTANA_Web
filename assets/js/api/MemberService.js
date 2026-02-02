@@ -2,7 +2,7 @@ window.MemberService = {
     async fetchMembers() {
         const { data, error } = await window.supabaseClient
             .from('members')
-            .select('*')
+            .select('id, name, position, category, rank, bio, photo_url')
             .order('rank', { ascending: true });
 
         if (error) throw error;
@@ -33,7 +33,10 @@ window.MemberService = {
 
         const { data, error } = await window.supabaseClient.storage
             .from('members')
-            .upload(filePath, file, { upsert: true });
+            .upload(filePath, file, {
+                upsert: true,
+                cacheControl: '2592000' // 30 days
+            });
 
         if (error) throw error;
 

@@ -2,7 +2,7 @@ window.SliderService = {
     async fetchHeroSlides() {
         const { data, error } = await window.supabaseClient
             .from('hero_slides')
-            .select('*')
+            .select('id, title, image_url, created_at')
             .order('created_at', { ascending: true });
 
         if (error) throw error;
@@ -27,7 +27,10 @@ window.SliderService = {
 
         const { data, error } = await window.supabaseClient.storage
             .from('members')
-            .upload(filePath, file, { upsert: true });
+            .upload(filePath, file, {
+                upsert: true,
+                cacheControl: '2592000' // 30 days
+            });
 
         if (error) throw error;
 

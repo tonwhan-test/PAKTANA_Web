@@ -2,9 +2,9 @@ window.GalleryService = {
     async fetchGallery() {
         const { data, error } = await window.supabaseClient
             .from('gallery')
-            .select('*')
+            .select('id, title, description, date, image_url')
             .order('date', { ascending: false });
-        
+
         if (error) throw error;
         return data || [];
     },
@@ -32,7 +32,10 @@ window.GalleryService = {
 
         const { data, error } = await window.supabaseClient.storage
             .from('members')
-            .upload(filePath, file, { upsert: true });
+            .upload(filePath, file, {
+                upsert: true,
+                cacheControl: '2592000' // 30 days
+            });
 
         if (error) throw error;
 

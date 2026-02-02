@@ -114,7 +114,7 @@ window.Renderers = {
                         <!-- Col 1: Member Info -->
                         <div class="md:col-span-5 flex items-center gap-4">
                             <div class="w-16 h-16 md:w-12 md:h-12 rounded-xl md:rounded-full overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 shadow-sm">
-                                ${m.photo_url ? `<img src="${m.photo_url}" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-gray-400">👤</div>'}
+                                ${m.photo_url ? `<img src="${m.photo_url}" class="w-full h-full object-cover" loading="lazy">` : '<div class="w-full h-full flex items-center justify-center text-gray-400">👤</div>'}
                             </div>
                             <div class="min-w-0 flex-1">
                                 <h4 class="font-bold text-heading text-base truncate">${m.name} ${m.bio && m.bio.startsWith('{') && JSON.parse(m.bio).nickname ? `<span class="text-blue-500 font-normal">(${JSON.parse(m.bio).nickname})</span>` : ''}</h4>
@@ -152,7 +152,7 @@ window.Renderers = {
 
     createMemberCard(m, isLeader, isHome = true, size = 'small') {
         const photoHtml = m.photo_url
-            ? `<img src="${m.photo_url}" alt="${m.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`
+            ? `<img src="${m.photo_url}" alt="${m.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">`
             : `<div class="w-full h-full flex items-center justify-center bg-gray-100 text-4xl text-gray-400">👤</div>`;
 
         const categoryTitle = window.Renderers.categoryMap[m.category] || m.category;
@@ -400,7 +400,7 @@ window.Renderers = {
                             <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
                                 ${ach.image_url ? `
                                 <div class="aspect-video overflow-hidden">
-                                    <img src="${ach.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <img src="${ach.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
                                 </div>
                                 ` : ''}
                                 <div class="p-6">
@@ -422,7 +422,7 @@ window.Renderers = {
                 <!-- Profile Header -->
                 <div class="flex flex-col items-center text-center mb-10">
                     <div class="w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border-8 border-white shadow-2xl mb-8 bg-gray-100 relative group rotate-0 hover:rotate-1 transition-transform duration-500">
-                        ${data.photo_url ? `<img src="${data.photo_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">` : '<div class="w-full h-full flex items-center justify-center text-6xl text-gray-300">👤</div>'}
+                        ${data.photo_url ? `<img src="${data.photo_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">` : '<div class="w-full h-full flex items-center justify-center text-6xl text-gray-300">👤</div>'}
                     </div>
                     
                     <span class="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-widest mb-3 border border-blue-100">${data.position}</span>
@@ -656,7 +656,7 @@ window.Renderers = {
         if (adminGrid) {
             adminGrid.innerHTML = gallery.map(item => `
                 <div class="relative group rounded-xl overflow-hidden aspect-video shadow-md border-2 border-transparent hover:border-primary transition-all cursor-pointer" onclick="window.AdminManagement.openGalleryManagementModal('${item.id}')">
-                    <img src="${item.image_url}" class="w-full h-full object-cover">
+                    <img src="${item.image_url}" class="w-full h-full object-cover" loading="lazy">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <span class="text-white font-bold">✏️ แก้ไข</span>
                     </div>
@@ -708,7 +708,7 @@ window.Renderers = {
                 <div class="relative w-full">
                     <!-- Main Image Display -->
                     <div id="galleryMainImage" class="relative overflow-hidden rounded-t-2xl md:rounded-3xl bg-black/5 flex items-center justify-center">
-                        <img src="${images[0]}" class="w-full h-auto max-h-[50vh] md:max-h-[70vh] object-contain mx-auto transition-opacity duration-300" alt="${data.title}">
+                        <img src="${images[0]}" class="w-full h-auto max-h-[50vh] md:max-h-[70vh] object-contain mx-auto transition-opacity duration-300" alt="${data.title}" loading="lazy">
                     </div>
                     
                     ${hasMultipleImages ? `
@@ -719,7 +719,7 @@ window.Renderers = {
                                 onclick="window.Renderers.switchGalleryImage('${imageId}', ${idx})"
                                 class="gallery-thumb snap-start ${idx === 0 ? 'active ring-2 md:ring-4 ring-blue-500 ring-offset-2' : ''} shrink-0 w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl overflow-hidden border-2 border-transparent transition-all cursor-pointer opacity-70 hover:opacity-100 active:scale-95"
                                 data-thumb-index="${idx}">
-                                <img src="${img}" class="w-full h-full object-cover" alt="รูปที่ ${idx + 1}">
+                                <img src="${img}" class="w-full h-full object-cover" alt="รูปที่ ${idx + 1}" loading="lazy">
                             </button>
                         `).join('')}
                     </div>
@@ -839,7 +839,7 @@ window.Renderers = {
             <div class="slide ${i === 0 ? 'active' : ''} ${isActivities ? 'slide-gallery' : ''}" ${!isActivities ? `style="background-image: url('${s.image_url}')"` : ''}>
                 ${isActivities ? `
                     <div class="slide-bg-blur" style="background-image: url('${s.image_url}')"></div>
-                    <img src="${s.image_url}" class="slide-img-contain" alt="${s.title}">
+                    <img src="${s.image_url}" class="slide-img-contain" alt="${s.title}" loading="lazy">
                 ` : `
                     <div class="slide-overlay"></div>
                     <div class="slide-content">

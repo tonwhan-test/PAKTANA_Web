@@ -23,12 +23,12 @@ window.AnalyticsService = {
     },
 
     async fetchPageViews() {
-        const { data } = await window.supabaseClient.from('analytics_page_views').select('*');
+        const { data } = await window.supabaseClient.from('analytics_page_views').select('page_id, view_count');
         return data || [];
     },
 
     async fetchRatings() {
-        const { data } = await window.supabaseClient.from('analytics_ratings').select('*').order('created_at', { ascending: false });
+        const { data } = await window.supabaseClient.from('analytics_ratings').select('rating, comment, created_at').order('created_at', { ascending: false });
         return data || [];
     },
 

@@ -2,9 +2,9 @@ window.PolicyService = {
     async fetchPolicies() {
         const { data, error } = await window.supabaseClient
             .from('policies')
-            .select('*')
+            .select('id, icon, title, rank, summary, objective, guidelines, results')
             .order('rank', { ascending: true });
-        
+
         if (error) throw error;
         return data || [];
     },
